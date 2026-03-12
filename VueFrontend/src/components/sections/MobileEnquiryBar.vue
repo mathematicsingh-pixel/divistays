@@ -40,20 +40,28 @@ defineProps({
 <style scoped>
 .mobile-bar {
   position: fixed;
-  right: 0;
+  right: 0.8rem;
   bottom: 0;
-  left: 0;
+  left: 0.8rem;
   z-index: 35;
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 0.7rem;
-  padding: 0.9rem 1rem calc(0.9rem + env(safe-area-inset-bottom));
-  background: rgba(248, 244, 235, 0.9);
-  border-top: 1px solid rgba(20, 32, 36, 0.08);
-  backdrop-filter: blur(18px);
+  padding: 0.7rem;
+  margin-bottom: calc(0.8rem + env(safe-area-inset-bottom));
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 1.4rem;
+  background: rgba(7, 18, 26, 0.92);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 20px 42px rgba(0, 0, 0, 0.34);
   transition:
-    transform 0.22s ease,
-    opacity 0.22s ease;
+    transform 0.18s ease,
+    opacity 0.18s ease;
+}
+
+.mobile-bar .button-secondary {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-inverse);
 }
 
 .mobile-bar-hidden {

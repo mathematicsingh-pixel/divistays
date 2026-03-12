@@ -14,14 +14,26 @@ defineProps({
 </script>
 
 <template>
-  <section class="section-shell">
+  <section class="section-shell locality-shell">
     <div class="container locality-grid">
-      <div class="surface-panel locality-copy">
-        <span class="eyebrow">Living context</span>
-        <h2>Kakadeo fit, not just a room list.</h2>
+      <div class="locality-copy page-rise">
+        <span class="eyebrow">Location</span>
+        <h2>Kakadeo fit, minus the back-and-forth.</h2>
         <p>
           {{ site.localitySummary }}
         </p>
+
+        <div class="process-list">
+          <article
+            v-for="(step, index) in site.processSteps"
+            :key="step.title"
+            class="process-item"
+          >
+            <span class="process-index">0{{ index + 1 }}</span>
+            <h3>{{ step.title }}</h3>
+            <p>{{ step.body }}</p>
+          </article>
+        </div>
 
         <ul class="benefit-list">
           <li
@@ -33,7 +45,7 @@ defineProps({
         </ul>
       </div>
 
-      <article class="surface-panel locality-card">
+      <article class="surface-panel locality-card page-rise-delay-1">
         <div class="locality-image">
           <ResponsiveImage
             :room-slug="room.slug"
@@ -42,9 +54,14 @@ defineProps({
           />
         </div>
         <div class="locality-note">
-          <p class="eyebrow">Featured room</p>
+          <span class="eyebrow">Featured</span>
           <h3>{{ room.title }}</h3>
           <p>{{ room.summary }}</p>
+          <div class="locality-tags">
+            <span class="soft-chip">{{ room.priceLabel }}</span>
+            <span class="soft-chip">{{ room.occupancyLabel }}</span>
+            <span class="soft-chip">{{ room.kitchenLabel }}</span>
+          </div>
         </div>
       </article>
     </div>
@@ -52,47 +69,98 @@ defineProps({
 </template>
 
 <style scoped>
+.locality-shell {
+  position: relative;
+}
+
 .locality-grid {
   display: grid;
   gap: 1rem;
 }
 
-.locality-copy,
-.locality-card {
-  overflow: hidden;
-  padding: 1rem;
+.locality-copy {
+  display: grid;
+  gap: 0.95rem;
+  padding: 1.1rem;
+  border: 1px solid rgba(121, 217, 202, 0.16);
+  border-radius: var(--radius-xl);
+  background:
+    radial-gradient(circle at top right, rgba(121, 217, 202, 0.16), transparent 28%),
+    linear-gradient(180deg, rgba(12, 29, 38, 0.95), rgba(7, 18, 26, 0.98));
+  box-shadow: 0 22px 56px rgba(0, 0, 0, 0.24);
 }
 
-.locality-copy p {
-  color: var(--muted);
+.locality-copy h2 {
+  color: var(--text-inverse);
+}
+
+.locality-copy p,
+.process-item p,
+.locality-note p {
+  color: var(--muted-inverse);
+}
+
+.process-list {
+  display: grid;
+  gap: 0.7rem;
+}
+
+.process-item {
+  padding: 0.85rem 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.process-item:first-child {
+  border-top: 0;
+  padding-top: 0;
+}
+
+.process-index {
+  color: #ffba7c;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.process-item h3 {
+  margin-top: 0.2rem;
+  color: var(--text-inverse);
 }
 
 .benefit-list {
   display: grid;
-  gap: 0.65rem;
-  margin: 1rem 0 0;
+  gap: 0.55rem;
+  margin: 0;
   padding-left: 1rem;
-  color: var(--text-strong);
+  color: var(--text-inverse);
+}
+
+.locality-card {
+  padding: 1rem;
+  border: 1px solid rgba(121, 217, 202, 0.16);
 }
 
 .locality-image {
   overflow: hidden;
-  border-radius: 1.1rem;
+  border-radius: 1.8rem 1.8rem 0.95rem 0.95rem;
   aspect-ratio: 4 / 3;
 }
 
 .locality-note {
-  margin-top: 1rem;
+  display: grid;
+  gap: 0.7rem;
+  padding-top: 1rem;
 }
 
-.locality-note h3,
 .locality-note p {
-  margin: 0;
+  color: var(--muted);
 }
 
-.locality-note p:last-child {
-  margin-top: 0.65rem;
-  color: var(--muted);
+.locality-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
 }
 
 @media (min-width: 960px) {
@@ -102,7 +170,7 @@ defineProps({
 
   .locality-copy,
   .locality-card {
-    padding: 1.3rem;
+    padding: 1.2rem;
   }
 }
 </style>

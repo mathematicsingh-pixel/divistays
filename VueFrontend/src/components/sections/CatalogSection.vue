@@ -1,7 +1,7 @@
 <script setup>
-import { computed, ref } from 'vue'
+import { computed } from 'vue'
 import RoomCard from '@/components/RoomCard.vue'
-import { useOverlayDialog } from '@/composables/useOverlayDialog'
+import CatalogFilterSheet from '@/components/sections/CatalogFilterSheet.vue'
 
 const props = defineProps({
   rooms: {
@@ -31,8 +31,6 @@ const props = defineProps({
 })
 
 const emit = defineEmits(['update:sheet-open'])
-const sheetPanel = ref(null)
-const closeButton = ref(null)
 
 const occupancyOptions = [
   { value: 'single', label: 'Single' },
@@ -48,6 +46,12 @@ const kitchenOptions = [
 const washroomOptions = [
   { value: 'private', label: 'Attached / private' },
   { value: 'common', label: 'Common washroom' },
+]
+
+const sortOptions = [
+  { value: 'recommended', label: 'Recommended' },
+  { value: 'price-asc', label: 'Price: low to high' },
+  { value: 'price-desc', label: 'Price: high to low' },
 ]
 
 const activeLabels = computed(() => {
@@ -95,34 +99,30 @@ function isActive(list, value) {
 function closeSheet() {
   emit('update:sheet-open', false)
 }
-
-useOverlayDialog({
-  isOpen: computed(() => props.isSheetOpen),
-  panelRef: sheetPanel,
-  initialFocusRef: closeButton,
-  onClose: closeSheet,
-})
 </script>
 
 <template>
   <section
     id="rooms"
-    class="section-shell"
+    class="section-shell catalog-shell"
   >
     <div class="container">
-      <div class="section-heading">
-        <span class="eyebrow">Room catalog</span>
-        <h2>Compare the fit fast, then enquire with context.</h2>
+      <div class="section-heading catalog-heading">
+        <span class="eyebrow">Rooms</span>
+        <h2>Shortlist by fit, not brochure fluff.</h2>
         <p>
-          Start with rooms that are open now, then widen the list when you want a fuller view of layout and pricing.
+          Start with live availability, then cut by occupancy, kitchen, washroom, and price order.
         </p>
       </div>
 
       <div class="catalog-toolbar surface-panel">
         <div class="toolbar-top">
-          <div>
+          <div class="toolbar-copy">
             <p class="toolbar-label">Showing</p>
             <strong>{{ resultLabel }}</strong>
+            <p class="toolbar-note">
+              {{ hasActiveFilters ? `${activeFilterCount} active filter${activeFilterCount === 1 ? '' : 's'}` : 'Currently sorted by recommended fit' }}
+            </p>
           </div>
 
           <div class="toolbar-actions">
@@ -143,21 +143,19 @@ useOverlayDialog({
                 :value="filters.sort"
                 @change="actions.setSort($event.target.value)"
               >
-                <option value="recommended">
-                  Recommended
-                </option>
-                <option value="price-asc">
-                  Price: low to high
-                </option>
-                <option value="price-desc">
-                  Price: high to low
+                <option
+                  v-for="item in sortOptions"
+                  :key="item.value"
+                  :value="item.value"
+                >
+                  {{ item.label }}
                 </option>
               </select>
             </label>
           </div>
         </div>
 
-        <div class="availability-toggle">
+        <div class="availability-row">
           <button
             type="button"
             class="chip-button"
@@ -174,24 +172,8 @@ useOverlayDialog({
             :aria-pressed="filters.availability === 'all'"
             @click="actions.setAvailability('all')"
           >
-            Show all rooms
+            Show all
           </button>
-        </div>
-
-        <div
-          v-if="activeLabels.length"
-          class="active-summary"
-        >
-          <span class="toolbar-label">Active</span>
-          <div class="chip-row">
-            <span
-              v-for="label in activeLabels"
-              :key="label"
-              class="soft-chip"
-            >
-              {{ label }}
-            </span>
-          </div>
         </div>
 
         <div class="desktop-groups">
@@ -247,14 +229,28 @@ useOverlayDialog({
           </div>
         </div>
 
-        <button
-          v-if="hasActiveFilters"
-          class="reset-link"
-          type="button"
-          @click="actions.resetFilters()"
+        <div
+          v-if="activeLabels.length"
+          class="active-row"
         >
-          Reset filters
-        </button>
+          <span class="toolbar-label">Active filters</span>
+          <div class="active-chips">
+            <span
+              v-for="label in activeLabels"
+              :key="label"
+              class="soft-chip"
+            >
+              {{ label }}
+            </span>
+          </div>
+          <button
+            class="reset-link"
+            type="button"
+            @click="actions.resetFilters()"
+          >
+            Reset all
+          </button>
+        </div>
       </div>
 
       <p
@@ -282,7 +278,7 @@ useOverlayDialog({
         class="empty-state surface-panel"
       >
         <h3>No rooms match that filter mix.</h3>
-        <p>Reset the filters or switch back to the full catalog to compare every current layout.</p>
+        <p>Reset filters or switch back to all rooms to compare every layout.</p>
         <button
           class="button-primary"
           type="button"
@@ -293,350 +289,212 @@ useOverlayDialog({
       </div>
     </div>
 
-    <Teleport to="body">
-      <transition name="sheet-fade">
-        <div
-          v-if="isSheetOpen"
-          class="sheet-shell"
-          @click.self="closeSheet"
-        >
-          <section
-            id="catalog-filters"
-            ref="sheetPanel"
-            class="sheet-panel"
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="catalog-filters-title"
-          >
-            <div class="sheet-head">
-              <div>
-                <p class="toolbar-label">Filters</p>
-                <h3 id="catalog-filters-title">Refine the shortlist</h3>
-              </div>
-              <button
-                ref="closeButton"
-                class="icon-button"
-                type="button"
-                aria-label="Close filters"
-                @click="closeSheet"
-              >
-                ×
-              </button>
-            </div>
-
-            <div class="sheet-body">
-              <div class="sheet-group">
-                <span>Occupancy</span>
-                <div class="chip-row">
-                  <button
-                    v-for="item in occupancyOptions"
-                    :key="item.value"
-                    type="button"
-                    class="chip-button"
-                    :class="{ active: isActive(filters.occupancy, item.value) }"
-                    :aria-pressed="isActive(filters.occupancy, item.value)"
-                    @click="actions.toggleOccupancy(item.value)"
-                  >
-                    {{ item.label }}
-                  </button>
-                </div>
-              </div>
-
-              <div class="sheet-group">
-                <span>Kitchen</span>
-                <div class="chip-row">
-                  <button
-                    v-for="item in kitchenOptions"
-                    :key="item.value"
-                    type="button"
-                    class="chip-button"
-                    :class="{ active: isActive(filters.kitchen, item.value) }"
-                    :aria-pressed="isActive(filters.kitchen, item.value)"
-                    @click="actions.toggleKitchen(item.value)"
-                  >
-                    {{ item.label }}
-                  </button>
-                </div>
-              </div>
-
-              <div class="sheet-group">
-                <span>Washroom</span>
-                <div class="chip-row">
-                  <button
-                    v-for="item in washroomOptions"
-                    :key="item.value"
-                    type="button"
-                    class="chip-button"
-                    :class="{ active: isActive(filters.washroom, item.value) }"
-                    :aria-pressed="isActive(filters.washroom, item.value)"
-                    @click="actions.toggleWashroom(item.value)"
-                  >
-                    {{ item.label }}
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            <div class="sheet-actions">
-              <button
-                class="button-secondary"
-                type="button"
-                @click="actions.resetFilters()"
-              >
-                Reset
-              </button>
-              <button
-                class="button-primary"
-                type="button"
-                @click="closeSheet"
-              >
-                Show rooms
-              </button>
-            </div>
-          </section>
-        </div>
-      </transition>
-    </Teleport>
+    <CatalogFilterSheet
+      :is-open="isSheetOpen"
+      :filters="filters"
+      :actions="actions"
+      :occupancy-options="occupancyOptions"
+      :kitchen-options="kitchenOptions"
+      :washroom-options="washroomOptions"
+      :sort-options="sortOptions"
+      @close="closeSheet"
+    />
   </section>
 </template>
 
 <style scoped>
+.catalog-shell {
+  scroll-margin-top: 1rem;
+}
+
+.catalog-heading h2 {
+  color: var(--text-inverse);
+}
+
 .catalog-toolbar {
-  position: sticky;
-  top: 0.75rem;
-  z-index: 20;
   display: grid;
-  gap: 0.95rem;
+  gap: 0.9rem;
   padding: 1rem;
+  border: 1px solid rgba(121, 217, 202, 0.18);
+  background:
+    linear-gradient(180deg, rgba(249, 252, 255, 0.98), rgba(240, 247, 250, 0.96));
 }
 
 .toolbar-top {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: end;
-  justify-content: space-between;
-  gap: 0.85rem;
+  display: grid;
+  gap: 0.9rem;
+}
+
+.toolbar-copy {
+  display: grid;
+  gap: 0.15rem;
 }
 
 .toolbar-label {
-  margin: 0;
   color: var(--muted);
-  font-size: 0.82rem;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  letter-spacing: 0.14em;
+}
+
+.toolbar-copy strong {
+  color: var(--text-strong);
+  font-size: 1.2rem;
+}
+
+.toolbar-note {
+  color: var(--muted);
+  font-size: 0.92rem;
 }
 
 .toolbar-actions {
-  display: flex;
-  align-items: end;
-  gap: 0.7rem;
-}
-
-.active-summary {
   display: grid;
-  gap: 0.5rem;
-}
-
-.filter-trigger,
-.icon-button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.45rem;
-  min-height: 2.8rem;
-  padding: 0.55rem 0.85rem;
-  border: 1px solid rgba(20, 32, 36, 0.12);
-  border-radius: 999px;
-  background: white;
-  color: var(--text-strong);
-  font-weight: 600;
-}
-
-.filter-trigger span {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 1.35rem;
-  height: 1.35rem;
-  border-radius: 999px;
-  background: var(--accent);
-  color: white;
-  font-size: 0.78rem;
+  gap: 0.7rem;
 }
 
 .sort-field {
   display: grid;
   gap: 0.35rem;
   color: var(--muted);
-  font-size: 0.88rem;
+  font-size: 0.86rem;
 }
 
 .sort-field select {
-  min-height: 2.8rem;
-  padding: 0 0.85rem;
-  border: 1px solid rgba(20, 32, 36, 0.12);
-  border-radius: 999px;
-  background: white;
+  min-height: 3rem;
+  padding: 0 0.9rem;
+  border: 1px solid var(--line);
+  border-radius: 0.95rem;
+  background: #ffffff;
   color: var(--text-strong);
-  font: inherit;
 }
 
-.availability-toggle,
-.chip-row {
+.filter-trigger,
+.chip-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  min-height: 2.85rem;
+  padding: 0.55rem 0.9rem;
+  border: 1px solid var(--line);
+  border-radius: 0.95rem;
+  background: #ffffff;
+  color: var(--text-strong);
+  font-weight: 700;
+}
+
+.filter-trigger span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.3rem;
+  height: 1.3rem;
+  border-radius: 999px;
+  background: var(--forest-soft);
+  color: var(--text-inverse);
+  font-size: 0.76rem;
+}
+
+.availability-row,
+.chip-row,
+.active-chips {
   display: flex;
   flex-wrap: wrap;
   gap: 0.6rem;
 }
 
-.chip-button {
-  min-height: 2.5rem;
-  padding: 0.55rem 0.85rem;
-  border: 1px solid rgba(20, 32, 36, 0.12);
-  border-radius: 999px;
-  background: white;
-  color: var(--text-strong);
-  font: inherit;
-  font-weight: 600;
-}
-
 .chip-button.active {
-  border-color: var(--accent);
-  background: rgba(188, 106, 79, 0.12);
+  border-color: rgba(255, 122, 26, 0.35);
+  background: rgba(255, 122, 26, 0.1);
+  color: var(--accent-deep);
 }
 
 .desktop-groups {
   display: none;
+  gap: 0.85rem;
 }
 
 .group-row {
   display: grid;
-  gap: 0.6rem;
+  gap: 0.45rem;
 }
 
-.group-row span,
-.sheet-group span {
+.group-row > span {
   color: var(--muted);
-  font-size: 0.88rem;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.active-row {
+  display: grid;
+  gap: 0.6rem;
+  padding-top: 0.2rem;
+  border-top: 1px solid var(--line);
 }
 
 .reset-link {
   justify-self: start;
   color: var(--accent-deep);
-  font-weight: 700;
+  font-weight: 800;
 }
 
 .room-grid {
   display: grid;
   gap: 1rem;
-  margin-top: 1.1rem;
+  margin-top: 1.15rem;
 }
 
 .empty-state {
   display: grid;
   gap: 0.8rem;
-  justify-items: start;
-  margin-top: 1.1rem;
-  padding: 1.2rem;
+  margin-top: 1rem;
+  padding: 1.1rem;
+  border: 1px solid rgba(121, 217, 202, 0.18);
 }
 
-.empty-state h3,
 .empty-state p {
-  margin: 0;
-}
-
-.sheet-shell {
-  position: fixed;
-  inset: 0;
-  z-index: 45;
-  display: flex;
-  align-items: end;
-  justify-content: center;
-  padding: 0.75rem 0 0;
-  overflow-y: auto;
-  background: rgba(20, 24, 25, 0.5);
-}
-
-.sheet-panel {
-  width: min(100%, 38rem);
-  max-height: calc(100svh - 0.75rem);
-  display: grid;
-  grid-template-rows: auto minmax(0, 1fr) auto;
-  gap: 1rem;
-  padding: 1rem 1rem calc(1rem + env(safe-area-inset-bottom));
-  border-radius: 1.5rem 1.5rem 0 0;
-  background: var(--paper);
-  box-shadow: var(--shadow);
-}
-
-.sheet-head {
-  display: flex;
-  align-items: start;
-  justify-content: space-between;
-  gap: 1rem;
-}
-
-.sheet-head h3 {
-  margin: 0.15rem 0 0;
-}
-
-.sheet-body {
-  display: grid;
-  gap: 1rem;
-  overflow-y: auto;
-  padding-right: 0.1rem;
-}
-
-.sheet-group {
-  display: grid;
-  gap: 0.65rem;
-}
-
-.sheet-actions {
-  display: flex;
-  gap: 0.7rem;
-  padding-top: 0.2rem;
-}
-
-.sheet-actions > * {
-  flex: 1 1 0;
-}
-
-.sheet-fade-enter-active,
-.sheet-fade-leave-active {
-  transition: opacity 0.2s ease;
-}
-
-.sheet-fade-enter-from,
-.sheet-fade-leave-to {
-  opacity: 0;
+  color: var(--muted);
 }
 
 @media (min-width: 760px) {
+  .toolbar-top {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: end;
+  }
+
+  .toolbar-actions {
+    grid-template-columns: auto auto;
+    align-items: end;
+  }
+
   .room-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
-@media (min-width: 1024px) {
+@media (min-width: 960px) {
   .catalog-toolbar {
-    top: 1rem;
+    padding: 1.15rem;
+  }
+
+  .desktop-groups {
+    display: grid;
   }
 
   .filter-trigger {
     display: none;
   }
 
-  .active-summary {
-    display: none;
+  .room-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    align-items: start;
   }
 
-  .desktop-groups {
-    display: grid;
-    gap: 0.85rem;
-  }
-
-  .sheet-shell {
-    display: none;
+  .room-grid :deep(.room-card:nth-child(3n + 2)) {
+    transform: translateY(1rem);
   }
 }
 </style>

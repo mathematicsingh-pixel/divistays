@@ -1,4 +1,6 @@
 <script setup>
+import BrandMark from '@/components/brand/BrandMark.vue'
+
 defineProps({
   site: {
     type: Object,
@@ -17,13 +19,18 @@ defineProps({
 
 <template>
   <footer class="site-footer">
-    <div class="container footer-grid">
-      <div>
-        <p class="footer-brand">{{ site.name }}</p>
+    <div class="container footer-panel">
+      <div class="footer-copy">
+        <BrandMark
+          inverted
+          tag="Student stays"
+        />
         <p>{{ site.locationLabel }}</p>
+        <p class="footer-summary">{{ site.brandSummary }}</p>
       </div>
 
       <div class="footer-links">
+        <a href="#rooms">Rooms</a>
         <a :href="callHref">{{ site.phoneDisplay }}</a>
         <a
           :href="whatsappHref"
@@ -42,41 +49,39 @@ defineProps({
   padding: 0 0 calc(7rem + env(safe-area-inset-bottom));
 }
 
-.footer-grid {
+.footer-panel {
   display: grid;
   gap: 1rem;
-  padding-top: 1rem;
-  border-top: 1px solid rgba(20, 32, 36, 0.1);
+  padding: 1.25rem 0 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-.footer-brand,
-.footer-grid p {
-  margin: 0;
+.footer-copy {
+  display: grid;
+  gap: 0.5rem;
 }
 
-.footer-brand {
-  color: var(--text-strong);
-  font-weight: 700;
+.footer-copy p {
+  color: var(--muted-inverse);
 }
 
-.footer-grid p:last-child {
-  margin-top: 0.4rem;
-  color: var(--muted);
+.footer-summary {
+  max-width: 34rem;
 }
 
 .footer-links {
   display: flex;
-  gap: 1rem;
   flex-wrap: wrap;
+  gap: 1rem;
 }
 
 .footer-links a {
-  color: var(--text-strong);
-  font-weight: 600;
+  color: var(--text-inverse);
+  font-weight: 700;
 }
 
 @media (min-width: 760px) {
-  .footer-grid {
+  .footer-panel {
     grid-template-columns: minmax(0, 1fr) auto;
     align-items: center;
   }

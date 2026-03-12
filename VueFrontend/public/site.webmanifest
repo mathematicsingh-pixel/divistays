@@ -1,11 +1,11 @@
 {
-  "name": "Cozy Rooms",
-  "short_name": "Cozy",
-  "description": "Premium student rooms in Kakadeo, Kanpur.",
+  "name": "CozyRooms",
+  "short_name": "CozyRooms",
+  "description": "Furnished student rooms in Kakadeo, Kanpur with direct mobile enquiry.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#f8f4eb",
-  "theme_color": "#f8f4eb",
+  "background_color": "#07121a",
+  "theme_color": "#07121a",
   "icons": [
     {
       "src": "/favicon.svg",

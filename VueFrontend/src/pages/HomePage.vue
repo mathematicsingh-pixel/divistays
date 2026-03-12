@@ -20,11 +20,16 @@ const isSheetOpen = ref(false)
 const catalog = useRoomCatalog()
 const callHref = getCallHref()
 const defaultWhatsAppHref = getWhatsAppHref()
-const featuredRooms = availableRooms.slice(0, 3)
-const highlightRoom = featuredRooms[1] || roomCatalog[0]
+const featuredRooms = [
+  ...availableRooms,
+  ...roomCatalog.filter((room) => !availableRooms.some((availableRoom) => availableRoom.id === room.id)),
+].slice(0, 3)
+const availableRoomCount = availableRooms.length
+const highlightRoom = computed(() => catalog.visibleRooms.value[0] || featuredRooms[0] || roomCatalog[0])
 const isOverlayOpen = computed(() => isSheetOpen.value || Boolean(catalog.selectedRoom.value))
 const siteUrl = resolveSiteUrl(import.meta.env.VITE_SITE_URL)
-const ogImage = `${siteUrl}/media/rooms/${roomCatalog[0].slug}/${roomCatalog[0].gallery[0].key}-1440.jpg`
+const heroRoom = featuredRooms[0] || roomCatalog[0]
+const ogImage = `${siteUrl}/media/rooms/${heroRoom.slug}/${heroRoom.gallery[0].key}-1440.jpg`
 
 const structuredData = computed(() =>
   buildStructuredData({
@@ -76,7 +81,7 @@ useHead(() => ({
   ],
   meta: [
     { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-    { name: 'theme-color', content: '#f8f4eb' },
+    { name: 'theme-color', content: siteConfig.themeColor },
   ],
   script: structuredData.value.map((item, index) => ({
     key: `ld-json-${index}`,
@@ -103,6 +108,7 @@ const actions = {
       :stats="siteConfig.stats"
       :site="siteConfig"
       :starting-price-label="startingPriceLabel"
+      :available-room-count="availableRoomCount"
       :call-href="callHref"
       :whatsapp-href="defaultWhatsAppHref"
     />

@@ -1,4 +1,6 @@
 <script setup>
+import BrandMark from '@/components/brand/BrandMark.vue'
+
 defineProps({
   site: {
     type: Object,
@@ -18,10 +20,13 @@ defineProps({
 <template>
   <section class="section-shell">
     <div class="container">
-      <div class="cta-banner">
-        <div>
-          <span class="eyebrow">Enquiry</span>
-          <h2>See a likely-fit room, then ask while the context is fresh.</h2>
+      <div class="cta-banner page-rise">
+        <div class="cta-copy">
+          <BrandMark
+            compact
+            tag="Direct line"
+          />
+          <h2>Found the vibe? Check live availability.</h2>
           <p>{{ site.enquirySummary }}</p>
         </div>
 
@@ -50,42 +55,55 @@ defineProps({
 .cta-banner {
   display: grid;
   gap: 1rem;
-  padding: 1.2rem;
-  border-radius: 1.6rem;
+  padding: 1rem;
+  border: 1px solid rgba(255, 122, 26, 0.28);
+  border-radius: 1.9rem;
   background:
-    radial-gradient(circle at top left, rgba(188, 106, 79, 0.3), transparent 30%),
-    linear-gradient(135deg, #18342f, #10201d);
-  color: white;
-  box-shadow: 0 24px 64px rgba(12, 24, 22, 0.18);
+    radial-gradient(circle at top right, rgba(255, 211, 142, 0.34), transparent 28%),
+    linear-gradient(135deg, #ff7a1a 0%, #ff9d3b 100%);
+  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.22);
 }
 
-.cta-banner h2,
-.cta-banner p {
-  margin: 0;
+.cta-copy {
+  display: grid;
+  gap: 0.8rem;
 }
 
-.cta-banner p {
-  margin-top: 0.75rem;
+.cta-copy h2,
+.cta-copy p {
+  color: var(--forest);
+}
+
+.cta-copy p {
   max-width: 36rem;
-  color: rgba(255, 255, 255, 0.78);
+  color: rgba(7, 18, 26, 0.78);
 }
 
 .cta-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem;
+  display: grid;
+  gap: 0.7rem;
+}
+
+.cta-actions .button-primary {
+  background: var(--forest);
+  color: var(--text-inverse);
+  box-shadow: none;
 }
 
 .cta-actions .button-secondary {
-  border-color: rgba(255, 255, 255, 0.24);
-  color: white;
+  border-color: rgba(7, 18, 26, 0.16);
+  background: rgba(255, 255, 255, 0.82);
 }
 
 @media (min-width: 960px) {
   .cta-banner {
     grid-template-columns: minmax(0, 1fr) auto;
     align-items: center;
-    padding: 1.5rem;
+    padding: 1.2rem;
+  }
+
+  .cta-actions {
+    grid-template-columns: repeat(2, minmax(0, auto));
   }
 }
 </style>
