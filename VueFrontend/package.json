@@ -1,0 +1,28 @@
+{
+  "name": "vuefrontend",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "predev": "node scripts/build-room-media.mjs",
+    "dev": "vite",
+    "prebuild": "node scripts/build-room-media.mjs",
+    "build": "vite-ssg build",
+    "postbuild": "node scripts/postbuild.mjs",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@fontsource/fraunces": "^5.2.9",
+    "@fontsource/instrument-sans": "^5.2.8",
+    "@unhead/vue": "^2.1.12",
+    "vite-ssg": "^28.3.0",
+    "vue": "^3.5.30",
+    "vue-router": "^4.6.4"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^6.0.5",
+    "beasties": "^0.3.5",
+    "sharp": "^0.34.5",
+    "vite": "^8.0.0"
+  }
+}

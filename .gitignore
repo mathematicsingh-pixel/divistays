@@ -112,3 +112,6 @@ htmlcov/
 data/
 temp/
 test.ipynb
+.playwright-cli
+.vite-ssg-temp/
+output/playwright/
