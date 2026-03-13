@@ -33,56 +33,44 @@ const label = computed(() => props.strap || props.tag || 'Student stays')
     class="brand-mark"
     :class="[`tone-${resolvedTone}`, { compact }]"
   >
-    <span class="brand-icon-frame">
+    <span class="brand-icon-wrap">
       <svg
         class="brand-icon"
         viewBox="0 0 64 64"
         aria-hidden="true"
       >
         <path
-          d="M18 52V35.5L34 20l16 15.5V52H18Z"
-          class="brand-room-fill"
+          d="M14.5 53V30c0-10.7 8.8-19.5 19.5-19.5S53.5 19.3 53.5 30v23H14.5Z"
+          class="brand-shell-fill"
         />
         <path
-          d="M14 54V30c0-11 8.95-20 20-20s20 9 20 20v24H14Z"
-          class="brand-arch-shell"
+          d="M16.5 51V39.2L34 26l17.5 13.2V51H16.5Z"
+          class="brand-floor-glow"
         />
         <path
-          d="M22 54V33c0-6.6 5.4-12 12-12s12 5.4 12 12v21"
-          class="brand-arch-inner"
+          d="M14.5 36.2V30c0-10.7 8.8-19.5 19.5-19.5S53.5 19.3 53.5 30v6.2c-5.5-4.8-12.1-7.2-19.5-7.2s-14 2.4-19.5 7.2Z"
+          class="brand-top-shadow"
         />
         <path
-          d="M34 17v10"
+          d="M14.5 53V30c0-10.7 8.8-19.5 19.5-19.5S53.5 19.3 53.5 30v23H14.5Z"
+          class="brand-shell-stroke"
+        />
+        <path
+          d="M34 12.4v9.3"
           class="brand-lamp-stem"
         />
         <path
-          d="M24.5 31.5h19A9.5 9.5 0 0 0 34 23a9.5 9.5 0 0 0-9.5 8.5Z"
+          d="M24.3 30.6h19.4a9.7 9.7 0 0 0-9.7-8.5 9.7 9.7 0 0 0-9.7 8.5Z"
           class="brand-lamp-shade"
         />
         <circle
           cx="34"
-          cy="37"
-          r="5.8"
-          class="brand-lamp-glow"
+          cy="35.9"
+          r="5.2"
+          class="brand-lamp-core"
         />
         <path
-          d="M34 43.5v6"
-          class="brand-ray"
-        />
-        <path
-          d="M26.6 41.4 23 46"
-          class="brand-ray"
-        />
-        <path
-          d="M41.4 41.4 45 46"
-          class="brand-ray"
-        />
-        <path
-          d="M23.3 36.8H18"
-          class="brand-ray"
-        />
-        <path
-          d="M50 36.8h-5.3"
+          d="M34 42.7v6.1M26.3 40.7l-3.9 4.4M41.7 40.7l3.9 4.4M23.1 35.9h-5.5M50.4 35.9h-5.5"
           class="brand-ray"
         />
       </svg>
@@ -104,54 +92,59 @@ const label = computed(() => props.strap || props.tag || 'Student stays')
 
 <style scoped>
 .brand-mark {
-  --frame: linear-gradient(180deg, #fff1db, #f5c266);
-  --frame-border: rgba(133, 74, 43, 0.18);
-  --arch-shell: #5c2f20;
-  --arch-inner: #6f3d27;
-  --room-fill: #ec9433;
-  --lamp-shade: #5c2f20;
-  --lamp-glow: #fff2bf;
-  --ray: #ffe7a0;
-  --word: #4a261b;
-  --tag: #94624c;
+  --shell-fill: #d66c30;
+  --floor-glow: #f4ae45;
+  --top-shadow: rgba(105, 39, 24, 0.28);
+  --shell-stroke: #5f2b1f;
+  --lamp-metal: #5f2b1f;
+  --lamp-core: #ffe6a0;
+  --ray: #f7e1a2;
+  --word-top: #6c3123;
+  --word-bottom: #4f2118;
+  --tag: #8a5441;
+  --word-shadow: 0 8px 18px rgba(115, 50, 31, 0.08);
+  --icon-shadow: drop-shadow(0 10px 18px rgba(94, 43, 31, 0.16));
   display: inline-flex;
   align-items: center;
   gap: 0.78rem;
 }
 
 .tone-light {
-  --frame: linear-gradient(180deg, rgba(255, 241, 219, 0.2), rgba(236, 148, 51, 0.18));
-  --frame-border: rgba(255, 203, 122, 0.22);
-  --arch-shell: #fff2df;
-  --arch-inner: #ffd08d;
-  --room-fill: rgba(236, 148, 51, 0.85);
-  --lamp-shade: #fff2df;
-  --lamp-glow: #fff5c8;
-  --ray: #ffe6a0;
-  --word: #fff3e2;
-  --tag: rgba(255, 232, 208, 0.78);
+  --word-top: #fff7ef;
+  --word-bottom: #ffcd82;
+  --tag: rgba(255, 229, 200, 0.9);
+  --word-shadow: 0 1px 16px rgba(0, 0, 0, 0.22);
+  --icon-shadow: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.2));
 }
 
-.brand-icon-frame {
+.brand-icon-wrap {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 3.15rem;
-  height: 3.15rem;
-  border: 1px solid var(--frame-border);
-  border-radius: 1.1rem;
-  background: var(--frame);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.24);
-}
-
-.brand-icon {
-  width: 2.5rem;
-  height: 2.5rem;
+  width: 3.2rem;
+  height: 3.2rem;
   flex: 0 0 auto;
 }
 
-.brand-arch-shell,
-.brand-arch-inner,
+.brand-icon {
+  width: 100%;
+  height: 100%;
+  filter: var(--icon-shadow);
+}
+
+.brand-shell-fill {
+  fill: var(--shell-fill);
+}
+
+.brand-floor-glow {
+  fill: var(--floor-glow);
+}
+
+.brand-top-shadow {
+  fill: var(--top-shadow);
+}
+
+.brand-shell-stroke,
 .brand-lamp-stem,
 .brand-ray {
   fill: none;
@@ -159,39 +152,27 @@ const label = computed(() => props.strap || props.tag || 'Student stays')
   stroke-linejoin: round;
 }
 
-.brand-room-fill {
-  fill: var(--room-fill);
-}
-
-.brand-arch-shell {
-  stroke: var(--arch-shell);
-  stroke-width: 5.2;
-}
-
-.brand-arch-inner {
-  stroke: var(--arch-inner);
-  stroke-width: 3.8;
+.brand-shell-stroke {
+  stroke: var(--shell-stroke);
+  stroke-width: 4.8;
 }
 
 .brand-lamp-stem {
-  stroke: var(--arch-shell);
-  stroke-width: 4.2;
+  stroke: var(--lamp-metal);
+  stroke-width: 3.7;
 }
 
 .brand-lamp-shade {
-  fill: var(--lamp-shade);
-  stroke: var(--arch-shell);
-  stroke-width: 3.1;
-  stroke-linejoin: round;
+  fill: var(--lamp-metal);
 }
 
-.brand-lamp-glow {
-  fill: var(--lamp-glow);
+.brand-lamp-core {
+  fill: var(--lamp-core);
 }
 
 .brand-ray {
   stroke: var(--ray);
-  stroke-width: 3.2;
+  stroke-width: 3.1;
 }
 
 .brand-copy {
@@ -200,20 +181,25 @@ const label = computed(() => props.strap || props.tag || 'Student stays')
 }
 
 .brand-name {
-  color: var(--word);
   font-family: 'Syne', sans-serif;
   font-size: 1.16rem;
   font-weight: 800;
   letter-spacing: -0.045em;
   line-height: 1;
+  background-image: linear-gradient(180deg, var(--word-top), var(--word-bottom));
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  text-shadow: var(--word-shadow);
 }
 
 .brand-name-cozy {
-  font-weight: 600;
+  font-weight: 700;
 }
 
 .brand-name-rooms {
-  margin-left: 0.02em;
+  margin-left: 0.01em;
 }
 
 .brand-tag {
@@ -222,23 +208,19 @@ const label = computed(() => props.strap || props.tag || 'Student stays')
   font-weight: 700;
   letter-spacing: 0.15em;
   text-transform: uppercase;
+  text-shadow: var(--word-shadow);
 }
 
 .compact {
   gap: 0.58rem;
 }
 
-.compact .brand-icon-frame {
-  width: 2.7rem;
-  height: 2.7rem;
-}
-
-.compact .brand-icon {
-  width: 2.15rem;
-  height: 2.15rem;
+.compact .brand-icon-wrap {
+  width: 2.84rem;
+  height: 2.84rem;
 }
 
 .compact .brand-name {
-  font-size: 1.02rem;
+  font-size: 1.05rem;
 }
 </style>

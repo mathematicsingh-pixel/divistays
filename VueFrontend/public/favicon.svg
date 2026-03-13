@@ -1,12 +1,12 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title desc">
   <title id="title">CozyRooms</title>
-  <desc id="desc">Warm arch and lamp mark for CozyRooms.</desc>
-  <rect width="64" height="64" rx="18" fill="#fff1db" />
-  <path d="M18 52V35.5L34 20l16 15.5V52H18Z" fill="#ec9433" />
-  <path d="M14 54V30c0-11 8.95-20 20-20s20 9 20 20v24H14Z" fill="none" stroke="#5c2f20" stroke-linecap="round" stroke-linejoin="round" stroke-width="5" />
-  <path d="M22 54V33c0-6.6 5.4-12 12-12s12 5.4 12 12v21" fill="none" stroke="#6f3d27" stroke-linecap="round" stroke-linejoin="round" stroke-width="3.8" />
-  <path d="M34 17v10" fill="none" stroke="#5c2f20" stroke-linecap="round" stroke-width="4.2" />
-  <path d="M24.5 31.5h19A9.5 9.5 0 0 0 34 23a9.5 9.5 0 0 0-9.5 8.5Z" fill="#5c2f20" stroke="#5c2f20" stroke-linejoin="round" stroke-width="2.8" />
-  <circle cx="34" cy="37" r="5.8" fill="#fff2bf" />
-  <path d="M34 43.5v6M26.6 41.4 23 46M41.4 41.4 45 46M23.3 36.8H18M50 36.8h-5.3" fill="none" stroke="#ffe7a0" stroke-linecap="round" stroke-width="3" />
+  <desc id="desc">Warm arched room icon with hanging lamp for CozyRooms.</desc>
+  <path d="M14.5 53V30c0-10.7 8.8-19.5 19.5-19.5S53.5 19.3 53.5 30v23H14.5Z" fill="#d66c30" />
+  <path d="M16.5 51V39.2L34 26l17.5 13.2V51H16.5Z" fill="#f4ae45" />
+  <path d="M14.5 36.2V30c0-10.7 8.8-19.5 19.5-19.5S53.5 19.3 53.5 30v6.2c-5.5-4.8-12.1-7.2-19.5-7.2s-14 2.4-19.5 7.2Z" fill="rgba(105, 39, 24, 0.28)" />
+  <path d="M14.5 53V30c0-10.7 8.8-19.5 19.5-19.5S53.5 19.3 53.5 30v23H14.5Z" fill="none" stroke="#5f2b1f" stroke-linecap="round" stroke-linejoin="round" stroke-width="4.8" />
+  <path d="M34 12.4v9.3" fill="none" stroke="#5f2b1f" stroke-linecap="round" stroke-width="3.7" />
+  <path d="M24.3 30.6h19.4a9.7 9.7 0 0 0-9.7-8.5 9.7 9.7 0 0 0-9.7 8.5Z" fill="#5f2b1f" />
+  <circle cx="34" cy="35.9" r="5.2" fill="#ffe6a0" />
+  <path d="M34 42.7v6.1M26.3 40.7l-3.9 4.4M41.7 40.7l3.9 4.4M23.1 35.9h-5.5M50.4 35.9h-5.5" fill="none" stroke="#f7e1a2" stroke-linecap="round" stroke-width="3.1" />
 </svg>

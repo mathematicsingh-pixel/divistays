@@ -115,3 +115,4 @@ test.ipynb
 .playwright-cli
 .vite-ssg-temp/
 output/playwright/
+.playwright-browsers

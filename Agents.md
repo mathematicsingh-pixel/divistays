@@ -48,3 +48,5 @@ To generate assets/images or edit it for the frontend use the nano-banana-pro sk
 You also have access to playwright skill to automate browser
 
 for frontend design use frontend-design skill
+
+Focus on mobile first experience then on bigger screens
