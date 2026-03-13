@@ -9,7 +9,7 @@ const scriptDir = dirname(fileURLToPath(import.meta.url))
 const rootDir = resolve(scriptDir, '..')
 const cacheDir = resolve(rootDir, 'scripts/.cache/originals')
 const mediaDir = resolve(rootDir, 'public/media/rooms')
-const remoteBase = 'https://divyendra-gahlot.github.io/hostel-rooms/'
+const remoteBase = process.env.ROOM_MEDIA_REMOTE_BASE || 'https://divyendra-gahlot.github.io/hostel-rooms/'
 const imageWidths = [480, 960, 1440]
 const videoScaleFilter = "scale=w='min(1280,iw)':h=-2"
 

@@ -1,27 +1,30 @@
 <script setup>
 defineProps({
-  points: {
-    type: Array,
+  site: {
+    type: Object,
     required: true,
   },
 })
 </script>
 
 <template>
-  <section class="section-shell trust-shell">
+  <section
+    id="features"
+    class="section-shell trust-shell"
+  >
     <div class="container">
       <div class="section-heading trust-heading">
-        <span class="eyebrow">Why CozyRooms</span>
-        <h2>Built for the 11 pm room hunt.</h2>
+        <span class="eyebrow">{{ site.proofEyebrow }}</span>
+        <h2>{{ site.proofTitle }}</h2>
+        <p>{{ site.proofSummary }}</p>
       </div>
 
       <div class="trust-grid">
         <article
-          v-for="(point, index) in points"
+          v-for="point in site.proofCards"
           :key="point.title"
           class="surface-panel trust-card"
         >
-          <span class="trust-index">0{{ index + 1 }}</span>
           <h3>{{ point.title }}</h3>
           <p>{{ point.body }}</p>
         </article>
@@ -49,14 +52,6 @@ defineProps({
     linear-gradient(180deg, rgba(249, 252, 255, 0.98), rgba(240, 247, 250, 0.96));
 }
 
-.trust-index {
-  color: var(--accent-deep);
-  font-size: 0.72rem;
-  font-weight: 800;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-}
-
 .trust-card p {
   color: var(--muted);
 }
@@ -70,10 +65,6 @@ defineProps({
 @media (min-width: 1100px) {
   .trust-grid {
     grid-template-columns: repeat(4, minmax(0, 1fr));
-  }
-
-  .trust-card:nth-child(2n) {
-    transform: translateY(1rem);
   }
 }
 </style>

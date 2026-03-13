@@ -1,5 +1,5 @@
 <script setup>
-import { buildRoomEnquiry, getWhatsAppHref } from '@/data/site'
+import RoomReferenceBadge from '@/components/RoomReferenceBadge.vue'
 import ResponsiveImage from '@/components/ui/ResponsiveImage.vue'
 
 defineProps({
@@ -11,31 +11,43 @@ defineProps({
     type: Boolean,
     default: false,
   },
+  showQuickPreview: {
+    type: Boolean,
+    default: false,
+  },
 })
 
-defineEmits(['open'])
+defineEmits(['preview'])
 
 const quickFacts = (room) => [room.occupancyLabel, room.kitchenLabel, room.washroomLabel]
 </script>
 
 <template>
-  <article class="room-card surface-panel">
+  <article class="room-card surface-panel glass-panel">
     <div class="room-media">
-      <ResponsiveImage
-        :room-slug="room.slug"
-        :media="room.gallery[0]"
-        :eager="eager"
-        sizes="(min-width: 1200px) 29vw, (min-width: 760px) 44vw, 92vw"
-      />
+      <RouterLink :to="room.detailsHref">
+        <ResponsiveImage
+          :room-slug="room.slug"
+          :media="room.gallery[0]"
+          :eager="eager"
+          sizes="(min-width: 1200px) 29vw, (min-width: 760px) 44vw, 92vw"
+        />
+      </RouterLink>
 
       <div class="room-badges">
-        <span
-          class="status-pill"
-          :class="{ muted: !room.available }"
-        >
-          {{ room.available ? 'Available' : 'Occupied' }}
-        </span>
+        <RoomReferenceBadge
+          :room="room"
+          inverse
+        />
         <span class="gallery-pill">{{ room.gallery.length }} photos</span>
+        <button
+          v-if="showQuickPreview"
+          class="preview-pill"
+          type="button"
+          @click="$emit('preview')"
+        >
+          Quick preview
+        </button>
       </div>
     </div>
 
@@ -43,13 +55,23 @@ const quickFacts = (room) => [room.occupancyLabel, room.kitchenLabel, room.washr
       <div class="room-head">
         <div class="room-copy">
           <p class="room-kicker">{{ room.highlightLabel }}</p>
-          <h3>{{ room.title }}</h3>
+          <h3>
+            <RouterLink :to="room.detailsHref">
+              {{ room.title }}
+            </RouterLink>
+          </h3>
         </div>
-        <p class="room-price">{{ room.priceLabel }}</p>
+
+        <div class="room-price-wrap">
+          <p class="room-price">{{ room.priceLabel }}</p>
+          <span class="room-status">
+            {{ room.availabilityShortLabel }}
+          </span>
+        </div>
       </div>
 
       <p class="room-summary">
-        {{ room.summary }}
+        {{ room.fitSummary }}
       </p>
 
       <div class="fact-row">
@@ -64,7 +86,7 @@ const quickFacts = (room) => [room.occupancyLabel, room.kitchenLabel, room.washr
 
       <div class="amenity-row">
         <span
-          v-for="amenity in room.amenities.slice(0, 3)"
+          v-for="amenity in room.extraNotes.slice(0, 2)"
           :key="amenity"
           class="soft-chip"
         >
@@ -73,21 +95,12 @@ const quickFacts = (room) => [room.occupancyLabel, room.kitchenLabel, room.washr
       </div>
 
       <div class="room-actions">
-        <button
+        <RouterLink
           class="button-primary"
-          type="button"
-          @click="$emit('open')"
+          :to="room.detailsHref"
         >
-          View details
-        </button>
-        <a
-          class="button-secondary"
-          :href="getWhatsAppHref(buildRoomEnquiry(room))"
-          target="_blank"
-          rel="noreferrer"
-        >
-          WhatsApp
-        </a>
+          {{ room.available ? 'See room details' : 'See similar open rooms' }}
+        </RouterLink>
       </div>
     </div>
   </article>
@@ -98,9 +111,6 @@ const quickFacts = (room) => [room.occupancyLabel, room.kitchenLabel, room.washr
   overflow: hidden;
   display: grid;
   position: relative;
-  border: 1px solid rgba(121, 217, 202, 0.16);
-  background:
-    linear-gradient(180deg, rgba(249, 252, 255, 0.98), rgba(240, 247, 250, 0.96));
 }
 
 .room-card::before {
@@ -111,27 +121,21 @@ const quickFacts = (room) => [room.occupancyLabel, room.kitchenLabel, room.washr
   background: linear-gradient(90deg, var(--accent) 0%, var(--sun) 45%, var(--brand) 100%);
 }
 
-.room-card::after {
-  position: absolute;
-  top: 0.9rem;
-  right: -1.2rem;
-  width: 5rem;
-  height: 5rem;
-  border: 1px solid rgba(121, 217, 202, 0.18);
-  border-radius: 999px 999px 0 0;
-  content: '';
-  pointer-events: none;
-}
-
 .room-media {
   position: relative;
   overflow: hidden;
   aspect-ratio: 5 / 4;
 }
 
+.room-media a,
+.room-media :deep(picture),
 .room-media :deep(img) {
+  display: block;
   width: 100%;
   height: 100%;
+}
+
+.room-media :deep(img) {
   object-fit: cover;
 }
 
@@ -145,14 +149,14 @@ const quickFacts = (room) => [room.occupancyLabel, room.kitchenLabel, room.washr
   gap: 0.45rem;
 }
 
-.status-pill,
-.gallery-pill {
+.gallery-pill,
+.preview-pill {
   display: inline-flex;
   align-items: center;
   min-height: 1.95rem;
   padding: 0.36rem 0.7rem;
   border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.16);
   background: rgba(7, 18, 26, 0.7);
   color: var(--text-inverse);
   font-size: 0.74rem;
@@ -161,14 +165,18 @@ const quickFacts = (room) => [room.occupancyLabel, room.kitchenLabel, room.washr
   text-transform: uppercase;
 }
 
-.status-pill.muted {
-  color: rgba(247, 251, 255, 0.68);
+.preview-pill {
+  display: none;
 }
 
 .room-body {
   display: grid;
   gap: 0.9rem;
   padding: 1.05rem;
+  border-top: 1px solid rgba(11, 23, 32, 0.12);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.24), rgba(255, 255, 255, 0.08)),
+    rgba(247, 251, 255, 0.34);
 }
 
 .room-head {
@@ -189,11 +197,26 @@ const quickFacts = (room) => [room.occupancyLabel, room.kitchenLabel, room.washr
   text-transform: uppercase;
 }
 
+.room-copy a {
+  color: var(--text-strong);
+}
+
+.room-price-wrap {
+  display: grid;
+  gap: 0.18rem;
+}
+
 .room-price {
   color: var(--text-strong);
-  font-size: 1.08rem;
+  font-size: 1.18rem;
   font-weight: 800;
   white-space: nowrap;
+}
+
+.room-status {
+  color: var(--brand-strong);
+  font-size: 0.82rem;
+  font-weight: 800;
 }
 
 .room-summary {
@@ -225,14 +248,16 @@ const quickFacts = (room) => [room.occupancyLabel, room.kitchenLabel, room.washr
   flex: 1 1 11rem;
 }
 
-.room-actions :deep(.button-secondary) {
-  border-color: var(--line);
-}
-
 @media (min-width: 760px) {
   .room-head {
     grid-template-columns: minmax(0, 1fr) auto;
     align-items: start;
+  }
+}
+
+@media (min-width: 960px) {
+  .preview-pill {
+    display: inline-flex;
   }
 }
 </style>

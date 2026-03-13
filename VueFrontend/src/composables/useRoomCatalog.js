@@ -1,17 +1,18 @@
 import { computed, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { roomCatalog } from '@/data/rooms'
+import { priceBands, roomCatalog, roomMatchesPriceBand } from '@/data/rooms'
 
 const defaultState = {
   availability: 'available',
-  sort: 'recommended',
+  sort: 'available-first',
 }
 
 const allowedAvailability = new Set(['available', 'all'])
-const allowedSort = new Set(['recommended', 'price-asc', 'price-desc'])
+const allowedSort = new Set(['available-first', 'price-asc', 'price-desc', 'updated'])
 const allowedOccupancy = new Set(['single', 'double', 'flex'])
 const allowedKitchen = new Set(['private', 'common'])
-const allowedWashroom = new Set(['private', 'common'])
+const allowedWashroom = new Set(['attached', 'common'])
+const allowedPrice = new Set(priceBands.map((item) => item.value))
 
 function parseMulti(value, allowedValues) {
   if (typeof value !== 'string' || !value.length) {
@@ -35,16 +36,16 @@ function sortRooms(list, sort) {
     return rooms.sort((left, right) => right.priceMonthly - left.priceMonthly || Number(right.available) - Number(left.available))
   }
 
+  if (sort === 'updated') {
+    return rooms.sort((left, right) => new Date(right.updatedAt) - new Date(left.updatedAt) || Number(right.available) - Number(left.available))
+  }
+
   return rooms.sort((left, right) => {
     if (left.available !== right.available) {
       return Number(right.available) - Number(left.available)
     }
 
-    if (left.featured !== right.featured) {
-      return Number(right.featured) - Number(left.featured)
-    }
-
-    return left.priceMonthly - right.priceMonthly
+    return new Date(right.updatedAt) - new Date(left.updatedAt) || left.priceMonthly - right.priceMonthly
   })
 }
 
@@ -57,8 +58,9 @@ export function useRoomCatalog() {
     occupancy: parseMulti(route.query.occupancy, allowedOccupancy),
     kitchen: parseMulti(route.query.kitchen, allowedKitchen),
     washroom: parseMulti(route.query.washroom, allowedWashroom),
+    price: parseMulti(route.query.price, allowedPrice),
     sort: allowedSort.has(route.query.sort) ? route.query.sort : defaultState.sort,
-    room: typeof route.query.room === 'string' ? route.query.room : '',
+    preview: typeof route.query.preview === 'string' ? route.query.preview : '',
   }))
 
   const visibleRooms = computed(() => {
@@ -81,28 +83,33 @@ export function useRoomCatalog() {
         return false
       }
 
+      if (current.price.length && !current.price.some((band) => roomMatchesPriceBand(room, band))) {
+        return false
+      }
+
       return true
     })
 
     return sortRooms(filtered, current.sort)
   })
 
-  const selectedRoom = computed(() => visibleRooms.value.find((room) => room.slug === filters.value.room) || null)
+  const selectedRoom = computed(() => visibleRooms.value.find((room) => room.slug === filters.value.preview) || null)
   const activeFilterCount = computed(
     () =>
       filters.value.occupancy.length
       + filters.value.kitchen.length
       + filters.value.washroom.length
+      + filters.value.price.length
       + Number(filters.value.availability !== defaultState.availability)
       + Number(filters.value.sort !== defaultState.sort),
   )
   const hasActiveFilters = computed(() => activeFilterCount.value > 0)
 
   watch(
-    () => [filters.value.room, selectedRoom.value?.slug],
+    () => [filters.value.preview, selectedRoom.value?.slug],
     ([requestedRoom, activeRoom]) => {
       if (requestedRoom && !activeRoom) {
-        commit({ room: null }, 'replace')
+        commit({ preview: null }, 'replace')
       }
     },
     { immediate: true },
@@ -153,6 +160,7 @@ export function useRoomCatalog() {
     toggleOccupancy: (value) => toggleValue('occupancy', value),
     toggleKitchen: (value) => toggleValue('kitchen', value),
     toggleWashroom: (value) => toggleValue('washroom', value),
+    togglePrice: (value) => toggleValue('price', value),
     resetFilters: () =>
       commit({
         availability: defaultState.availability,
@@ -160,8 +168,10 @@ export function useRoomCatalog() {
         occupancy: [],
         kitchen: [],
         washroom: [],
+        price: [],
+        preview: null,
       }),
-    openRoom: (slug) => commit({ room: slug }),
-    closeRoom: () => commit({ room: null }),
+    openPreview: (slug) => commit({ preview: slug }),
+    closePreview: () => commit({ preview: null }),
   }
 }

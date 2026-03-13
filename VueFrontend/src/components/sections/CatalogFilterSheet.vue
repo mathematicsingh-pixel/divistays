@@ -15,6 +15,10 @@ const props = defineProps({
     type: Object,
     required: true,
   },
+  availabilityOptions: {
+    type: Array,
+    required: true,
+  },
   occupancyOptions: {
     type: Array,
     required: true,
@@ -27,8 +31,16 @@ const props = defineProps({
     type: Array,
     required: true,
   },
+  priceOptions: {
+    type: Array,
+    required: true,
+  },
   sortOptions: {
     type: Array,
+    required: true,
+  },
+  resultCount: {
+    type: Number,
     required: true,
   },
 })
@@ -54,13 +66,13 @@ useOverlayDialog({
     <transition name="sheet-fade">
       <div
         v-if="isOpen"
-        class="sheet-shell"
+        class="sheet-shell glass-overlay"
         @click.self="emit('close')"
       >
         <section
           id="catalog-filters"
           ref="panelRef"
-          class="sheet-panel"
+          class="sheet-panel glass-panel"
           role="dialog"
           aria-modal="true"
           aria-labelledby="catalog-filters-title"
@@ -87,22 +99,15 @@ useOverlayDialog({
               <span>Availability</span>
               <div class="chip-row">
                 <button
+                  v-for="item in availabilityOptions"
+                  :key="item.value"
                   type="button"
                   class="chip-button"
-                  :class="{ active: filters.availability === 'available' }"
-                  :aria-pressed="filters.availability === 'available'"
-                  @click="actions.setAvailability('available')"
+                  :class="{ active: filters.availability === item.value }"
+                  :aria-pressed="filters.availability === item.value"
+                  @click="actions.setAvailability(item.value)"
                 >
-                  Available now
-                </button>
-                <button
-                  type="button"
-                  class="chip-button"
-                  :class="{ active: filters.availability === 'all' }"
-                  :aria-pressed="filters.availability === 'all'"
-                  @click="actions.setAvailability('all')"
-                >
-                  Show all rooms
+                  {{ item.label }}
                 </button>
               </div>
             </div>
@@ -158,8 +163,25 @@ useOverlayDialog({
               </div>
             </div>
 
+            <div class="sheet-group">
+              <span>Budget</span>
+              <div class="chip-row">
+                <button
+                  v-for="item in priceOptions"
+                  :key="item.value"
+                  type="button"
+                  class="chip-button"
+                  :class="{ active: isActive(filters.price, item.value) }"
+                  :aria-pressed="isActive(filters.price, item.value)"
+                  @click="actions.togglePrice(item.value)"
+                >
+                  {{ item.label }}
+                </button>
+              </div>
+            </div>
+
             <label class="sort-field">
-              <span>Sort order</span>
+              <span>Sort by</span>
               <select
                 :value="filters.sort"
                 @change="actions.setSort($event.target.value)"
@@ -188,7 +210,7 @@ useOverlayDialog({
               type="button"
               @click="emit('close')"
             >
-              Show rooms
+              Show {{ resultCount }} {{ resultCount === 1 ? 'room' : 'rooms' }}
             </button>
           </div>
         </section>
@@ -205,7 +227,8 @@ useOverlayDialog({
   display: grid;
   align-items: end;
   background: rgba(7, 18, 26, 0.52);
-  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(18px) saturate(160%);
+  backdrop-filter: blur(18px) saturate(160%);
 }
 
 .sheet-panel {
@@ -216,9 +239,12 @@ useOverlayDialog({
   max-height: min(44rem, 92svh);
   padding: 1rem 1rem calc(1rem + env(safe-area-inset-bottom));
   border-radius: 1.5rem 1.5rem 0 0;
-  border: 1px solid rgba(121, 217, 202, 0.18);
-  background: var(--paper-strong);
-  box-shadow: 0 -20px 50px rgba(0, 0, 0, 0.22);
+  background:
+    radial-gradient(circle at top right, rgba(121, 217, 202, 0.14), transparent 28%),
+    radial-gradient(circle at 12% 100%, rgba(255, 211, 142, 0.18), transparent 28%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.34), rgba(255, 255, 255, 0.14)),
+    rgba(249, 252, 255, 0.68);
+  box-shadow: 0 32px 68px rgba(0, 0, 0, 0.28);
 }
 
 .sheet-head {
@@ -242,11 +268,18 @@ useOverlayDialog({
   justify-content: center;
   width: 2.6rem;
   height: 2.6rem;
-  border: 1px solid var(--line);
+  border: 1px solid rgba(255, 255, 255, 0.24);
   border-radius: 999px;
-  background: var(--paper-soft);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.72), rgba(239, 247, 250, 0.5)),
+    rgba(255, 255, 255, 0.28);
   color: var(--text-strong);
   font-size: 1.45rem;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.58),
+    0 10px 22px rgba(0, 0, 0, 0.08);
+  -webkit-backdrop-filter: blur(12px) saturate(170%);
+  backdrop-filter: blur(12px) saturate(170%);
 }
 
 .sheet-body {
@@ -259,6 +292,17 @@ useOverlayDialog({
 .sort-field {
   display: grid;
   gap: 0.65rem;
+  padding: 0.9rem;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 1.1rem;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.34), rgba(255, 255, 255, 0.12)),
+    rgba(255, 255, 255, 0.14);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.58),
+    0 14px 28px rgba(0, 0, 0, 0.08);
+  -webkit-backdrop-filter: blur(12px) saturate(165%);
+  backdrop-filter: blur(12px) saturate(165%);
 }
 
 .sheet-group span,
@@ -279,26 +323,42 @@ useOverlayDialog({
 .chip-button {
   min-height: 2.85rem;
   padding: 0.55rem 0.8rem;
-  border: 1px solid var(--line);
+  border: 1px solid rgba(255, 255, 255, 0.24);
   border-radius: 0.95rem;
-  background: var(--paper-soft);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.66), rgba(241, 248, 252, 0.42)),
+    rgba(255, 255, 255, 0.28);
   color: var(--text-strong);
   font-weight: 700;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.6),
+    0 10px 20px rgba(0, 0, 0, 0.06);
+  -webkit-backdrop-filter: blur(10px) saturate(165%);
+  backdrop-filter: blur(10px) saturate(165%);
 }
 
 .chip-button.active {
-  border-color: rgba(255, 122, 26, 0.35);
-  background: rgba(255, 122, 26, 0.1);
+  border-color: rgba(255, 186, 124, 0.42);
+  background:
+    linear-gradient(180deg, rgba(255, 247, 238, 0.82), rgba(255, 225, 194, 0.52)),
+    rgba(255, 122, 26, 0.12);
   color: var(--accent-deep);
 }
 
 .sort-field select {
   min-height: 3rem;
   padding: 0 0.9rem;
-  border: 1px solid var(--line);
+  border: 1px solid rgba(255, 255, 255, 0.24);
   border-radius: 0.95rem;
-  background: var(--paper-soft);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.66), rgba(241, 248, 252, 0.42)),
+    rgba(255, 255, 255, 0.28);
   color: var(--text-strong);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.58),
+    0 10px 20px rgba(0, 0, 0, 0.06);
+  -webkit-backdrop-filter: blur(10px) saturate(165%);
+  backdrop-filter: blur(10px) saturate(165%);
 }
 
 .sheet-actions {
@@ -325,7 +385,7 @@ useOverlayDialog({
   }
 
   .sheet-panel {
-    width: min(36rem, 100%);
+    width: min(40rem, 100%);
     max-height: 90svh;
     border-radius: 1.5rem;
   }

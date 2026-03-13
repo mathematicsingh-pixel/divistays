@@ -1,0 +1,31 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="630" fill="#07121A"/>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <circle cx="1042" cy="102" r="174" fill="url(#sun)" fill-opacity="0.42"/>
+  <circle cx="170" cy="516" r="220" fill="url(#mint)" fill-opacity="0.28"/>
+  <rect x="70" y="72" width="1060" height="486" rx="40" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.14)"/>
+  <rect x="112" y="112" width="470" height="406" rx="32" fill="rgba(7,18,26,0.54)" stroke="rgba(162,225,216,0.24)"/>
+  <path d="M192 360V262C192 219.216 226.216 185 269 185H426C468.784 185 503 219.216 503 262V360H463V267C463 241.595 442.405 221 417 221H278C252.595 221 232 241.595 232 267V360H192Z" fill="#FFD38E"/>
+  <path d="M292 406C292 378.386 314.386 356 342 356H353V486H342C314.386 486 292 463.614 292 436V406Z" fill="#79D9CA"/>
+  <path d="M353 356H392C433.421 356 467 389.579 467 431V486H353V356Z" fill="#FFF5E8"/>
+  <rect x="655" y="150" width="160" height="36" rx="18" fill="rgba(255,255,255,0.12)" stroke="rgba(255,255,255,0.14)"/>
+  <text x="684" y="174" fill="#79D9CA" font-family="Manrope, sans-serif" font-size="16" font-weight="800" letter-spacing="2.2">KAKADEO, KANPUR</text>
+  <text x="655" y="264" fill="#FFD38E" font-family="Manrope, sans-serif" font-size="22" font-weight="800" letter-spacing="3.6">COZYROOMS</text>
+  <text x="655" y="350" fill="#F7FBFF" font-family="Georgia, 'Times New Roman', serif" font-size="72" font-weight="700">See the room.</text>
+  <text x="655" y="426" fill="#F7FBFF" font-family="Georgia, 'Times New Roman', serif" font-size="72" font-weight="700">Know the rent.</text>
+  <text x="655" y="486" fill="rgba(247,251,255,0.72)" font-family="Manrope, sans-serif" font-size="24" font-weight="700">Furnished student rooms in Kakadeo, Kanpur</text>
+  <defs>
+    <linearGradient id="bg" x1="600" y1="0" x2="600" y2="630" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0A1821"/>
+      <stop offset="1" stop-color="#07121A"/>
+    </linearGradient>
+    <radialGradient id="sun" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(1042 102) rotate(90) scale(174)">
+      <stop stop-color="#FFD38E"/>
+      <stop offset="1" stop-color="#FFD38E" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="mint" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(170 516) rotate(90) scale(220)">
+      <stop stop-color="#79D9CA"/>
+      <stop offset="1" stop-color="#79D9CA" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+</svg>

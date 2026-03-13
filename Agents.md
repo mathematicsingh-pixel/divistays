@@ -45,7 +45,7 @@ Avoid: purple-on-white clichés, generic component grids, predictable layouts.
 
 To generate assets/images or edit it for the frontend use the nano-banana-pro skill. Keys in .env file
 
-You also have access to playwright skill to automate browser
+
 
 for frontend design use frontend-design skill
 

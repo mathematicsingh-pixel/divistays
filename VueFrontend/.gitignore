@@ -13,6 +13,8 @@ node_modules
 Library
 dist
 dist-ssr
+output
+tmp
 *.local
 scripts/.cache
 .playwright-cli

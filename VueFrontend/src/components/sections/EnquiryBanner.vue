@@ -26,24 +26,24 @@ defineProps({
             compact
             tag="Direct line"
           />
-          <h2>Found the vibe? Check live availability.</h2>
-          <p>{{ site.enquirySummary }}</p>
+          <h2>{{ site.ctaTitle }}</h2>
+          <p>{{ site.ctaSummary }}</p>
         </div>
 
         <div class="cta-actions">
           <a
             class="button-primary"
-            :href="callHref"
-          >
-            Call {{ site.phoneDisplay }}
-          </a>
-          <a
-            class="button-secondary"
             :href="whatsappHref"
             target="_blank"
             rel="noreferrer"
           >
-            Start WhatsApp chat
+            {{ site.ctaPrimaryLabel }}
+          </a>
+          <a
+            class="button-secondary"
+            :href="callHref"
+          >
+            {{ site.ctaSecondaryLabel }}
           </a>
         </div>
       </div>
@@ -85,14 +85,18 @@ defineProps({
 }
 
 .cta-actions .button-primary {
-  background: var(--forest);
+  background:
+    linear-gradient(180deg, rgba(7, 18, 26, 0.92), rgba(18, 39, 53, 0.82)),
+    var(--forest);
   color: var(--text-inverse);
-  box-shadow: none;
+  box-shadow: 0 14px 28px rgba(7, 18, 26, 0.2);
 }
 
 .cta-actions .button-secondary {
-  border-color: rgba(7, 18, 26, 0.16);
-  background: rgba(255, 255, 255, 0.82);
+  border-color: rgba(255, 255, 255, 0.28);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.82), rgba(255, 245, 232, 0.56)),
+    rgba(255, 255, 255, 0.42);
 }
 
 @media (min-width: 960px) {

@@ -1,10 +1,15 @@
 <script setup>
 import { computed, ref, watch } from 'vue'
 import RoomCard from '@/components/RoomCard.vue'
+import { priceBands } from '@/data/rooms'
 import CatalogFilterSheet from '@/components/sections/CatalogFilterSheet.vue'
 
 const props = defineProps({
   rooms: {
+    type: Array,
+    required: true,
+  },
+  allRooms: {
     type: Array,
     required: true,
   },
@@ -32,6 +37,15 @@ const props = defineProps({
 
 const emit = defineEmits(['update:sheet-open'])
 
+const availabilityOptions = computed(() => {
+  const availableCount = props.allRooms.filter((room) => room.available).length
+
+  return [
+    { value: 'available', label: `Available now (${availableCount})` },
+    { value: 'all', label: `All rooms (${props.allRooms.length})` },
+  ]
+})
+
 const occupancyOptions = [
   { value: 'single', label: 'Single' },
   { value: 'double', label: 'Double' },
@@ -44,24 +58,26 @@ const kitchenOptions = [
 ]
 
 const washroomOptions = [
-  { value: 'private', label: 'Attached / private' },
+  { value: 'attached', label: 'Attached washroom' },
   { value: 'common', label: 'Common washroom' },
 ]
 
 const sortOptions = [
-  { value: 'recommended', label: 'Recommended' },
+  { value: 'available-first', label: 'Available first' },
   { value: 'price-asc', label: 'Price: low to high' },
   { value: 'price-desc', label: 'Price: high to low' },
+  { value: 'updated', label: 'Recently updated' },
 ]
 
 const filterGroups = [
   { key: 'occupancy', label: 'Occupancy', options: occupancyOptions, action: 'toggleOccupancy' },
   { key: 'kitchen', label: 'Kitchen', options: kitchenOptions, action: 'toggleKitchen' },
   { key: 'washroom', label: 'Washroom', options: washroomOptions, action: 'toggleWashroom' },
+  { key: 'price', label: 'Budget', options: priceBands, action: 'togglePrice' },
 ]
 
 const advancedFilterCount = computed(
-  () => props.filters.occupancy.length + props.filters.kitchen.length + props.filters.washroom.length,
+  () => props.filters.occupancy.length + props.filters.kitchen.length + props.filters.washroom.length + props.filters.price.length,
 )
 
 const activeLabels = computed(() => {
@@ -71,30 +87,29 @@ const activeLabels = computed(() => {
     labels.push('All rooms')
   }
 
-  occupancyOptions.forEach((item) => {
-    if (props.filters.occupancy.includes(item.value)) {
-      labels.push(item.label)
-    }
-  })
+  ;[
+    ...occupancyOptions,
+    ...kitchenOptions,
+    ...washroomOptions,
+    ...priceBands,
+  ].forEach((item) => {
+    const key = item.value
 
-  kitchenOptions.forEach((item) => {
-    if (props.filters.kitchen.includes(item.value)) {
-      labels.push(item.label)
-    }
-  })
-
-  washroomOptions.forEach((item) => {
-    if (props.filters.washroom.includes(item.value)) {
+    if (props.filters.occupancy.includes(key) || props.filters.kitchen.includes(key) || props.filters.washroom.includes(key) || props.filters.price.includes(key)) {
       labels.push(item.label)
     }
   })
 
   if (props.filters.sort === 'price-asc') {
-    labels.push('Price low to high')
+    labels.push('Price: low to high')
   }
 
   if (props.filters.sort === 'price-desc') {
-    labels.push('Price high to low')
+    labels.push('Price: high to low')
+  }
+
+  if (props.filters.sort === 'updated') {
+    labels.push('Recently updated')
   }
 
   return labels
@@ -103,8 +118,8 @@ const activeLabels = computed(() => {
 const resultLabel = computed(() => `${props.rooms.length} room${props.rooms.length === 1 ? '' : 's'} matched`)
 const toolbarNote = computed(() =>
   props.hasActiveFilters
-    ? `${props.activeFilterCount} refinement${props.activeFilterCount === 1 ? '' : 's'} active`
-    : 'Available now by default. Switch to show all anytime.',
+    ? `${props.activeFilterCount} active filter${props.activeFilterCount === 1 ? '' : 's'}`
+    : 'Open rooms show first. Use filters only if you need them.',
 )
 const isDesktopFiltersOpen = ref(false)
 
@@ -139,13 +154,13 @@ function closeSheet() {
     <div class="container">
       <div class="section-heading catalog-heading">
         <span class="eyebrow">Rooms</span>
-        <h2>Shortlist by fit, not brochure fluff.</h2>
+        <h2>Find your room</h2>
         <p>
-          Start with live availability, then cut by occupancy, kitchen, washroom, and price order.
+          Start with rooms that are free now. Filter only when you want a tighter list.
         </p>
       </div>
 
-      <div class="catalog-toolbar surface-panel">
+      <div class="catalog-toolbar surface-panel glass-panel">
         <div class="toolbar-top">
           <div class="toolbar-copy">
             <p class="toolbar-label">Showing</p>
@@ -161,28 +176,21 @@ function closeSheet() {
             <span class="toolbar-label">Availability</span>
             <div class="availability-row">
               <button
+                v-for="item in availabilityOptions"
+                :key="item.value"
                 type="button"
                 class="chip-button"
-                :class="{ active: filters.availability === 'available' }"
-                :aria-pressed="filters.availability === 'available'"
-                @click="actions.setAvailability('available')"
+                :class="{ active: filters.availability === item.value }"
+                :aria-pressed="filters.availability === item.value"
+                @click="actions.setAvailability(item.value)"
               >
-                Available now
-              </button>
-              <button
-                type="button"
-                class="chip-button"
-                :class="{ active: filters.availability === 'all' }"
-                :aria-pressed="filters.availability === 'all'"
-                @click="actions.setAvailability('all')"
-              >
-                Show all
+                {{ item.label }}
               </button>
             </div>
           </div>
 
           <label class="control-card sort-card">
-            <span class="toolbar-label">Sort</span>
+            <span class="toolbar-label">Sort by</span>
             <select
               :value="filters.sort"
               @change="actions.setSort($event.target.value)"
@@ -204,9 +212,9 @@ function closeSheet() {
             :aria-expanded="isSheetOpen ? 'true' : 'false'"
             @click="emit('update:sheet-open', true)"
           >
-            <span class="toolbar-label">More filters</span>
-            <strong>Room setup</strong>
-            <span class="control-note">{{ advancedFilterCount ? `${advancedFilterCount} selected` : 'Optional' }}</span>
+            <span class="toolbar-label">Mobile filters</span>
+            <strong>{{ advancedFilterCount ? `${advancedFilterCount} selected` : 'More filters' }}</strong>
+            <span class="control-note">Budget, setup, and room type</span>
           </button>
 
           <button
@@ -217,9 +225,9 @@ function closeSheet() {
             aria-controls="catalog-filter-panel"
             @click="toggleDesktopFilters"
           >
-            <span class="toolbar-label">More filters</span>
-            <strong>Room setup</strong>
-            <span class="control-note">{{ advancedFilterCount ? `${advancedFilterCount} selected` : 'Optional' }}</span>
+            <span class="toolbar-label">Desktop filters</span>
+            <strong>{{ advancedFilterCount ? `${advancedFilterCount} selected` : 'More filters' }}</strong>
+            <span class="control-note">Budget, setup, and room type</span>
           </button>
         </div>
 
@@ -262,11 +270,11 @@ function closeSheet() {
         >
           <div class="active-copy">
             <span class="toolbar-label">Selected</span>
-            <div class="chip-row">
+            <div class="chip-row active-chip-row">
               <span
                 v-for="label in activeLabels"
                 :key="label"
-                class="soft-chip"
+                class="soft-chip glass-chip"
               >
                 {{ label }}
               </span>
@@ -299,16 +307,17 @@ function closeSheet() {
           :key="room.slug"
           :room="room"
           :eager="index < 2"
-          @open="actions.openRoom(room.slug)"
+          show-quick-preview
+          @preview="actions.openPreview(room.slug)"
         />
       </div>
 
       <div
         v-else
-        class="empty-state surface-panel"
+        class="empty-state surface-panel glass-panel"
       >
-        <h3>No rooms match that filter mix.</h3>
-        <p>Reset filters or switch back to all rooms to compare every layout.</p>
+        <h3>No rooms match those filters.</h3>
+        <p>Clear a few filters or switch to all rooms.</p>
         <button
           class="button-primary"
           type="button"
@@ -323,49 +332,33 @@ function closeSheet() {
       :is-open="isSheetOpen"
       :filters="filters"
       :actions="actions"
+      :availability-options="availabilityOptions"
       :occupancy-options="occupancyOptions"
       :kitchen-options="kitchenOptions"
       :washroom-options="washroomOptions"
+      :price-options="priceBands"
       :sort-options="sortOptions"
+      :result-count="rooms.length"
       @close="closeSheet"
     />
   </section>
 </template>
 
 <style scoped>
-.catalog-shell {
-  scroll-margin-top: 1rem;
-}
-
-.catalog-heading h2 {
-  color: var(--text-inverse);
-}
-
 .catalog-toolbar {
-  position: relative;
   display: grid;
   gap: 0.85rem;
   padding: 1rem;
   overflow: hidden;
-  border: 1px solid rgba(121, 217, 202, 0.18);
   background:
-    radial-gradient(circle at top right, rgba(121, 217, 202, 0.16), transparent 28%),
-    linear-gradient(180deg, rgba(249, 252, 255, 0.98), rgba(240, 247, 250, 0.96));
+    radial-gradient(circle at top right, rgba(121, 217, 202, 0.14), transparent 28%),
+    radial-gradient(circle at 15% 100%, rgba(255, 211, 142, 0.18), transparent 26%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.28), rgba(255, 255, 255, 0.08)),
+    linear-gradient(180deg, rgba(249, 252, 255, 0.74), rgba(240, 247, 250, 0.52));
+  box-shadow: 0 28px 64px rgba(0, 0, 0, 0.18);
 }
 
-.catalog-toolbar::before {
-  position: absolute;
-  inset: 0 0 auto;
-  height: 0.24rem;
-  content: '';
-  background: linear-gradient(90deg, rgba(121, 217, 202, 0.65), rgba(255, 122, 26, 0.7));
-}
-
-.toolbar-top {
-  display: grid;
-  gap: 0.4rem;
-}
-
+.toolbar-top,
 .toolbar-copy {
   display: grid;
   gap: 0.2rem;
@@ -381,116 +374,121 @@ function closeSheet() {
 
 .toolbar-copy strong {
   color: var(--text-strong);
-  font-size: 1.2rem;
+  font-size: 1.25rem;
 }
 
 .toolbar-note {
   color: var(--muted);
-  font-size: 0.92rem;
 }
 
 .control-rail {
   display: grid;
-  gap: 0.7rem;
-  grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
+  gap: 0.75rem;
 }
 
 .control-card {
   display: grid;
-  align-content: start;
   gap: 0.48rem;
   min-height: 100%;
   padding: 0.8rem 0.9rem;
-  border: 1px solid rgba(11, 23, 32, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.22);
   border-radius: 1.15rem;
-  background: rgba(255, 255, 255, 0.72);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.55);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.42), rgba(255, 255, 255, 0.18)),
+    rgba(255, 255, 255, 0.22);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.62),
+    0 16px 32px rgba(0, 0, 0, 0.08);
+  -webkit-backdrop-filter: blur(12px) saturate(170%);
+  backdrop-filter: blur(12px) saturate(170%);
 }
 
-.availability-card {
-  grid-column: 1 / -1;
+.availability-row,
+.chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
 }
 
-.filter-trigger,
-.desktop-filter-toggle {
-  width: 100%;
-  justify-items: start;
-  text-align: left;
-}
-
-.sort-card select,
 .chip-button {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
   gap: 0.45rem;
   min-height: 2.7rem;
   padding: 0.55rem 0.9rem;
-  border: 1px solid var(--line);
+  border: 1px solid rgba(255, 255, 255, 0.24);
   border-radius: 0.95rem;
-  background: #ffffff;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.66), rgba(244, 249, 252, 0.42)),
+    rgba(255, 255, 255, 0.3);
   color: var(--text-strong);
   font-weight: 700;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.6),
+    0 10px 22px rgba(0, 0, 0, 0.06);
+  -webkit-backdrop-filter: blur(10px) saturate(165%);
+  backdrop-filter: blur(10px) saturate(165%);
   transition:
     border-color 0.18s ease,
     background-color 0.18s ease,
-    color 0.18s ease,
     transform 0.18s ease;
 }
 
+.chip-button.active,
+.desktop-filter-toggle.active {
+  border-color: rgba(255, 186, 124, 0.38);
+  background:
+    linear-gradient(180deg, rgba(255, 249, 241, 0.72), rgba(255, 225, 194, 0.44)),
+    rgba(255, 122, 26, 0.08);
+  color: var(--accent-deep);
+}
+
 .sort-card select {
-  width: 100%;
-  justify-content: space-between;
-  appearance: auto;
+  min-height: 2.9rem;
+  padding: 0 0.9rem;
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  border-radius: 0.95rem;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.66), rgba(244, 249, 252, 0.42)),
+    rgba(255, 255, 255, 0.3);
+  color: var(--text-strong);
+}
+
+.filter-trigger {
+  align-items: start;
+  text-align: left;
+}
+
+.desktop-filter-toggle {
+  display: none;
+  align-items: start;
+  text-align: left;
 }
 
 .control-note {
   color: var(--muted);
-  font-size: 0.82rem;
-  font-weight: 700;
-}
-
-.filter-trigger strong,
-.desktop-filter-toggle strong {
-  color: var(--text-strong);
-  font-size: 1.02rem;
-}
-
-.availability-row {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0.6rem;
-}
-
-.chip-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.6rem;
-}
-
-.chip-button.active {
-  border-color: rgba(255, 122, 26, 0.35);
-  background: rgba(255, 122, 26, 0.1);
-  color: var(--accent-deep);
-}
-
-.availability-row .chip-button {
-  width: 100%;
+  font-size: 0.9rem;
 }
 
 .desktop-groups {
   display: grid;
-  gap: 0.75rem;
-  padding-top: 0.1rem;
+  gap: 0.8rem;
 }
 
 .group-card {
   display: grid;
   gap: 0.65rem;
   padding: 0.9rem;
-  border: 1px solid rgba(11, 23, 32, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 1.1rem;
-  background: rgba(255, 255, 255, 0.76);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.36), rgba(255, 255, 255, 0.14)),
+    rgba(255, 255, 255, 0.18);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.54),
+    0 14px 28px rgba(0, 0, 0, 0.08);
+  -webkit-backdrop-filter: blur(12px) saturate(165%);
+  backdrop-filter: blur(12px) saturate(165%);
 }
 
 .group-copy {
@@ -500,53 +498,40 @@ function closeSheet() {
   gap: 0.8rem;
 }
 
-.group-copy > span {
+.group-copy span {
   color: var(--muted);
-  font-size: 0.78rem;
+  font-size: 0.8rem;
   font-weight: 800;
   letter-spacing: 0.12em;
   text-transform: uppercase;
 }
 
-.group-copy strong {
-  color: var(--text-strong);
-  font-size: 0.84rem;
-}
-
-.desktop-filter-toggle {
-  display: none;
-}
-
-.desktop-filter-toggle.active {
-  border-color: rgba(255, 122, 26, 0.28);
-  background: rgba(255, 122, 26, 0.08);
-}
-
 .active-row {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.6rem;
-  padding-top: 0.2rem;
-  border-top: 1px solid var(--line);
+  display: grid;
+  gap: 0.8rem;
+  padding-top: 0.8rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .active-copy {
   display: grid;
-  flex: 1 1 16rem;
   gap: 0.55rem;
 }
 
+.active-chip-row {
+  gap: 0.5rem;
+}
+
 .reset-link {
-  margin-left: auto;
-  color: var(--accent-deep);
+  width: fit-content;
+  color: var(--text-strong);
   font-weight: 800;
 }
 
 .room-grid {
   display: grid;
-  gap: 1rem;
-  margin-top: 1.15rem;
+  gap: 0.9rem;
+  margin-top: 1rem;
 }
 
 .empty-state {
@@ -554,7 +539,10 @@ function closeSheet() {
   gap: 0.8rem;
   margin-top: 1rem;
   padding: 1.1rem;
-  border: 1px solid rgba(121, 217, 202, 0.18);
+  background:
+    radial-gradient(circle at top right, rgba(121, 217, 202, 0.12), transparent 26%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.28), rgba(255, 255, 255, 0.12)),
+    rgba(249, 252, 255, 0.64);
 }
 
 .empty-state p {
@@ -574,53 +562,40 @@ function closeSheet() {
   transform: translateY(-8px);
 }
 
+@media (hover: hover) {
+  .control-card:hover,
+  .group-card:hover,
+  .chip-button:hover {
+    transform: translateY(-2px);
+  }
+}
+
 @media (min-width: 760px) {
-  .control-rail {
-    grid-template-columns: minmax(0, 1.3fr) minmax(14rem, 0.7fr) minmax(12rem, 0.8fr);
-    align-items: stretch;
-  }
-
-  .availability-card {
-    grid-column: auto;
-  }
-
-  .sort-card {
-    grid-column: auto;
-  }
-
   .room-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
 @media (min-width: 960px) {
-  .catalog-toolbar {
-    padding: 1.15rem;
-  }
-
   .control-rail {
-    grid-template-columns: minmax(0, 1.5fr) minmax(15rem, 0.7fr) minmax(13rem, 0.75fr);
-  }
-
-  .desktop-filter-toggle {
-    display: grid;
+    grid-template-columns: minmax(0, 1.45fr) minmax(12rem, 0.7fr) minmax(12rem, 0.7fr);
   }
 
   .filter-trigger {
     display: none;
   }
 
+  .desktop-filter-toggle {
+    display: grid;
+  }
+
   .desktop-groups {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .room-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    align-items: start;
-  }
-
-  .room-grid :deep(.room-card:nth-child(3n + 2)) {
-    transform: translateY(1rem);
+  .active-row {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
   }
 }
 </style>

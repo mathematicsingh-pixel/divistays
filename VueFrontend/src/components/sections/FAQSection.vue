@@ -1,26 +1,29 @@
 <script setup>
 defineProps({
-  faqs: {
-    type: Array,
+  site: {
+    type: Object,
     required: true,
   },
 })
 </script>
 
 <template>
-  <section class="section-shell faq-shell">
+  <section
+    id="faqs"
+    class="section-shell faq-shell"
+  >
     <div class="container faq-grid">
       <div class="section-heading faq-heading">
-        <span class="eyebrow">FAQs</span>
-        <h2>Real questions before the first call.</h2>
+        <span class="eyebrow">{{ site.faqEyebrow }}</span>
+        <h2>{{ site.faqTitle }}</h2>
         <p>
-          Short answers first. Straight enquiry next.
+          {{ site.faqSummary }}
         </p>
       </div>
 
       <div class="faq-list">
         <details
-          v-for="(item, index) in faqs"
+          v-for="(item, index) in site.faqs"
           :key="item.question"
           class="surface-panel faq-item"
           :open="index === 0"
@@ -83,7 +86,13 @@ defineProps({
 
 .faq-item p {
   margin: 0.8rem 0 0;
-  color: var(--muted);
+  padding: 0.85rem 0.95rem 0.95rem;
+  border: 1px solid rgba(11, 23, 32, 0.06);
+  border-radius: 1rem;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.7), rgba(245, 250, 253, 0.52)),
+    rgba(255, 255, 255, 0.46);
+  color: #728493;
 }
 
 @media (min-width: 960px) {
