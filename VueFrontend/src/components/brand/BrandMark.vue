@@ -40,15 +40,19 @@ const label = computed(() => props.strap || props.tag || 'Student stays')
         aria-hidden="true"
       >
         <path
-          d="M14 56V28c0-11 8.95-20 20-20s20 9 20 20v28H14Z"
+          d="M18 52V35.5L34 20l16 15.5V52H18Z"
+          class="brand-room-fill"
+        />
+        <path
+          d="M14 54V30c0-11 8.95-20 20-20s20 9 20 20v24H14Z"
           class="brand-arch-shell"
         />
         <path
-          d="M22 56V30c0-6.6 5.4-12 12-12s12 5.4 12 12v26"
+          d="M22 54V33c0-6.6 5.4-12 12-12s12 5.4 12 12v21"
           class="brand-arch-inner"
         />
         <path
-          d="M34 18v10"
+          d="M34 17v10"
           class="brand-lamp-stem"
         />
         <path
@@ -58,8 +62,28 @@ const label = computed(() => props.strap || props.tag || 'Student stays')
         <circle
           cx="34"
           cy="37"
-          r="6.25"
+          r="5.8"
           class="brand-lamp-glow"
+        />
+        <path
+          d="M34 43.5v6"
+          class="brand-ray"
+        />
+        <path
+          d="M26.6 41.4 23 46"
+          class="brand-ray"
+        />
+        <path
+          d="M41.4 41.4 45 46"
+          class="brand-ray"
+        />
+        <path
+          d="M23.3 36.8H18"
+          class="brand-ray"
+        />
+        <path
+          d="M50 36.8h-5.3"
+          class="brand-ray"
         />
       </svg>
     </span>
@@ -80,28 +104,32 @@ const label = computed(() => props.strap || props.tag || 'Student stays')
 
 <style scoped>
 .brand-mark {
-  --frame: rgba(9, 18, 26, 0.04);
-  --frame-border: rgba(121, 217, 202, 0.28);
-  --arch-shell: #0c1820;
-  --arch-inner: #79d9ca;
-  --lamp-shade: #ff7a1a;
-  --lamp-glow: #ffd38e;
-  --word: #0b1720;
-  --tag: #5f7484;
+  --frame: linear-gradient(180deg, #fff1db, #f5c266);
+  --frame-border: rgba(133, 74, 43, 0.18);
+  --arch-shell: #5c2f20;
+  --arch-inner: #6f3d27;
+  --room-fill: #ec9433;
+  --lamp-shade: #5c2f20;
+  --lamp-glow: #fff2bf;
+  --ray: #ffe7a0;
+  --word: #4a261b;
+  --tag: #94624c;
   display: inline-flex;
   align-items: center;
   gap: 0.78rem;
 }
 
 .tone-light {
-  --frame: rgba(255, 255, 255, 0.08);
-  --frame-border: rgba(121, 217, 202, 0.28);
-  --arch-shell: #f7fbff;
-  --arch-inner: #79d9ca;
-  --lamp-shade: #ff8f36;
-  --lamp-glow: #ffd38e;
-  --word: #f5fbfc;
-  --tag: rgba(245, 251, 252, 0.72);
+  --frame: linear-gradient(180deg, rgba(255, 241, 219, 0.2), rgba(236, 148, 51, 0.18));
+  --frame-border: rgba(255, 203, 122, 0.22);
+  --arch-shell: #fff2df;
+  --arch-inner: #ffd08d;
+  --room-fill: rgba(236, 148, 51, 0.85);
+  --lamp-shade: #fff2df;
+  --lamp-glow: #fff5c8;
+  --ray: #ffe6a0;
+  --word: #fff3e2;
+  --tag: rgba(255, 232, 208, 0.78);
 }
 
 .brand-icon-frame {
@@ -113,7 +141,7 @@ const label = computed(() => props.strap || props.tag || 'Student stays')
   border: 1px solid var(--frame-border);
   border-radius: 1.1rem;
   background: var(--frame);
-  backdrop-filter: blur(12px);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.24);
 }
 
 .brand-icon {
@@ -124,10 +152,15 @@ const label = computed(() => props.strap || props.tag || 'Student stays')
 
 .brand-arch-shell,
 .brand-arch-inner,
-.brand-lamp-stem {
+.brand-lamp-stem,
+.brand-ray {
   fill: none;
   stroke-linecap: round;
   stroke-linejoin: round;
+}
+
+.brand-room-fill {
+  fill: var(--room-fill);
 }
 
 .brand-arch-shell {
@@ -137,7 +170,7 @@ const label = computed(() => props.strap || props.tag || 'Student stays')
 
 .brand-arch-inner {
   stroke: var(--arch-inner);
-  stroke-width: 4.2;
+  stroke-width: 3.8;
 }
 
 .brand-lamp-stem {
@@ -156,6 +189,11 @@ const label = computed(() => props.strap || props.tag || 'Student stays')
   fill: var(--lamp-glow);
 }
 
+.brand-ray {
+  stroke: var(--ray);
+  stroke-width: 3.2;
+}
+
 .brand-copy {
   display: grid;
   gap: 0.1rem;
@@ -164,9 +202,9 @@ const label = computed(() => props.strap || props.tag || 'Student stays')
 .brand-name {
   color: var(--word);
   font-family: 'Syne', sans-serif;
-  font-size: 1.14rem;
+  font-size: 1.16rem;
   font-weight: 800;
-  letter-spacing: -0.05em;
+  letter-spacing: -0.045em;
   line-height: 1;
 }
 

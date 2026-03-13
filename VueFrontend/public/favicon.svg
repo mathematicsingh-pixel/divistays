@@ -1,10 +1,12 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title desc">
   <title id="title">CozyRooms</title>
-  <desc id="desc">Arch and pendant lamp mark for CozyRooms.</desc>
-  <rect width="64" height="64" rx="18" fill="#07121a" />
-  <path d="M14 54V29c0-9.95 8.05-18 18-18s18 8.05 18 18v25H14Z" fill="none" stroke="#f7fbff" stroke-linecap="round" stroke-linejoin="round" stroke-width="5" />
-  <path d="M22 54V31c0-5.52 4.48-10 10-10s10 4.48 10 10v23" fill="none" stroke="#79d9ca" stroke-linecap="round" stroke-linejoin="round" stroke-width="4" />
-  <path d="M32 21v9" fill="none" stroke="#f7fbff" stroke-linecap="round" stroke-width="4" />
-  <path d="M24 33h16a8 8 0 0 0-8-7 8 8 0 0 0-8 7Z" fill="#ff7a1a" stroke="#f7fbff" stroke-linejoin="round" stroke-width="2.8" />
-  <circle cx="32" cy="38" r="5.5" fill="#ffd38e" />
+  <desc id="desc">Warm arch and lamp mark for CozyRooms.</desc>
+  <rect width="64" height="64" rx="18" fill="#fff1db" />
+  <path d="M18 52V35.5L34 20l16 15.5V52H18Z" fill="#ec9433" />
+  <path d="M14 54V30c0-11 8.95-20 20-20s20 9 20 20v24H14Z" fill="none" stroke="#5c2f20" stroke-linecap="round" stroke-linejoin="round" stroke-width="5" />
+  <path d="M22 54V33c0-6.6 5.4-12 12-12s12 5.4 12 12v21" fill="none" stroke="#6f3d27" stroke-linecap="round" stroke-linejoin="round" stroke-width="3.8" />
+  <path d="M34 17v10" fill="none" stroke="#5c2f20" stroke-linecap="round" stroke-width="4.2" />
+  <path d="M24.5 31.5h19A9.5 9.5 0 0 0 34 23a9.5 9.5 0 0 0-9.5 8.5Z" fill="#5c2f20" stroke="#5c2f20" stroke-linejoin="round" stroke-width="2.8" />
+  <circle cx="34" cy="37" r="5.8" fill="#fff2bf" />
+  <path d="M34 43.5v6M26.6 41.4 23 46M41.4 41.4 45 46M23.3 36.8H18M50 36.8h-5.3" fill="none" stroke="#ffe7a0" stroke-linecap="round" stroke-width="3" />
 </svg>
