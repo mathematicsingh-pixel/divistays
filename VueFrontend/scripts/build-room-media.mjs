@@ -1,15 +1,13 @@
 import { spawn } from 'node:child_process'
-import { access, constants, mkdir, writeFile } from 'node:fs/promises'
-import { basename, dirname, resolve } from 'node:path'
+import { access, constants, mkdir } from 'node:fs/promises'
+import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import sharp from 'sharp'
-import { roomCatalog } from '../src/data/rooms.js'
+import { roomCatalog } from '../src/features/rooms/index.js'
 
 const scriptDir = dirname(fileURLToPath(import.meta.url))
 const rootDir = resolve(scriptDir, '..')
-const cacheDir = resolve(rootDir, 'scripts/.cache/originals')
 const mediaDir = resolve(rootDir, 'public/media/rooms')
-const remoteBase = process.env.ROOM_MEDIA_REMOTE_BASE || 'https://divyendra-gahlot.github.io/hostel-rooms/'
 const imageWidths = [480, 960, 1440]
 const videoScaleFilter = "scale=w='min(1280,iw)':h=-2"
 
@@ -27,22 +25,13 @@ async function ensureDir(filePath) {
   await mkdir(filePath, { recursive: true })
 }
 
-async function downloadIfMissing(sourcePath) {
-  const targetPath = resolve(cacheDir, basename(sourcePath))
+async function resolveSourcePath(sourcePath) {
+  const targetPath = resolve(rootDir, sourcePath)
 
-  if (await exists(targetPath)) {
-    return targetPath
+  if (!(await exists(targetPath))) {
+    throw new Error(`Missing local source asset: ${sourcePath}`)
   }
 
-  await ensureDir(cacheDir)
-
-  const response = await fetch(new URL(sourcePath, remoteBase))
-
-  if (!response.ok) {
-    throw new Error(`Failed to fetch ${sourcePath}: ${response.status}`)
-  }
-
-  await writeFile(targetPath, Buffer.from(await response.arrayBuffer()))
   return targetPath
 }
 
@@ -62,7 +51,7 @@ async function buildImageVariants(room, media) {
     return
   }
 
-  const sourceFile = await downloadIfMissing(media.source)
+  const sourceFile = await resolveSourcePath(media.source)
   const baseImage = sharp(sourceFile).rotate()
 
   for (const width of imageWidths) {
@@ -126,7 +115,7 @@ async function buildVideoAssets(room, video) {
 
   await ensureDir(roomDir)
 
-  const sourceFile = await downloadIfMissing(video.source)
+  const sourceFile = await resolveSourcePath(video.source)
   const playableVideo = (await exists(videoTarget)) && (await probeVideo(videoTarget))
 
   if (!playableVideo) {

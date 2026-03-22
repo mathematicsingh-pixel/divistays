@@ -4,9 +4,10 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "predev": "node scripts/build-room-media.mjs",
+    "validate:rooms": "node scripts/validate-room-catalog.mjs",
+    "predev": "npm run validate:rooms && node scripts/build-room-media.mjs",
     "dev": "vite",
-    "prebuild": "node scripts/build-room-media.mjs",
+    "prebuild": "npm run validate:rooms && node scripts/build-room-media.mjs",
     "build": "vite-ssg build",
     "postbuild": "node scripts/postbuild.mjs",
     "preview": "vite preview"

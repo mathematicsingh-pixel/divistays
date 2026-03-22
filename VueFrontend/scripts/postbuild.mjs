@@ -1,8 +1,8 @@
 import { mkdir, writeFile } from 'node:fs/promises'
 import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { roomCatalog } from '../src/data/rooms.js'
-import { resolveSiteUrl } from '../src/data/site.js'
+import { roomCatalog } from '../src/features/rooms/index.js'
+import { resolveSiteUrl } from '../src/features/site/config/site.js'
 
 const scriptDir = dirname(fileURLToPath(import.meta.url))
 const rootDir = resolve(scriptDir, '..')
