@@ -1,20 +1,22 @@
 <script setup>
-import { computed, ref } from 'vue'
+import { computed, ref, toRef } from 'vue'
 import RoomShowcase from '@/features/rooms/components/showcase/RoomShowcase.vue'
+import { useRoomDetail } from '@/features/rooms/composables/useRoomDetail'
 import { siteConfig } from '@/features/site/config/site'
 import { useOverlayDialog } from '@/shared/composables/useOverlayDialog'
 
 const props = defineProps({
-  room: {
-    type: Object,
-    default: null,
+  roomSlug: {
+    type: String,
+    default: '',
   },
 })
 
 const emit = defineEmits(['close'])
 const closeButton = ref(null)
 const dialogPanel = ref(null)
-const isOpen = computed(() => Boolean(props.room))
+const isOpen = computed(() => Boolean(props.roomSlug))
+const { roomSummary, roomDetail, isLoading } = useRoomDetail(toRef(props, 'roomSlug'))
 
 useOverlayDialog({
   isOpen,
@@ -28,23 +30,23 @@ useOverlayDialog({
   <Teleport to="body">
     <transition name="dialog-fade">
       <div
-        v-if="room"
+        v-if="roomSlug"
         class="dialog-shell glass-overlay"
         @click.self="emit('close')"
       >
         <section
-          :id="`${room.slug}-preview`"
+          :id="`${roomSummary?.slug || roomSlug}-preview`"
           ref="dialogPanel"
           class="dialog-panel surface-paper-panel"
           aria-modal="true"
           role="dialog"
-          :aria-labelledby="`${room.slug}-preview-title`"
+          :aria-labelledby="`${roomSummary?.slug || roomSlug}-preview-title`"
         >
           <header class="dialog-head">
             <div class="dialog-head-copy">
               <p class="dialog-brand">{{ siteConfig.uiText.room.previewLabel }}</p>
-              <h2 :id="`${room.slug}-preview-title`">
-                {{ room.title }}
+              <h2 :id="`${roomSummary?.slug || roomSlug}-preview-title`">
+                {{ roomSummary?.title || 'Loading room' }}
               </h2>
             </div>
 
@@ -61,9 +63,16 @@ useOverlayDialog({
 
           <div class="dialog-content">
             <RoomShowcase
-              :room="room"
+              v-if="roomDetail"
+              :room="roomDetail"
               preview
             />
+            <div
+              v-else-if="isLoading"
+              class="dialog-loading"
+            >
+              <p>Loading room details…</p>
+            </div>
           </div>
         </section>
       </div>
@@ -118,6 +127,17 @@ useOverlayDialog({
 .dialog-content {
   overflow-y: auto;
   padding: 1rem;
+}
+
+.dialog-loading {
+  display: grid;
+  place-items: center;
+  min-height: 18rem;
+  border: 1px solid var(--paper-border-soft);
+  border-radius: var(--radius-lg);
+  background: var(--surface-field-fill);
+  color: var(--muted);
+  font-weight: 700;
 }
 
 .icon-button {

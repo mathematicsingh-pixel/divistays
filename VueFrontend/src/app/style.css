@@ -463,6 +463,51 @@ summary:focus-visible {
   }
 }
 
+@media (max-width: 959px) {
+  :root {
+    --glass-blur: 0px;
+    --glass-saturate: 100%;
+    --glass-shadow: 0 18px 36px rgba(0, 0, 0, 0.18);
+    --shadow-paper: 0 14px 30px rgba(5, 14, 24, 0.12);
+    --shadow-dark: 0 18px 36px rgba(0, 0, 0, 0.2);
+  }
+
+  .glass-panel,
+  .glass-panel-dark,
+  .glass-chip,
+  .glass-overlay,
+  .mobile-section-nav,
+  .contact-sheet-shell,
+  .sheet-shell,
+  .dialog-shell {
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+  }
+
+  .glass-panel,
+  .glass-chip {
+    background: var(--glass-fallback);
+  }
+
+  .glass-panel-dark,
+  .glass-overlay,
+  .mobile-section-nav,
+  .contact-sheet-shell,
+  .sheet-shell,
+  .dialog-shell {
+    background: var(--glass-fallback-dark);
+  }
+
+  .page-rise,
+  .page-rise-delay-1,
+  .page-rise-delay-2,
+  .page-rise-delay-3 {
+    opacity: 1;
+    transform: none;
+    animation: none;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;

@@ -2,6 +2,7 @@ import { access, constants } from 'node:fs/promises'
 import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { roomSourceCatalog } from '../src/features/rooms/content/registry.js'
+import { roomSummarySourceCatalog } from '../src/features/rooms/content/summary-registry.js'
 
 const requiredRoomFields = [
   'id',
@@ -31,6 +32,29 @@ const requiredRoomFields = [
 
 const requiredGalleryFields = ['key', 'source', 'alt', 'caption']
 const requiredVideoFields = ['key', 'source', 'label']
+const requiredSummaryFields = [
+  'id',
+  'slug',
+  'title',
+  'summary',
+  'fitSummary',
+  'priceMonthly',
+  'available',
+  'updatedAt',
+  'availabilityUpdatedAt',
+  'occupancy',
+  'occupancyLabel',
+  'kitchenType',
+  'kitchenLabel',
+  'washroomType',
+  'washroomLabel',
+  'highlightLabel',
+  'bestFor',
+  'included',
+  'extraNotes',
+  'galleryCount',
+  'gallery',
+]
 
 const errors = []
 const idCounts = new Map()
@@ -64,12 +88,23 @@ async function fileExists(path) {
   }
 }
 
+function matchesValue(left, right) {
+  return JSON.stringify(left) === JSON.stringify(right)
+}
+
 if (!roomSourceCatalog.length) {
   note('room registry is empty')
 }
 
+if (roomSummarySourceCatalog.length !== roomSourceCatalog.length) {
+  note(`summary registry count mismatch (${roomSummarySourceCatalog.length} summaries, ${roomSourceCatalog.length} room modules)`)
+}
+
+const summaryBySlug = new Map(roomSummarySourceCatalog.map((room) => [room.slug, room]))
+
 for (const [roomIndex, room] of roomSourceCatalog.entries()) {
   const roomLabel = `room[${roomIndex}] ${room.slug || '<missing-slug>'}`
+  const summary = summaryBySlug.get(room.slug)
 
   count(idCounts, room.id)
   count(slugCounts, room.slug)
@@ -119,6 +154,52 @@ for (const [roomIndex, room] of roomSourceCatalog.entries()) {
     if (hasValue(room.video.source) && !(await fileExists(resolve(rootDir, room.video.source)))) {
       note(`${roomLabel}: missing local video source "${room.video.source}"`)
     }
+  }
+
+  if (!summary) {
+    note(`${roomLabel}: missing runtime summary entry`)
+  }
+  else {
+    requiredSummaryFields.forEach((field) => {
+      if (!hasValue(summary[field])) {
+        note(`${roomLabel}: summary missing ${field}`)
+      }
+    })
+
+    const expectedSummary = {
+      id: room.id,
+      slug: room.slug,
+      title: room.title,
+      summary: room.summary,
+      fitSummary: room.fitSummary,
+      priceMonthly: room.priceMonthly,
+      available: room.available,
+      updatedAt: room.updatedAt,
+      availabilityUpdatedAt: room.availabilityUpdatedAt,
+      occupancy: room.occupancy,
+      occupancyLabel: room.occupancyLabel,
+      kitchenType: room.kitchenType,
+      kitchenLabel: room.kitchenLabel,
+      washroomType: room.washroomType,
+      washroomLabel: room.washroomLabel,
+      highlightLabel: room.highlightLabel,
+      bestFor: room.bestFor,
+      included: room.included,
+      extraNotes: room.extraNotes,
+      galleryCount: room.gallery.length,
+      gallery: [
+        {
+          key: room.gallery[0]?.key,
+          alt: room.gallery[0]?.alt,
+        },
+      ],
+    }
+
+    Object.entries(expectedSummary).forEach(([field, value]) => {
+      if (!matchesValue(summary[field], value)) {
+        note(`${roomLabel}: summary ${field} is out of sync`)
+      }
+    })
   }
 }
 

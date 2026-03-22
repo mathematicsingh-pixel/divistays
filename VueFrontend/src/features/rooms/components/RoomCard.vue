@@ -40,7 +40,7 @@ const quickFacts = (room) => [room.occupancyLabel, room.kitchenLabel, room.washr
           :room="room"
           inverse
         />
-        <span class="gallery-pill">{{ room.gallery.length }} photos</span>
+        <span class="gallery-pill">{{ room.galleryCount || room.gallery.length }} photos</span>
         <button
           v-if="showQuickPreview"
           class="preview-pill"

@@ -1,7 +1,6 @@
 <script setup>
-import { computed, ref, watch } from 'vue'
+import { computed, defineAsyncComponent, ref, watch } from 'vue'
 import { useHead, useSeoMeta } from '@unhead/vue'
-import RoomDetailDialog from '@/features/rooms/components/RoomDetailDialog.vue'
 import CatalogSection from '@/features/rooms/components/catalog/CatalogSection.vue'
 import { useRoomCatalog } from '@/features/rooms/composables/useRoomCatalog'
 import { availableRooms, roomCatalog } from '@/features/rooms'
@@ -21,6 +20,7 @@ import {
 } from '@/features/site/config/site'
 import { useScrollLock } from '@/shared/composables/useScrollLock'
 
+const AsyncRoomDetailDialog = defineAsyncComponent(() => import('@/features/rooms/components/RoomDetailDialog.vue'))
 const isSheetOpen = ref(false)
 const catalog = useRoomCatalog()
 const callHref = getCallHref()
@@ -28,7 +28,7 @@ const defaultWhatsAppHref = getWhatsAppHref()
 const stickyContactOptions = buildStickyContactOptions(callHref, defaultWhatsAppHref)
 const siteUrl = resolveSiteUrl(import.meta.env.VITE_SITE_URL)
 const ogImage = getPageOgImage(siteUrl)
-const isOverlayOpen = computed(() => isSheetOpen.value || Boolean(catalog.selectedRoom.value))
+const isOverlayOpen = computed(() => isSheetOpen.value || Boolean(catalog.selectedRoomSlug.value))
 
 const structuredData = computed(() =>
   buildRoomsStructuredData({
@@ -129,8 +129,9 @@ useHead(() => ({
       @update:sheet-open="setSheetOpen"
     />
 
-    <RoomDetailDialog
-      :room="catalog.selectedRoom.value"
+    <AsyncRoomDetailDialog
+      v-if="catalog.selectedRoomSlug.value"
+      :room-slug="catalog.selectedRoomSlug.value"
       @close="catalog.closePreview()"
     />
 

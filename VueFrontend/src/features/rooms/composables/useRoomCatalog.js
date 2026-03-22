@@ -94,6 +94,7 @@ export function useRoomCatalog() {
   })
 
   const selectedRoom = computed(() => visibleRooms.value.find((room) => room.slug === filters.value.preview) || null)
+  const selectedRoomSlug = computed(() => selectedRoom.value?.slug || '')
   const activeFilterCount = computed(
     () =>
       filters.value.occupancy.length
@@ -153,6 +154,7 @@ export function useRoomCatalog() {
     filters,
     visibleRooms,
     selectedRoom,
+    selectedRoomSlug,
     activeFilterCount,
     hasActiveFilters,
     setAvailability: (value) => commit({ availability: value }),

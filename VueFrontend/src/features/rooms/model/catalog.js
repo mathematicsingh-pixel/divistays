@@ -1,4 +1,4 @@
-import { roomSourceCatalog } from '../content/registry.js'
+import { roomSummarySourceCatalog } from '../content/summary-registry.js'
 
 const money = new Intl.NumberFormat('en-IN')
 const dateFormatter = new Intl.DateTimeFormat('en-IN', {
@@ -29,7 +29,7 @@ export function getRoomPath(slug) {
   return `/rooms/${slug}`
 }
 
-function decorateRoom(definition) {
+export function decorateRoomRecord(definition) {
   const referenceCode = formatRoomReferenceCode(definition.id)
 
   return {
@@ -46,7 +46,7 @@ function decorateRoom(definition) {
   }
 }
 
-export const roomCatalog = roomSourceCatalog.map(decorateRoom)
+export const roomCatalog = roomSummarySourceCatalog.map(decorateRoomRecord)
 export const availableRooms = roomCatalog.filter((room) => room.available)
 export const roomCount = roomCatalog.length
 export const roomTypeCount = roomCatalog.length
@@ -72,7 +72,7 @@ export function roomMatchesPriceBand(room, band) {
   return true
 }
 
-export function findRoomBySlug(slug) {
+export function findRoomSummaryBySlug(slug) {
   return roomCatalog.find((room) => room.slug === slug) || null
 }
 

@@ -1,6 +1,23 @@
-import { defineRoom, image, video } from '../helpers.js'
+import { defineRoom, defineRoomSummary, image, video } from '../helpers.js'
 
-export default defineRoom({
+const included = [
+  'Bed, table, chair, and cupboard',
+  'Water purifier',
+  'Garden-facing ventilation',
+  'Common kitchen access',
+]
+
+const extraNotes = [
+  'Common washroom support',
+  'Ask about the closest available low-rent room',
+]
+
+const coverImage = {
+  key: '01',
+  alt: 'Compact solo room with single bed and study desk near the wall.',
+}
+
+export const roomSummary = defineRoomSummary({
   id: 5,
   slug: 'compact-solo-garden',
   title: 'Compact solo room',
@@ -19,20 +36,14 @@ export default defineRoom({
   washroomType: 'common',
   washroomLabel: 'Common washroom',
   highlightLabel: 'Lowest monthly rent',
-  facingLabel: 'Garden-facing',
   bestFor: 'Students who want the lowest rent and are comfortable with shared kitchen and washroom access.',
-  included: [
-    'Bed, table, chair, and cupboard',
-    'Water purifier',
-    'Garden-facing ventilation',
-    'Common kitchen access',
-  ],
-  extraNotes: [
-    'Common washroom support',
-    'Ask about the closest available low-rent room',
-  ],
-  visitNextStep: 'Use the similar-room CTA to ask which low-rent room is open now.',
-  gallery: [
+  included,
+  extraNotes,
+  galleryCount: 8,
+  gallery: [coverImage],
+})
+
+const gallery = [
     image('01', 'assets/rooms/compact-solo-garden/01.jpg', 'Compact solo room with single bed and study desk near the wall.', 'Compact study layout'),
     image('02', 'assets/rooms/compact-solo-garden/02.jpg', 'Solo room angle showing bed placement and open floor strip.', 'Bed placement'),
     image('03', 'assets/rooms/compact-solo-garden/03.jpg', 'Alternative angle of the compact solo room with desk and shelving.', 'Desk-side angle'),
@@ -41,6 +52,13 @@ export default defineRoom({
     image('06', 'assets/rooms/compact-solo-garden/06.jpg', 'Wide interior view of the compact solo room.', 'Wide room view'),
     image('07', 'assets/rooms/compact-solo-garden/07.jpg', 'Bed-side angle inside the garden-facing solo room.', 'Bed-side view'),
     image('08', 'assets/rooms/compact-solo-garden/08.jpg', 'Final interior angle of the compact solo room.', 'Alternate interior'),
-  ],
+]
+
+export default defineRoom({
+  ...roomSummary,
+  featured: false,
+  facingLabel: 'Garden-facing',
+  visitNextStep: 'Use the similar-room CTA to ask which low-rent room is open now.',
+  gallery,
   video: video('tour', 'assets/rooms/compact-solo-garden/tour.mp4', 'Compact solo walkthrough'),
 })

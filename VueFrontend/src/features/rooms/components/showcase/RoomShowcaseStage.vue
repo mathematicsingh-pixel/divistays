@@ -1,5 +1,5 @@
 <script setup>
-import { toRef } from 'vue'
+import { ref, toRef, watch } from 'vue'
 import { buildVideoPath, buildVideoPosterPath } from '@/features/rooms'
 import { useRoomShowcaseStage } from '@/features/rooms/composables/useRoomShowcaseStage'
 import ResponsiveImage from '@/shared/ui/ResponsiveImage.vue'
@@ -11,6 +11,20 @@ const props = defineProps({
     required: true,
   },
 })
+
+const isVideoReady = ref(false)
+
+watch(
+  () => props.room.slug,
+  () => {
+    isVideoReady.value = false
+  },
+  { immediate: true },
+)
+
+function enableVideo() {
+  isVideoReady.value = true
+}
 
 const {
   activeIndex,
@@ -148,7 +162,23 @@ const {
         <p class="detail-kicker">Walkthrough</p>
         <h3>{{ room.video.label }}</h3>
       </div>
+      <button
+        v-if="!isVideoReady"
+        class="video-trigger"
+        type="button"
+        @click="enableVideo"
+      >
+        <img
+          class="video-poster"
+          :src="buildVideoPosterPath(room.slug, room.video.key)"
+          :alt="`${room.video.label} poster`"
+          loading="lazy"
+          decoding="async"
+        >
+        <span class="video-play-pill">Play walkthrough</span>
+      </button>
       <video
+        v-else
         controls
         playsinline
         preload="metadata"
@@ -326,9 +356,38 @@ const {
   gap: 0.2rem;
 }
 
+.video-trigger {
+  position: relative;
+  overflow: hidden;
+  border-radius: 1rem;
+  border: 1px solid var(--paper-border-soft);
+  background: rgba(7, 18, 26, 0.9);
+  box-shadow: var(--shadow-paper);
+}
+
+.video-poster,
 .video-card video {
   width: 100%;
   border-radius: 1rem;
+}
+
+.video-play-pill {
+  position: absolute;
+  left: 50%;
+  bottom: 1rem;
+  transform: translateX(-50%);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.4rem;
+  padding: 0.5rem 0.95rem;
+  border-radius: 999px;
+  background: rgba(7, 18, 26, 0.78);
+  color: var(--text-inverse);
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 @media (min-width: 960px) {

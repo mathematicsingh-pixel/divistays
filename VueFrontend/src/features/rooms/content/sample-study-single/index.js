@@ -1,6 +1,23 @@
-import { defineRoom, image } from '../helpers.js'
+import { defineRoom, defineRoomSummary, image } from '../helpers.js'
 
-export default defineRoom({
+const included = [
+  'Single bed, study desk, and chair',
+  'Attached washroom',
+  'Common kitchen access',
+  'Open shelving',
+]
+
+const extraNotes = [
+  'Sample room added as a content reference',
+  'Swap copy, price, and media before using in production',
+]
+
+const coverImage = {
+  key: '01',
+  alt: 'Daylit sample single room with bed, desk, and attached washroom door.',
+}
+
+export const roomSummary = defineRoomSummary({
   id: 6,
   slug: 'sample-study-single',
   title: 'Daylit study single room',
@@ -19,20 +36,21 @@ export default defineRoom({
   washroomType: 'attached',
   washroomLabel: 'Attached washroom',
   highlightLabel: 'Simple single setup',
-  facingLabel: 'Daylit interior',
   bestFor: 'Students who want a simple single room with an attached washroom at a modest monthly rent.',
-  included: [
-    'Single bed, study desk, and chair',
-    'Attached washroom',
-    'Common kitchen access',
-    'Open shelving',
-  ],
-  extraNotes: [
-    'Sample room added as a content reference',
-    'Swap copy, price, and media before using in production',
-  ],
-  visitNextStep: 'Replace this placeholder visit note with the real contact instruction before publishing.',
-  gallery: [
+  included,
+  extraNotes,
+  galleryCount: 1,
+  gallery: [coverImage],
+})
+
+const gallery = [
     image('01', 'assets/rooms/sample-study-single/01.png', 'Daylit sample single room with bed, desk, and attached washroom door.', 'Sample single room'),
-  ],
+]
+
+export default defineRoom({
+  ...roomSummary,
+  featured: false,
+  facingLabel: 'Daylit interior',
+  visitNextStep: 'Replace this placeholder visit note with the real contact instruction before publishing.',
+  gallery,
 })

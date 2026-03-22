@@ -1,9 +1,10 @@
 <script setup>
-import { computed } from 'vue'
+import { computed, toRef } from 'vue'
 import { useHead, useSeoMeta } from '@unhead/vue'
 import RoomCard from '@/features/rooms/components/RoomCard.vue'
 import RoomShowcase from '@/features/rooms/components/showcase/RoomShowcase.vue'
-import { availableRooms, buildImagePath, findRoomBySlug, getSimilarRooms } from '@/features/rooms'
+import { availableRooms, buildImagePath, getSimilarRooms } from '@/features/rooms'
+import { useRoomDetail } from '@/features/rooms/composables/useRoomDetail'
 import { buildRoomStructuredData } from '@/features/rooms/seo'
 import BreadcrumbNav from '@/features/site/components/BreadcrumbNav.vue'
 import MobileEnquiryBar from '@/features/site/components/MobileEnquiryBar.vue'
@@ -13,6 +14,7 @@ import { mobileSectionNavItems } from '@/features/site/config/navigation'
 import {
   buildRoomEnquiry,
   getCallHref,
+  getPageOgImage,
   getRoomPageDescription,
   getRoomPageTitle,
   getWhatsAppHref,
@@ -27,21 +29,27 @@ const props = defineProps({
   },
 })
 
-const room = computed(() => findRoomBySlug(props.roomSlug))
-const similarRooms = computed(() => getSimilarRooms(room.value))
+const { roomSummary, roomDetail } = useRoomDetail(toRef(props, 'roomSlug'))
+const similarRooms = computed(() => getSimilarRooms(roomSummary.value))
 const callHref = getCallHref()
-const whatsappHref = computed(() => getWhatsAppHref(buildRoomEnquiry(room.value)))
+const whatsappHref = computed(() => getWhatsAppHref(buildRoomEnquiry(roomSummary.value)))
 const siteUrl = resolveSiteUrl(import.meta.env.VITE_SITE_URL)
-const title = computed(() => getRoomPageTitle(room.value))
-const description = computed(() => getRoomPageDescription(room.value))
-const ogImage = computed(() => `${siteUrl}${buildImagePath(room.value.slug, room.value.gallery[0].key, 1440, 'jpg')}`)
+const title = computed(() => roomSummary.value ? getRoomPageTitle(roomSummary.value) : siteConfig.roomsTitle)
+const description = computed(() => roomSummary.value ? getRoomPageDescription(roomSummary.value) : siteConfig.roomsDescription)
+const ogImage = computed(() =>
+  roomSummary.value
+    ? `${siteUrl}${buildImagePath(roomSummary.value.slug, roomSummary.value.gallery[0].key, 1440, 'jpg')}`
+    : getPageOgImage(siteUrl),
+)
 
 const structuredData = computed(() =>
-  buildRoomStructuredData({
-    site: siteConfig,
-    siteUrl,
-    room: room.value,
-  }),
+  roomDetail.value
+    ? buildRoomStructuredData({
+        site: siteConfig,
+        siteUrl,
+        room: roomDetail.value,
+      })
+    : [],
 )
 
 useSeoMeta({
@@ -64,7 +72,7 @@ useHead(() => ({
   },
   title: title.value,
   link: [
-    { rel: 'canonical', href: `${siteUrl}${room.value.detailsHref}` },
+    { rel: 'canonical', href: roomSummary.value ? `${siteUrl}${roomSummary.value.detailsHref}` : `${siteUrl}/rooms` },
     { rel: 'manifest', href: '/site.webmanifest' },
     { rel: 'icon', href: '/favicon.svg', type: 'image/svg+xml' },
   ],
@@ -81,7 +89,7 @@ useHead(() => ({
 </script>
 
 <template>
-  <main v-if="room">
+  <main v-if="roomSummary && roomDetail">
     <MobileSectionNav :items="mobileSectionNavItems" />
 
     <section class="section-shell">
@@ -90,12 +98,12 @@ useHead(() => ({
           :items="[
             { label: 'Home', to: '/' },
             { label: 'Rooms', to: '/rooms' },
-            { label: room.title },
+            { label: roomSummary.title },
           ]"
         />
 
         <div class="room-surface surface-soft-panel">
-          <RoomShowcase :room="room" />
+          <RoomShowcase :room="roomDetail" />
         </div>
       </div>
     </section>

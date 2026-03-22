@@ -5,14 +5,15 @@ import vue from '@vitejs/plugin-vue'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [vue()],
+  build: {
+    assetsInlineLimit: 0,
+  },
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),
     },
   },
   ssgOptions: {
-    beastiesOptions: {
-      preload: 'media',
-    },
+    beastiesOptions: false,
   },
 })

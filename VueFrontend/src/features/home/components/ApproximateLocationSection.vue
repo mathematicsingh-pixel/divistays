@@ -1,5 +1,5 @@
 <script setup>
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 
 const props = defineProps({
   site: {
@@ -21,6 +21,12 @@ const mapHighlights = computed(() => [
   'Google Maps area pin',
   'Exact building on enquiry',
 ])
+
+const isMapReady = ref(false)
+
+function loadMap() {
+  isMapReady.value = true
+}
 </script>
 
 <template>
@@ -67,12 +73,23 @@ const mapHighlights = computed(() => [
 
             <div class="location-frame">
               <iframe
+                v-if="isMapReady"
                 :src="mapEmbedUrl"
                 title="Approximate CozyRooms location in Kakadeo, Kanpur"
                 loading="lazy"
                 allowfullscreen
                 referrerpolicy="no-referrer-when-downgrade"
               />
+              <button
+                v-else
+                class="map-placeholder"
+                type="button"
+                @click="loadMap"
+              >
+                <span class="map-placeholder-kicker">Approximate area only</span>
+                <strong>Load Google Map</strong>
+                <small>Tap only if you want the embed. The direct Maps link is below.</small>
+              </button>
             </div>
 
             <p class="location-map-note">
@@ -258,6 +275,44 @@ const mapHighlights = computed(() => [
   border: 1px solid rgba(11, 23, 32, 0.08);
   border-radius: 1.6rem 1.6rem 0.95rem 0.95rem;
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
+}
+
+.location-frame iframe,
+.map-placeholder {
+  width: 100%;
+  min-height: 17rem;
+}
+
+.map-placeholder {
+  display: grid;
+  place-content: center;
+  gap: 0.45rem;
+  padding: 1.25rem;
+  background:
+    radial-gradient(circle at top right, rgba(121, 217, 202, 0.16), transparent 24%),
+    linear-gradient(180deg, rgba(11, 23, 32, 0.05), rgba(11, 23, 32, 0.02));
+  color: var(--text-strong);
+  text-align: center;
+}
+
+.map-placeholder-kicker {
+  color: var(--accent-deep);
+  font-size: 0.74rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.map-placeholder strong {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(1.5rem, 6vw, 2.2rem);
+  line-height: 0.98;
+}
+
+.map-placeholder small {
+  color: var(--muted);
+  font-size: 0.86rem;
+  font-weight: 700;
 }
 
 .location-frame iframe {

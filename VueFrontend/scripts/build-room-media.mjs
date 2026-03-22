@@ -3,7 +3,7 @@ import { access, constants, mkdir } from 'node:fs/promises'
 import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import sharp from 'sharp'
-import { roomCatalog } from '../src/features/rooms/index.js'
+import { roomDetailCatalog } from '../src/features/rooms/model/detail-catalog.js'
 
 const scriptDir = dirname(fileURLToPath(import.meta.url))
 const rootDir = resolve(scriptDir, '..')
@@ -162,7 +162,7 @@ async function buildVideoAssets(room, video) {
 }
 
 async function main() {
-  for (const room of roomCatalog) {
+  for (const room of roomDetailCatalog) {
     for (const media of room.gallery) {
       await buildImageVariants(room, media)
     }

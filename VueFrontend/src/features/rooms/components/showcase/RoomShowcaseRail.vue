@@ -117,4 +117,11 @@ defineProps({
     gap: 0.7rem;
   }
 }
+
+@media (max-width: 959px) {
+  .thumb-button {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+}
 </style>
