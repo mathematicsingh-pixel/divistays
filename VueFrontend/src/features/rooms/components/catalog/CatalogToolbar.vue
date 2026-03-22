@@ -1,7 +1,9 @@
 <script setup>
-import CatalogFilterSheet from '@/features/rooms/components/catalog/CatalogFilterSheet.vue'
-import CatalogFiltersDesktop from '@/features/rooms/components/catalog/CatalogFiltersDesktop.vue'
+import { defineAsyncComponent } from 'vue'
 import { siteConfig } from '@/features/site/config/site'
+
+const AsyncCatalogFilterSheet = defineAsyncComponent(() => import('@/features/rooms/components/catalog/CatalogFilterSheet.vue'))
+const AsyncCatalogFiltersDesktop = defineAsyncComponent(() => import('@/features/rooms/components/catalog/CatalogFiltersDesktop.vue'))
 
 const props = defineProps({
   filters: {
@@ -166,7 +168,7 @@ const emit = defineEmits(['update:sheet-open', 'toggle-desktop-filters'])
     </div>
 
     <transition name="desktop-panel">
-      <CatalogFiltersDesktop
+      <AsyncCatalogFiltersDesktop
         v-if="isDesktopFiltersOpen"
         id="catalog-filter-panel"
         :filter-groups="filterGroups"
@@ -202,7 +204,8 @@ const emit = defineEmits(['update:sheet-open', 'toggle-desktop-filters'])
     </div>
   </div>
 
-  <CatalogFilterSheet
+  <AsyncCatalogFilterSheet
+    v-if="isSheetOpen"
     :is-open="isSheetOpen"
     :filters="filters"
     :actions="actions"
