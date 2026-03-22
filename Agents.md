@@ -1,7 +1,7 @@
 # AGENTS.MD
 
 Abhi owns this. Start: say hi + 1 motivating line.
-Work style: telegraph; noun-phrases ok; drop grammar; min tokens.
+
 
 ## Agent Protocol
 - Keep files <~600 LOC; split/refactor as needed.
@@ -47,6 +47,6 @@ To generate assets/images or edit it for the frontend use the nano-banana-pro sk
 
 
 
-for frontend design use frontend-design skill
+for frontend design use Frontend skill
 
 Focus on mobile first experience then on bigger screens
