@@ -3,6 +3,9 @@ import { computed, onBeforeUnmount, ref, watch } from 'vue'
 const MAX_STAGE_ZOOM = 4
 const TAP_MOVE_THRESHOLD = 12
 const PINCH_MOVE_THRESHOLD = 6
+const SWIPE_LOCK_THRESHOLD = 18
+const SWIPE_DISTANCE_THRESHOLD = 56
+const SWIPE_DIRECTION_RATIO = 1.2
 const HINT_HIDE_DELAY = 2200
 
 export function useRoomShowcaseStage(room) {
@@ -20,6 +23,7 @@ export function useRoomShowcaseStage(room) {
     moved: false,
     ignoreClickUntil: 0,
     startPoint: null,
+    lastPoint: null,
     startOffset: { x: 0, y: 0 },
     startScale: 1,
     startDistance: 0,
@@ -37,6 +41,7 @@ export function useRoomShowcaseStage(room) {
     const commands = []
 
     if (canCycle.value && !isZoomed.value) {
+      commands.push('Swipe left or right')
       commands.push('Tap or click for the next photo')
     }
 
@@ -122,7 +127,9 @@ export function useRoomShowcaseStage(room) {
     isDragging.value = false
     interactionState.mode = null
     interactionState.moved = false
+    interactionState.startPoint = null
     interactionState.startDistance = 0
+    interactionState.lastPoint = null
   }
 
   function setActiveIndex(index) {
@@ -181,6 +188,7 @@ export function useRoomShowcaseStage(room) {
       x: touch.clientX,
       y: touch.clientY,
     }
+    interactionState.lastPoint = { ...interactionState.startPoint }
     interactionState.startOffset = { ...zoomOffset.value }
     isDragging.value = true
   }
@@ -228,6 +236,7 @@ export function useRoomShowcaseStage(room) {
     if (isStageControlTarget(event.target)) {
       interactionState.mode = null
       interactionState.startPoint = null
+      interactionState.lastPoint = null
       interactionState.moved = false
       return
     }
@@ -258,6 +267,10 @@ export function useRoomShowcaseStage(room) {
 
     const [touch] = event.touches
     interactionState.moved = false
+    interactionState.lastPoint = {
+      x: touch.clientX,
+      y: touch.clientY,
+    }
 
     if (isZoomed.value) {
       startPan(touch)
@@ -308,11 +321,18 @@ export function useRoomShowcaseStage(room) {
     const [touch] = event.touches
     const deltaX = touch.clientX - interactionState.startPoint.x
     const deltaY = touch.clientY - interactionState.startPoint.y
+    const absDeltaX = Math.abs(deltaX)
+    const absDeltaY = Math.abs(deltaY)
+
+    interactionState.lastPoint = {
+      x: touch.clientX,
+      y: touch.clientY,
+    }
 
     if (interactionState.mode === 'pan' && isZoomed.value) {
       event.preventDefault()
 
-      if (Math.abs(deltaX) > TAP_MOVE_THRESHOLD || Math.abs(deltaY) > TAP_MOVE_THRESHOLD) {
+      if (absDeltaX > TAP_MOVE_THRESHOLD || absDeltaY > TAP_MOVE_THRESHOLD) {
         interactionState.moved = true
       }
 
@@ -324,8 +344,31 @@ export function useRoomShowcaseStage(room) {
       return
     }
 
-    if (Math.abs(deltaX) > TAP_MOVE_THRESHOLD || Math.abs(deltaY) > TAP_MOVE_THRESHOLD) {
+    if (absDeltaX > TAP_MOVE_THRESHOLD || absDeltaY > TAP_MOVE_THRESHOLD) {
       interactionState.moved = true
+    }
+
+    if (!canCycle.value || interactionState.mode === 'scroll') {
+      return
+    }
+
+    if (
+      interactionState.mode === 'swipe'
+      || (
+        absDeltaX >= SWIPE_LOCK_THRESHOLD
+        && absDeltaX > absDeltaY * SWIPE_DIRECTION_RATIO
+      )
+    ) {
+      interactionState.mode = 'swipe'
+      event.preventDefault()
+      return
+    }
+
+    if (
+      absDeltaY >= SWIPE_LOCK_THRESHOLD
+      && absDeltaY > absDeltaX * SWIPE_DIRECTION_RATIO
+    ) {
+      interactionState.mode = 'scroll'
     }
   }
 
@@ -342,14 +385,37 @@ export function useRoomShowcaseStage(room) {
       return
     }
 
+    const endTouch = event.changedTouches[0]
+    const endPoint = endTouch
+      ? { x: endTouch.clientX, y: endTouch.clientY }
+      : interactionState.lastPoint
+    const deltaX = endPoint && interactionState.startPoint
+      ? endPoint.x - interactionState.startPoint.x
+      : 0
+    const deltaY = endPoint && interactionState.startPoint
+      ? endPoint.y - interactionState.startPoint.y
+      : 0
+    const shouldSwipe = (
+      interactionState.mode === 'swipe'
+      && canCycle.value
+      && !isZoomed.value
+      && Math.abs(deltaX) >= SWIPE_DISTANCE_THRESHOLD
+      && Math.abs(deltaX) > Math.abs(deltaY) * SWIPE_DIRECTION_RATIO
+    )
     const shouldCycle = interactionState.mode === 'tap' && !interactionState.moved && !isZoomed.value
 
     interactionState.mode = null
     interactionState.startPoint = null
     interactionState.startDistance = 0
+    interactionState.lastPoint = null
 
     if (zoomScale.value <= 1.01) {
       resetZoom()
+    }
+
+    if (shouldSwipe) {
+      cycleImage(deltaX > 0 ? -1 : 1)
+      return
     }
 
     if (shouldCycle) {
@@ -362,6 +428,7 @@ export function useRoomShowcaseStage(room) {
     interactionState.moved = false
     interactionState.startPoint = null
     interactionState.startDistance = 0
+    interactionState.lastPoint = null
     isDragging.value = false
 
     if (zoomScale.value <= 1.01) {

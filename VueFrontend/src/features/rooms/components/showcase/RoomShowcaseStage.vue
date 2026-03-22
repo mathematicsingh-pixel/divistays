@@ -77,7 +77,7 @@ const {
           v-if="canCycle"
           class="stage-hint glass-chip"
         >
-          Tap photo for next
+          Swipe left or right, or tap for next
         </span>
         <span class="stage-hint glass-chip">
           {{ isZoomed ? 'Drag to pan' : 'Pinch to zoom' }}
