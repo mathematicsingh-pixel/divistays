@@ -18,13 +18,13 @@ export const siteConfig = {
   audienceLabel: 'Students in Kakadeo',
   brandLine: 'Real rooms. Real rent.',
   supportLine: 'Furnished student rooms in Kakadeo, Kanpur.',
-  heroEyebrow: 'Available now!',
+  heroEyebrow: 'Available now',
   heroTitle: 'Furnished student rooms in Kakadeo',
   heroSummary:
     'See photos, rent, occupancy, kitchen, and washroom details before you call. If a room works, message or ring us directly.',
-  heroPrimaryLabel: 'Browse open rooms',
-  heroSecondaryLabel: 'WhatsApp',
-  heroCallLabel: 'Call now',
+  heroPrimaryLabel: 'View open rooms',
+  heroSecondaryLabel: 'Ask on WhatsApp',
+  heroCallLabel: 'Call us',
   homeRoomsEyebrow: 'Available rooms',
   homeRoomsTitle: 'Rooms open right now',
   homeRoomsSummary:
@@ -102,11 +102,64 @@ export const siteConfig = {
   ctaTitle: 'Ask what is free today',
   ctaSummary:
     'Send the room ID you like. If that one is taken, we will point you to the closest open option.',
-  ctaPrimaryLabel: 'Message on WhatsApp',
-  ctaSecondaryLabel: 'Call CozyRooms',
+  ctaPrimaryLabel: 'Ask on WhatsApp',
+  ctaSecondaryLabel: 'Call us',
   footerDescriptor: 'Furnished student rooms in Kakadeo, Kanpur.',
   footerSummary:
     'CozyRooms keeps it simple: photos, rent, room setup, and a direct phone or WhatsApp line.',
+  uiText: {
+    actions: {
+      viewOpenRooms: 'View open rooms',
+      compareAllRooms: 'Compare all rooms',
+      talkToUs: 'Talk to us',
+      chooseFilters: 'Choose filters',
+      clearFilters: 'Clear filters',
+      viewRoom: 'View room',
+      viewSimilarRooms: 'View similar rooms',
+      askOnWhatsApp: 'Ask on WhatsApp',
+      callCozyRooms: 'Call us',
+    },
+    contactSheet: {
+      eyebrow: 'Talk to us',
+      title: 'Talk to CozyRooms',
+      summary: 'Call us directly or send a quick WhatsApp message.',
+      whatsappMeta: 'Quick reply on WhatsApp',
+    },
+    heroPanel: {
+      badge: 'Open now',
+      title: 'See the room before you call',
+      summary: 'Photos, rent, and room setup first. Then decide if you want to talk.',
+      points: [
+        {
+          title: 'Rent stays visible',
+          body: 'No price chasing once you open a room.',
+        },
+        {
+          title: 'Kitchen and washroom are clear',
+          body: 'Private or shared is easy to spot.',
+        },
+        {
+          title: 'Talk directly',
+          body: 'Call or WhatsApp once the room looks right.',
+        },
+      ],
+    },
+    catalog: {
+      title: 'Find your room',
+      summary: 'Start with rooms that are free now. Narrow the list only if you need to.',
+      defaultNote: 'Open rooms show first. Use filters only if you need them.',
+      mobileFiltersLabel: 'Filters',
+      mobileFiltersSummary: 'Budget, setup, and room type',
+    },
+    room: {
+      similarTitle: 'You may like these too',
+      similarSummary: 'Similar setups first, with open rooms shown first.',
+      previewLabel: 'Quick look',
+    },
+    footer: {
+      headline: 'See rooms. Pick one. Talk to us.',
+    },
+  },
   localityPage: {
     mapUrl: 'https://maps.google.com/?q=Kakadeo+Kanpur',
   },
@@ -123,6 +176,23 @@ export function resolveSiteUrl(candidate) {
 
 export function getCallHref() {
   return `tel:${siteConfig.phoneE164}`
+}
+
+export function buildStickyContactOptions(callHref, whatsappHref) {
+  return [
+    {
+      label: siteConfig.uiText.actions.callCozyRooms,
+      href: callHref,
+      meta: siteConfig.phoneDisplay,
+      tone: 'primary',
+    },
+    {
+      label: siteConfig.uiText.actions.askOnWhatsApp,
+      href: whatsappHref,
+      meta: siteConfig.uiText.contactSheet.whatsappMeta,
+      blank: true,
+    },
+  ]
 }
 
 export function buildGenericEnquiry() {

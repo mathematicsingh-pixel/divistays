@@ -24,7 +24,7 @@ function isActive(list, value) {
     <div
       v-for="group in filterGroups"
       :key="group.key"
-      class="group-card"
+      class="group-card surface-field-panel"
     >
       <div class="group-copy">
         <span>{{ group.label }}</span>
@@ -58,16 +58,7 @@ function isActive(list, value) {
   display: grid;
   gap: 0.65rem;
   padding: 0.9rem;
-  border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 1.1rem;
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.36), rgba(255, 255, 255, 0.14)),
-    rgba(255, 255, 255, 0.18);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.54),
-    0 14px 28px rgba(0, 0, 0, 0.08);
-  -webkit-backdrop-filter: blur(12px) saturate(165%);
-  backdrop-filter: blur(12px) saturate(165%);
 }
 
 .group-copy {
@@ -97,18 +88,12 @@ function isActive(list, value) {
   gap: 0.45rem;
   min-height: 2.7rem;
   padding: 0.55rem 0.9rem;
-  border: 1px solid rgba(255, 255, 255, 0.24);
+  border: 1px solid var(--paper-border-soft);
   border-radius: 0.95rem;
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.66), rgba(244, 249, 252, 0.42)),
-    rgba(255, 255, 255, 0.3);
+  background: var(--surface-field-fill);
   color: var(--text-strong);
   font-weight: 700;
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.6),
-    0 10px 22px rgba(0, 0, 0, 0.06);
-  -webkit-backdrop-filter: blur(10px) saturate(165%);
-  backdrop-filter: blur(10px) saturate(165%);
+  box-shadow: var(--shadow-field);
   transition:
     border-color 0.18s ease,
     background-color 0.18s ease,
@@ -116,11 +101,9 @@ function isActive(list, value) {
 }
 
 .chip-button.active {
-  border-color: rgba(255, 186, 124, 0.38);
-  background:
-    linear-gradient(180deg, rgba(255, 249, 241, 0.72), rgba(255, 225, 194, 0.44)),
-    rgba(255, 122, 26, 0.08);
-  color: var(--accent-deep);
+  border-color: rgba(44, 161, 142, 0.26);
+  background: rgba(121, 217, 202, 0.12);
+  color: var(--brand-strong);
 }
 
 @media (hover: hover) {

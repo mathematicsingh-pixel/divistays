@@ -1,5 +1,6 @@
 <script setup>
 import { computed, ref, watch } from 'vue'
+import { siteConfig } from '@/features/site/config/site'
 import { useOverlayDialog } from '@/shared/composables/useOverlayDialog'
 
 const props = defineProps({
@@ -41,11 +42,11 @@ const props = defineProps({
   },
   secondaryMenuTitle: {
     type: String,
-    default: 'Contact CozyRooms',
+    default: siteConfig.uiText.contactSheet.title,
   },
   secondaryMenuSummary: {
     type: String,
-    default: 'Call directly or message on WhatsApp.',
+    default: siteConfig.uiText.contactSheet.summary,
   },
 })
 
@@ -96,14 +97,14 @@ useOverlayDialog({
       >
         <section
           ref="panelRef"
-          class="contact-sheet glass-panel"
+          class="contact-sheet surface-paper-panel"
           aria-modal="true"
           role="dialog"
           aria-labelledby="mobile-contact-sheet-title"
         >
           <div class="contact-sheet-head">
             <div class="contact-sheet-copy">
-              <p class="contact-sheet-kicker">Direct contact</p>
+              <p class="contact-sheet-kicker">{{ siteConfig.uiText.contactSheet.eyebrow }}</p>
               <h2 id="mobile-contact-sheet-title">{{ secondaryMenuTitle }}</h2>
               <p>{{ secondaryMenuSummary }}</p>
             </div>
@@ -145,7 +146,7 @@ useOverlayDialog({
   </Teleport>
 
   <div
-    class="mobile-bar glass-panel-dark"
+    class="mobile-bar surface-dark-shell"
     :class="{ 'mobile-bar-hidden': hidden }"
   >
     <button
@@ -208,12 +209,6 @@ useOverlayDialog({
   gap: 1rem;
   padding: 1rem;
   border-radius: 1.5rem;
-  background:
-    radial-gradient(circle at top right, rgba(121, 217, 202, 0.16), transparent 28%),
-    radial-gradient(circle at 12% 100%, rgba(255, 122, 26, 0.14), transparent 32%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.1)),
-    rgba(247, 251, 255, 0.72);
-  box-shadow: 0 28px 64px rgba(0, 0, 0, 0.24);
 }
 
 .contact-sheet-head {
@@ -251,16 +246,12 @@ useOverlayDialog({
   justify-content: center;
   width: 2.55rem;
   height: 2.55rem;
-  border: 1px solid rgba(11, 23, 32, 0.08);
+  border: 1px solid var(--paper-border-soft);
   border-radius: 999px;
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.84), rgba(239, 247, 250, 0.62)),
-    rgba(255, 255, 255, 0.42);
+  background: var(--surface-field-fill);
   color: var(--text-strong);
   font-size: 1.35rem;
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.62),
-    0 10px 22px rgba(0, 0, 0, 0.08);
+  box-shadow: var(--shadow-field);
 }
 
 .contact-sheet-actions {
@@ -296,14 +287,9 @@ useOverlayDialog({
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 0.7rem;
-  padding: 0.7rem;
+  padding: 0.6rem;
   margin-bottom: calc(0.8rem + env(safe-area-inset-bottom));
   border-radius: 1.4rem;
-  background:
-    radial-gradient(circle at top right, rgba(121, 217, 202, 0.12), transparent 34%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02)),
-    rgba(7, 18, 26, 0.7);
-  box-shadow: 0 24px 52px rgba(0, 0, 0, 0.34);
   transition:
     transform 0.18s ease,
     opacity 0.18s ease;
@@ -319,11 +305,15 @@ useOverlayDialog({
 }
 
 .mobile-bar .button-secondary {
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0.06)),
-    rgba(255, 255, 255, 0.08);
+  min-height: 3rem;
+  background: rgba(255, 255, 255, 0.08);
   color: var(--text-inverse);
   border-color: rgba(255, 255, 255, 0.16);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12);
+}
+
+.mobile-bar .button-primary {
+  min-height: 3rem;
 }
 
 .mobile-bar-hidden {

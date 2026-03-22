@@ -35,7 +35,7 @@ defineProps({
         <p class="footer-summary">{{ site.footerSummary }}</p>
       </div>
 
-      <div class="footer-mobile-card glass-panel-dark">
+      <div class="footer-mobile-card surface-dark-shell">
         <p class="footer-section-kicker">Quick links</p>
 
         <div class="footer-mobile-grid">
@@ -69,11 +69,11 @@ defineProps({
         </div>
       </div>
 
-      <div class="footer-shell glass-panel-dark">
+      <div class="footer-shell surface-dark-shell">
         <div class="footer-shell-head">
           <div class="footer-shell-copy">
             <p class="footer-section-kicker">Start here</p>
-            <h3>See rooms. Pick one. Call us.</h3>
+            <h3>{{ site.uiText.footer.headline }}</h3>
           </div>
           <a
             class="footer-phone"
@@ -119,7 +119,7 @@ defineProps({
                 rel="noreferrer"
               >
                 <span class="footer-action-label">WhatsApp</span>
-                <strong>Chat now</strong>
+                <strong>{{ site.uiText.actions.askOnWhatsApp }}</strong>
               </a>
             </div>
           </div>
@@ -154,7 +154,7 @@ defineProps({
                 />
                 <span class="room-link-title">{{ room.title }}</span>
               </div>
-              <span class="room-link-cta">View room</span>
+              <span class="room-link-cta">{{ site.uiText.actions.viewRoom }}</span>
             </RouterLink>
           </div>
         </div>
@@ -220,18 +220,6 @@ defineProps({
   display: none;
 }
 
-.footer-mobile-card::before,
-.footer-shell::before {
-  position: absolute;
-  inset: 0;
-  content: '';
-  background:
-    radial-gradient(circle at top right, rgba(121, 217, 202, 0.18), transparent 26%),
-    radial-gradient(circle at left bottom, rgba(255, 122, 26, 0.14), transparent 26%),
-    linear-gradient(120deg, rgba(255, 255, 255, 0.04), transparent 52%);
-  z-index: 0;
-}
-
 .footer-mobile-card > *,
 .footer-shell > * {
   position: relative;
@@ -270,7 +258,7 @@ defineProps({
 .footer-group-label,
 .footer-action-label,
 .room-link-cta {
-  color: rgba(236, 246, 252, 0.6);
+  color: rgba(236, 246, 252, 0.74);
 }
 
 .footer-shell-head h3 {
@@ -285,10 +273,10 @@ defineProps({
   width: fit-content;
   min-height: 2.5rem;
   padding: 0.55rem 0.85rem;
-  border: 1px solid rgba(255, 211, 142, 0.26);
+  border: 1px solid rgba(255, 122, 26, 0.2);
   border-radius: 999px;
-  background: rgba(255, 211, 142, 0.08);
-  color: var(--sun);
+  background: rgba(255, 122, 26, 0.08);
+  color: #ffd7af;
   font-weight: 800;
 }
 
@@ -335,15 +323,11 @@ defineProps({
 }
 
 .footer-mobile-link-location {
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.02)),
-    rgba(7, 18, 26, 0.3);
+  background: rgba(255, 255, 255, 0.06);
 }
 
 .footer-mobile-link-features {
-  background:
-    linear-gradient(180deg, rgba(121, 217, 202, 0.16), rgba(121, 217, 202, 0.04)),
-    rgba(7, 18, 26, 0.24);
+  background: rgba(121, 217, 202, 0.08);
 }
 
 .footer-chip {
@@ -369,15 +353,11 @@ defineProps({
 }
 
 .footer-action-call {
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02)),
-    rgba(7, 18, 26, 0.28);
+  background: rgba(255, 255, 255, 0.04);
 }
 
 .footer-action-whatsapp {
-  background:
-    linear-gradient(180deg, rgba(121, 217, 202, 0.14), rgba(121, 217, 202, 0.04)),
-    rgba(7, 18, 26, 0.22);
+  background: rgba(121, 217, 202, 0.08);
 }
 
 .footer-rooms {

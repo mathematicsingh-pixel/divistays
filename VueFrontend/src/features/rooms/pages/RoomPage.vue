@@ -94,7 +94,7 @@ useHead(() => ({
           ]"
         />
 
-        <div class="room-surface glass-panel">
+        <div class="room-surface surface-soft-panel">
           <RoomShowcase :room="room" />
         </div>
       </div>
@@ -104,8 +104,8 @@ useHead(() => ({
       <div class="container">
         <div class="section-heading">
           <span class="eyebrow">Similar rooms</span>
-          <h2>More rooms like this</h2>
-          <p>Similar setups first, with available rooms pushed to the top.</p>
+          <h2>{{ siteConfig.uiText.room.similarTitle }}</h2>
+          <p>{{ siteConfig.uiText.room.similarSummary }}</p>
         </div>
 
         <div class="similar-grid">
@@ -127,10 +127,10 @@ useHead(() => ({
 
     <MobileEnquiryBar
       :primary-href="whatsappHref"
-      primary-label="Ask about this room"
+      :primary-label="siteConfig.uiText.actions.askOnWhatsApp"
       primary-blank
       :secondary-href="callHref"
-      secondary-label="Call"
+      :secondary-label="siteConfig.uiText.actions.callCozyRooms"
     />
   </main>
 </template>

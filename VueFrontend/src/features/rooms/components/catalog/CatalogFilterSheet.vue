@@ -1,5 +1,6 @@
 <script setup>
 import { computed, ref } from 'vue'
+import { siteConfig } from '@/features/site/config/site'
 import { useOverlayDialog } from '@/shared/composables/useOverlayDialog'
 
 const props = defineProps({
@@ -72,7 +73,7 @@ useOverlayDialog({
         <section
           id="catalog-filters"
           ref="panelRef"
-          class="sheet-panel glass-panel"
+          class="sheet-panel surface-paper-panel"
           role="dialog"
           aria-modal="true"
           aria-labelledby="catalog-filters-title"
@@ -80,7 +81,7 @@ useOverlayDialog({
           <div class="sheet-head">
             <div>
               <p class="sheet-kicker">Filters</p>
-              <h3 id="catalog-filters-title">Refine rooms</h3>
+              <h3 id="catalog-filters-title">{{ siteConfig.uiText.actions.chooseFilters }}</h3>
             </div>
 
             <button
@@ -95,7 +96,7 @@ useOverlayDialog({
           </div>
 
           <div class="sheet-body">
-            <div class="sheet-group">
+            <div class="sheet-group surface-field-panel">
               <span>Availability</span>
               <div class="chip-row">
                 <button
@@ -112,7 +113,7 @@ useOverlayDialog({
               </div>
             </div>
 
-            <div class="sheet-group">
+            <div class="sheet-group surface-field-panel">
               <span>Occupancy</span>
               <div class="chip-row">
                 <button
@@ -129,7 +130,7 @@ useOverlayDialog({
               </div>
             </div>
 
-            <div class="sheet-group">
+            <div class="sheet-group surface-field-panel">
               <span>Kitchen</span>
               <div class="chip-row">
                 <button
@@ -146,7 +147,7 @@ useOverlayDialog({
               </div>
             </div>
 
-            <div class="sheet-group">
+            <div class="sheet-group surface-field-panel">
               <span>Washroom</span>
               <div class="chip-row">
                 <button
@@ -163,7 +164,7 @@ useOverlayDialog({
               </div>
             </div>
 
-            <div class="sheet-group">
+            <div class="sheet-group surface-field-panel">
               <span>Budget</span>
               <div class="chip-row">
                 <button
@@ -180,7 +181,7 @@ useOverlayDialog({
               </div>
             </div>
 
-            <label class="sort-field">
+            <label class="sort-field surface-field-panel">
               <span>Sort by</span>
               <select
                 :value="filters.sort"
@@ -203,7 +204,7 @@ useOverlayDialog({
               type="button"
               @click="actions.resetFilters()"
             >
-              Reset
+              {{ siteConfig.uiText.actions.clearFilters }}
             </button>
             <button
               class="button-primary"
@@ -239,12 +240,6 @@ useOverlayDialog({
   max-height: min(44rem, 92svh);
   padding: 1rem 1rem calc(1rem + env(safe-area-inset-bottom));
   border-radius: 1.5rem 1.5rem 0 0;
-  background:
-    radial-gradient(circle at top right, rgba(121, 217, 202, 0.14), transparent 28%),
-    radial-gradient(circle at 12% 100%, rgba(255, 211, 142, 0.18), transparent 28%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.34), rgba(255, 255, 255, 0.14)),
-    rgba(249, 252, 255, 0.68);
-  box-shadow: 0 32px 68px rgba(0, 0, 0, 0.28);
 }
 
 .sheet-head {
@@ -268,18 +263,12 @@ useOverlayDialog({
   justify-content: center;
   width: 2.6rem;
   height: 2.6rem;
-  border: 1px solid rgba(255, 255, 255, 0.24);
+  border: 1px solid var(--paper-border-soft);
   border-radius: 999px;
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.72), rgba(239, 247, 250, 0.5)),
-    rgba(255, 255, 255, 0.28);
+  background: var(--surface-field-fill);
   color: var(--text-strong);
   font-size: 1.45rem;
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.58),
-    0 10px 22px rgba(0, 0, 0, 0.08);
-  -webkit-backdrop-filter: blur(12px) saturate(170%);
-  backdrop-filter: blur(12px) saturate(170%);
+  box-shadow: var(--shadow-field);
 }
 
 .sheet-body {
@@ -293,16 +282,7 @@ useOverlayDialog({
   display: grid;
   gap: 0.65rem;
   padding: 0.9rem;
-  border: 1px solid rgba(255, 255, 255, 0.22);
   border-radius: 1.1rem;
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.34), rgba(255, 255, 255, 0.12)),
-    rgba(255, 255, 255, 0.14);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.58),
-    0 14px 28px rgba(0, 0, 0, 0.08);
-  -webkit-backdrop-filter: blur(12px) saturate(165%);
-  backdrop-filter: blur(12px) saturate(165%);
 }
 
 .sheet-group span,
@@ -323,42 +303,28 @@ useOverlayDialog({
 .chip-button {
   min-height: 2.85rem;
   padding: 0.55rem 0.8rem;
-  border: 1px solid rgba(255, 255, 255, 0.24);
+  border: 1px solid var(--paper-border-soft);
   border-radius: 0.95rem;
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.66), rgba(241, 248, 252, 0.42)),
-    rgba(255, 255, 255, 0.28);
+  background: var(--surface-field-fill);
   color: var(--text-strong);
   font-weight: 700;
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.6),
-    0 10px 20px rgba(0, 0, 0, 0.06);
-  -webkit-backdrop-filter: blur(10px) saturate(165%);
-  backdrop-filter: blur(10px) saturate(165%);
+  box-shadow: var(--shadow-field);
 }
 
 .chip-button.active {
-  border-color: rgba(255, 186, 124, 0.42);
-  background:
-    linear-gradient(180deg, rgba(255, 247, 238, 0.82), rgba(255, 225, 194, 0.52)),
-    rgba(255, 122, 26, 0.12);
-  color: var(--accent-deep);
+  border-color: rgba(44, 161, 142, 0.26);
+  background: rgba(121, 217, 202, 0.12);
+  color: var(--brand-strong);
 }
 
 .sort-field select {
   min-height: 3rem;
   padding: 0 0.9rem;
-  border: 1px solid rgba(255, 255, 255, 0.24);
+  border: 1px solid var(--paper-border-soft);
   border-radius: 0.95rem;
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.66), rgba(241, 248, 252, 0.42)),
-    rgba(255, 255, 255, 0.28);
+  background: var(--surface-field-fill);
   color: var(--text-strong);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.58),
-    0 10px 20px rgba(0, 0, 0, 0.06);
-  -webkit-backdrop-filter: blur(10px) saturate(165%);
-  backdrop-filter: blur(10px) saturate(165%);
+  box-shadow: var(--shadow-field);
 }
 
 .sheet-actions {

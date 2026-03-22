@@ -166,6 +166,11 @@ const mapHighlights = computed(() => [
 }
 
 .location-chip {
+  border-color: rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.08);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    0 8px 18px rgba(0, 0, 0, 0.14);
   color: var(--text-inverse);
 }
 

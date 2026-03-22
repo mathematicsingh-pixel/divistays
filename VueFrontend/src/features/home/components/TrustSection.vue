@@ -23,7 +23,7 @@ defineProps({
         <article
           v-for="point in site.proofCards"
           :key="point.title"
-          class="surface-panel trust-card"
+          class="surface-panel surface-soft-panel trust-card"
         >
           <h3>{{ point.title }}</h3>
           <p>{{ point.body }}</p>
@@ -47,9 +47,6 @@ defineProps({
   display: grid;
   gap: 0.6rem;
   padding: 1rem;
-  border: 1px solid rgba(121, 217, 202, 0.16);
-  background:
-    linear-gradient(180deg, rgba(249, 252, 255, 0.98), rgba(240, 247, 250, 0.96));
 }
 
 .trust-card p {

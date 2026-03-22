@@ -36,17 +36,11 @@ defineProps({
   width: fit-content;
   min-height: 2rem;
   padding: 0.38rem 0.72rem;
-  border: 1px solid rgba(11, 23, 32, 0.12);
+  border: 1px solid var(--paper-border-soft);
   border-radius: 999px;
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.82), rgba(240, 247, 250, 0.64)),
-    rgba(255, 255, 255, 0.58);
+  background: var(--surface-field-fill);
   color: var(--text-strong);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.7),
-    0 12px 26px rgba(0, 0, 0, 0.08);
-  -webkit-backdrop-filter: blur(10px) saturate(165%);
-  backdrop-filter: blur(10px) saturate(165%);
+  box-shadow: var(--shadow-field);
 }
 
 .room-reference-label,
@@ -62,11 +56,11 @@ defineProps({
 }
 
 .room-reference strong {
-  color: var(--accent-deep);
+  color: var(--accent);
 }
 
 .room-reference-inverse {
-  border-color: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.16);
   background: rgba(7, 18, 26, 0.72);
   box-shadow: 0 12px 24px rgba(0, 0, 0, 0.18);
 }
@@ -76,7 +70,7 @@ defineProps({
 }
 
 .room-reference-inverse strong {
-  color: var(--sun);
+  color: var(--accent);
 }
 
 .room-reference-compact {

@@ -47,19 +47,17 @@ defineProps({
 <style scoped>
 .thumb-row {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 0.7rem;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 0.5rem;
 }
 
 .thumb-button {
   position: relative;
   overflow: hidden;
   aspect-ratio: 1 / 1;
-  border: 1px solid rgba(255, 255, 255, 0.18);
+  border: 1px solid var(--paper-border);
   border-radius: 0.9rem;
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0.08)),
-    rgba(255, 255, 255, 0.12);
+  background: var(--surface-paper-soft-fill);
   -webkit-backdrop-filter: blur(8px) saturate(160%);
   backdrop-filter: blur(8px) saturate(160%);
   transition:
@@ -78,9 +76,9 @@ defineProps({
 
 .thumb-button.active {
   transform: translateY(-0.1rem) scale(1.03);
-  border-color: rgba(255, 122, 26, 0.78);
+  border-color: rgba(44, 161, 142, 0.62);
   box-shadow:
-    0 0 0 0.24rem rgba(255, 122, 26, 0.2),
+    0 0 0 0.2rem rgba(121, 217, 202, 0.18),
     0 16px 28px rgba(0, 0, 0, 0.14);
 }
 
@@ -111,5 +109,12 @@ defineProps({
   font-weight: 800;
   letter-spacing: 0.08em;
   text-transform: uppercase;
+}
+
+@media (min-width: 760px) {
+  .thumb-row {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0.7rem;
+  }
 }
 </style>

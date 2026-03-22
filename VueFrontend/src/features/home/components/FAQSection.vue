@@ -25,7 +25,7 @@ defineProps({
         <details
           v-for="(item, index) in site.faqs"
           :key="item.question"
-          class="surface-panel faq-item"
+          class="surface-panel surface-soft-panel faq-item"
           :open="index === 0"
         >
           <summary>{{ item.question }}</summary>
@@ -53,9 +53,6 @@ defineProps({
 
 .faq-item {
   padding: 1rem 1.1rem;
-  border: 1px solid rgba(121, 217, 202, 0.16);
-  background:
-    linear-gradient(180deg, rgba(249, 252, 255, 0.98), rgba(240, 247, 250, 0.96));
 }
 
 .faq-item summary {
@@ -87,12 +84,10 @@ defineProps({
 .faq-item p {
   margin: 0.8rem 0 0;
   padding: 0.85rem 0.95rem 0.95rem;
-  border: 1px solid rgba(11, 23, 32, 0.06);
+  border: 1px solid var(--paper-border-soft);
   border-radius: 1rem;
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.7), rgba(245, 250, 253, 0.52)),
-    rgba(255, 255, 255, 0.46);
-  color: #728493;
+  background: var(--surface-field-fill);
+  color: var(--muted);
 }
 
 @media (min-width: 960px) {

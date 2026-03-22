@@ -173,12 +173,10 @@ const {
   position: relative;
   overflow: hidden;
   border-radius: var(--radius-lg);
-  border: 1px solid rgba(255, 255, 255, 0.24);
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.26), rgba(255, 255, 255, 0.08)),
-    rgba(255, 255, 255, 0.18);
-  aspect-ratio: 4 / 3;
-  box-shadow: 0 18px 34px rgba(0, 0, 0, 0.08);
+  border: 1px solid var(--paper-border);
+  background: var(--surface-paper-soft-fill);
+  aspect-ratio: 16 / 11;
+  box-shadow: var(--shadow-paper);
   cursor: pointer;
   touch-action: manipulation;
   user-select: none;
@@ -220,9 +218,7 @@ const {
   font-size: 0.76rem;
   font-weight: 800;
   letter-spacing: 0.04em;
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.72), rgba(238, 246, 250, 0.5)),
-    rgba(255, 255, 255, 0.22);
+  background: var(--surface-field-fill);
 }
 
 .stage-arrows {
@@ -247,9 +243,7 @@ const {
   font-weight: 700;
   line-height: 1;
   pointer-events: auto;
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.8), rgba(238, 246, 250, 0.54)),
-    rgba(255, 255, 255, 0.22);
+  background: var(--surface-field-fill);
 }
 
 .stage-zoom-surface {
@@ -282,6 +276,7 @@ const {
   flex: 1 1 14rem;
   color: var(--muted);
   font-weight: 700;
+  font-size: 0.94rem;
 }
 
 .gallery-status {
@@ -320,16 +315,10 @@ const {
   display: grid;
   gap: 0.7rem;
   padding: 0.9rem;
-  border: 1px solid rgba(255, 255, 255, 0.22);
+  border: 1px solid var(--paper-border-soft);
   border-radius: var(--radius-lg);
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.34), rgba(255, 255, 255, 0.12)),
-    rgba(255, 255, 255, 0.16);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.56),
-    0 14px 28px rgba(0, 0, 0, 0.08);
-  -webkit-backdrop-filter: blur(12px) saturate(165%);
-  backdrop-filter: blur(12px) saturate(165%);
+  background: var(--surface-field-fill);
+  box-shadow: var(--shadow-field);
 }
 
 .video-copy {
@@ -340,5 +329,11 @@ const {
 .video-card video {
   width: 100%;
   border-radius: 1rem;
+}
+
+@media (min-width: 960px) {
+  .stage-media {
+    aspect-ratio: 4 / 3;
+  }
 }
 </style>

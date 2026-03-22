@@ -49,7 +49,7 @@ defineProps({
     class="hero-shell"
   >
     <div class="container hero-grid">
-      <div class="hero-copy glass-panel-dark page-rise">
+      <div class="hero-copy surface-dark-shell page-rise">
         <div class="hero-topbar">
           <BrandMark
             compact
@@ -65,15 +65,15 @@ defineProps({
         </p>
 
         <div class="hero-proof-row">
-          <div>
+          <div class="hero-proof-card surface-field-panel">
             <dt>{{ availableRoomCount }} rooms available now</dt>
             <dd>From {{ availableStartingPriceLabel }}</dd>
           </div>
-          <div>
+          <div class="hero-proof-card surface-field-panel">
             <dt>{{ roomTypeCount }} room options</dt>
             <dd>Compare by occupancy and setup</dd>
           </div>
-          <div>
+          <div class="hero-proof-card surface-field-panel">
             <dt>All rooms from {{ startingPriceLabel }}</dt>
             <dd>Call or WhatsApp directly</dd>
           </div>
@@ -112,25 +112,19 @@ defineProps({
         </div>
       </div>
 
-      <aside class="hero-panel surface-panel glass-panel page-rise-delay-1">
-        <span class="hero-panel-badge">Open now</span>
-        <h2>Check the room before you call</h2>
-        <p>
-          Photos, rent, and setup first. Then decide if it is worth a call.
-        </p>
+      <aside class="hero-panel surface-paper-panel page-rise-delay-1">
+        <span class="hero-panel-badge">{{ site.uiText.heroPanel.badge }}</span>
+        <h2>{{ site.uiText.heroPanel.title }}</h2>
+        <p>{{ site.uiText.heroPanel.summary }}</p>
 
         <div class="hero-checklist">
-          <div class="hero-check">
-            <strong>Rent up front</strong>
-            <span>No price chasing.</span>
-          </div>
-          <div class="hero-check">
-            <strong>Kitchen and washroom spelled out</strong>
-            <span>Private or shared is easy to spot.</span>
-          </div>
-          <div class="hero-check">
-            <strong>Direct contact</strong>
-            <span>Call or WhatsApp when the room looks right.</span>
+          <div
+            v-for="item in site.uiText.heroPanel.points"
+            :key="item.title"
+            class="hero-check surface-field-panel"
+          >
+            <strong>{{ item.title }}</strong>
+            <span>{{ item.body }}</span>
           </div>
         </div>
 
@@ -138,7 +132,7 @@ defineProps({
           class="button-primary"
           to="/rooms?availability=available"
         >
-          Browse open rooms
+          {{ site.uiText.actions.viewOpenRooms }}
         </RouterLink>
       </aside>
     </div>
@@ -162,13 +156,7 @@ defineProps({
   gap: 1.1rem;
   padding: 1.15rem;
   border-radius: 2rem;
-  background:
-    radial-gradient(circle at top right, rgba(121, 217, 202, 0.18), transparent 30%),
-    radial-gradient(circle at 12% 100%, rgba(255, 122, 26, 0.18), transparent 28%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.02)),
-    linear-gradient(180deg, rgba(10, 24, 34, 0.78), rgba(7, 18, 26, 0.62));
-  box-shadow: 0 30px 72px rgba(0, 0, 0, 0.28);
-  color: #f7fbff;
+  color: var(--text-inverse);
   overflow: hidden;
 }
 
@@ -213,9 +201,7 @@ defineProps({
 
 .hero-eyebrow {
   border-color: rgba(255, 255, 255, 0.18);
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0.06)),
-    rgba(121, 217, 202, 0.1);
+  background: rgba(255, 255, 255, 0.08);
 }
 
 .hero-top-note {
@@ -246,18 +232,15 @@ defineProps({
   gap: 0.75rem;
 }
 
-.hero-proof-row div {
+.hero-proof-card {
   padding: 0.95rem;
-  border: 1px solid rgba(255, 255, 255, 0.14);
   border-radius: var(--radius-lg);
   background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0.04)),
-    rgba(255, 255, 255, 0.06);
-  -webkit-backdrop-filter: blur(14px) saturate(170%);
-  backdrop-filter: blur(14px) saturate(170%);
+    linear-gradient(180deg, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0.06)),
+    rgba(255, 255, 255, 0.07);
   box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.2),
-    0 14px 28px rgba(0, 0, 0, 0.14);
+    inset 0 1px 0 rgba(255, 255, 255, 0.18),
+    0 12px 24px rgba(0, 0, 0, 0.12);
 }
 
 .hero-proof-row dt {
@@ -371,7 +354,6 @@ defineProps({
   gap: 0.9rem;
   overflow: hidden;
   padding: 1rem;
-  box-shadow: 0 28px 62px rgba(0, 0, 0, 0.22);
 }
 
 .hero-panel-badge {
@@ -380,16 +362,19 @@ defineProps({
   align-items: center;
   min-height: 2rem;
   padding: 0.42rem 0.85rem;
-  border: 1px solid rgba(255, 255, 255, 0.24);
+  border: 1px solid rgba(255, 122, 26, 0.16);
   border-radius: 999px;
-  background:
-    linear-gradient(180deg, rgba(255, 244, 229, 0.88), rgba(255, 219, 182, 0.68)),
-    rgba(255, 122, 26, 0.36);
-  color: rgba(7, 18, 26, 0.82);
+  background: rgba(255, 122, 26, 0.12);
+  color: var(--accent-deep);
   font-size: 0.72rem;
   font-weight: 800;
   letter-spacing: 0.12em;
   text-transform: uppercase;
+}
+
+.hero-panel h2 {
+  font-size: clamp(1.8rem, 7vw, 2.8rem);
+  line-height: 0.98;
 }
 
 .hero-checklist {
@@ -401,11 +386,7 @@ defineProps({
   display: grid;
   gap: 0.2rem;
   padding: 0.9rem;
-  border: 1px solid rgba(11, 23, 32, 0.08);
   border-radius: 1.1rem;
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.82), rgba(245, 250, 253, 0.62)),
-    rgba(255, 255, 255, 0.56);
 }
 
 .hero-check strong {
@@ -414,7 +395,7 @@ defineProps({
 
 .hero-check span,
 .hero-panel p {
-  color: var(--muted);
+  color: var(--text);
 }
 
 @keyframes hero-call-ring {
@@ -440,6 +421,12 @@ defineProps({
   50% {
     transform: scale(1.08);
     filter: saturate(1.08);
+  }
+}
+
+@media (max-width: 959px) {
+  .hero-actions {
+    display: none;
   }
 }
 

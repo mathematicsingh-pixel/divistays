@@ -1,5 +1,6 @@
 <script setup>
 import RoomReferenceBadge from '@/features/rooms/components/RoomReferenceBadge.vue'
+import { siteConfig } from '@/features/site/config/site'
 import ResponsiveImage from '@/shared/ui/ResponsiveImage.vue'
 
 defineProps({
@@ -23,7 +24,7 @@ const quickFacts = (room) => [room.occupancyLabel, room.kitchenLabel, room.washr
 </script>
 
 <template>
-  <article class="room-card surface-panel glass-panel">
+  <article class="room-card surface-panel surface-soft-panel">
     <div class="room-media">
       <RouterLink :to="room.detailsHref">
         <ResponsiveImage
@@ -99,7 +100,7 @@ const quickFacts = (room) => [room.occupancyLabel, room.kitchenLabel, room.washr
           class="button-primary"
           :to="room.detailsHref"
         >
-          {{ room.available ? 'See room details' : 'See similar open rooms' }}
+          {{ room.available ? siteConfig.uiText.actions.viewRoom : siteConfig.uiText.actions.viewSimilarRooms }}
         </RouterLink>
       </div>
     </div>
@@ -173,10 +174,8 @@ const quickFacts = (room) => [room.occupancyLabel, room.kitchenLabel, room.washr
   display: grid;
   gap: 0.9rem;
   padding: 1.05rem;
-  border-top: 1px solid rgba(11, 23, 32, 0.12);
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.24), rgba(255, 255, 255, 0.08)),
-    rgba(247, 251, 255, 0.34);
+  border-top: 1px solid var(--paper-border-soft);
+  background: transparent;
 }
 
 .room-head {
@@ -236,9 +235,9 @@ const quickFacts = (room) => [room.occupancyLabel, room.kitchenLabel, room.washr
   align-items: center;
   min-height: 2.1rem;
   padding: 0.45rem 0.72rem;
-  border: 1px solid var(--line);
+  border: 1px solid var(--paper-border-soft);
   border-radius: 999px;
-  background: rgba(121, 217, 202, 0.08);
+  background: var(--surface-field-fill);
   color: var(--text-strong);
   font-size: 0.82rem;
   font-weight: 700;

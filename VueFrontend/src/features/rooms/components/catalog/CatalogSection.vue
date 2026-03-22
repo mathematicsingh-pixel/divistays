@@ -1,6 +1,7 @@
 <script setup>
 import { computed, ref, watch } from 'vue'
 import { priceBands } from '@/features/rooms'
+import { siteConfig } from '@/features/site/config/site'
 import CatalogResults from '@/features/rooms/components/catalog/CatalogResults.vue'
 import CatalogToolbar from '@/features/rooms/components/catalog/CatalogToolbar.vue'
 
@@ -119,7 +120,7 @@ const resultLabel = computed(() => `${props.rooms.length} room${props.rooms.leng
 const toolbarNote = computed(() =>
   props.hasActiveFilters
     ? `${props.activeFilterCount} active filter${props.activeFilterCount === 1 ? '' : 's'}`
-    : 'Open rooms show first. Use filters only if you need them.',
+    : siteConfig.uiText.catalog.defaultNote,
 )
 const isDesktopFiltersOpen = ref(false)
 
@@ -146,10 +147,8 @@ function toggleDesktopFilters() {
     <div class="container">
       <div class="section-heading catalog-heading">
         <span class="eyebrow">Rooms</span>
-        <h2>Find your room</h2>
-        <p>
-          Start with rooms that are free now. Filter only when you want a tighter list.
-        </p>
+        <h2>{{ siteConfig.uiText.catalog.title }}</h2>
+        <p>{{ siteConfig.uiText.catalog.summary }}</p>
       </div>
 
       <CatalogToolbar

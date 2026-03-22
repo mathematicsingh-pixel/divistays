@@ -1,5 +1,6 @@
 <script setup>
 import RoomCard from '@/features/rooms/components/RoomCard.vue'
+import { siteConfig } from '@/features/site/config/site'
 
 defineProps({
   rooms: {
@@ -42,7 +43,7 @@ defineProps({
 
     <div
       v-else
-      class="empty-state surface-panel glass-panel"
+      class="empty-state surface-panel surface-soft-panel"
     >
       <h3>No rooms match those filters.</h3>
       <p>Clear a few filters or switch to all rooms.</p>
@@ -51,7 +52,7 @@ defineProps({
         type="button"
         @click="actions.resetFilters()"
       >
-        Reset filters
+        {{ siteConfig.uiText.actions.clearFilters }}
       </button>
     </div>
   </div>
@@ -69,10 +70,6 @@ defineProps({
   gap: 0.8rem;
   margin-top: 1rem;
   padding: 1.1rem;
-  background:
-    radial-gradient(circle at top right, rgba(121, 217, 202, 0.12), transparent 26%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.28), rgba(255, 255, 255, 0.12)),
-    rgba(249, 252, 255, 0.64);
 }
 
 .empty-state p {

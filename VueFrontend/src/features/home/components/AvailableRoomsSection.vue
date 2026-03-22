@@ -36,7 +36,7 @@ defineProps({
           class="button-secondary"
           to="/rooms?availability=available"
         >
-          Compare all rooms
+          {{ site.uiText.actions.compareAllRooms }}
         </RouterLink>
       </div>
     </div>

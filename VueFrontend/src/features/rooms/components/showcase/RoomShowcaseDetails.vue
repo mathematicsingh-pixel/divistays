@@ -1,6 +1,6 @@
 <script setup>
 import RoomReferenceBadge from '@/features/rooms/components/RoomReferenceBadge.vue'
-import { getCallHref } from '@/features/site/config/site'
+import { getCallHref, siteConfig } from '@/features/site/config/site'
 
 const props = defineProps({
   room: {
@@ -20,10 +20,6 @@ const props = defineProps({
     required: true,
   },
   messageHref: {
-    type: String,
-    required: true,
-  },
-  primaryLabel: {
     type: String,
     required: true,
   },
@@ -104,7 +100,7 @@ const callHref = getCallHref()
         class="button-primary"
         :to="room.detailsHref"
       >
-        Open full room page
+        {{ siteConfig.uiText.actions.viewRoom }}
       </RouterLink>
       <a
         v-else
@@ -113,7 +109,7 @@ const callHref = getCallHref()
         target="_blank"
         rel="noreferrer"
       >
-        {{ primaryLabel }}
+        {{ siteConfig.uiText.actions.askOnWhatsApp }}
       </a>
       <a
         class="button-secondary"
@@ -121,7 +117,7 @@ const callHref = getCallHref()
         :target="preview ? '_blank' : undefined"
         :rel="preview ? 'noreferrer' : undefined"
       >
-        {{ preview ? 'WhatsApp us' : 'Call about this room' }}
+        {{ preview ? siteConfig.uiText.actions.askOnWhatsApp : siteConfig.uiText.actions.callCozyRooms }}
       </a>
     </div>
 
@@ -130,7 +126,7 @@ const callHref = getCallHref()
       class="detail-link"
       :href="callHref"
     >
-      Call CozyRooms
+      {{ siteConfig.uiText.actions.callCozyRooms }}
     </a>
   </div>
 </template>
@@ -183,8 +179,10 @@ const callHref = getCallHref()
   align-items: center;
   min-height: 2rem;
   padding: 0.35rem 0.72rem;
+  border: 1px solid rgba(44, 161, 142, 0.28);
   border-radius: 999px;
-  color: var(--accent-deep);
+  background: rgba(121, 217, 202, 0.14);
+  color: var(--brand-strong);
   font-size: 0.8rem;
   font-weight: 800;
   letter-spacing: 0.08em;
@@ -209,16 +207,10 @@ const callHref = getCallHref()
 .spec-grid div,
 .detail-block {
   padding: 0.9rem;
-  border: 1px solid rgba(255, 255, 255, 0.22);
+  border: 1px solid var(--paper-border-soft);
   border-radius: var(--radius-lg);
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.34), rgba(255, 255, 255, 0.12)),
-    rgba(255, 255, 255, 0.16);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.56),
-    0 14px 28px rgba(0, 0, 0, 0.08);
-  -webkit-backdrop-filter: blur(12px) saturate(165%);
-  backdrop-filter: blur(12px) saturate(165%);
+  background: var(--surface-field-fill);
+  box-shadow: var(--shadow-field);
 }
 
 .spec-grid dt {

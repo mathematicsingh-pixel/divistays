@@ -16,7 +16,6 @@ const props = defineProps({
 })
 
 const messageHref = computed(() => getWhatsAppHref(buildRoomEnquiry(props.room)))
-const primaryLabel = computed(() => props.room.available ? 'WhatsApp about this room' : 'Ask for similar rooms')
 const headingTag = computed(() => props.preview ? 'h2' : 'h1')
 const nextQuestions = computed(() => [
   `Mention ${props.room.referenceLabel} when you call or WhatsApp`,
@@ -36,7 +35,6 @@ const nextQuestions = computed(() => [
       :heading-tag="headingTag"
       :next-questions="nextQuestions"
       :message-href="messageHref"
-      :primary-label="primaryLabel"
     />
   </div>
 </template>

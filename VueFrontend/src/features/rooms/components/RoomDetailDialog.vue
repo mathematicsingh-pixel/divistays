@@ -1,6 +1,7 @@
 <script setup>
 import { computed, ref } from 'vue'
 import RoomShowcase from '@/features/rooms/components/showcase/RoomShowcase.vue'
+import { siteConfig } from '@/features/site/config/site'
 import { useOverlayDialog } from '@/shared/composables/useOverlayDialog'
 
 const props = defineProps({
@@ -34,14 +35,14 @@ useOverlayDialog({
         <section
           :id="`${room.slug}-preview`"
           ref="dialogPanel"
-          class="dialog-panel glass-panel"
+          class="dialog-panel surface-paper-panel"
           aria-modal="true"
           role="dialog"
           :aria-labelledby="`${room.slug}-preview-title`"
         >
           <header class="dialog-head">
             <div class="dialog-head-copy">
-              <p class="dialog-brand">Quick preview</p>
+              <p class="dialog-brand">{{ siteConfig.uiText.room.previewLabel }}</p>
               <h2 :id="`${room.slug}-preview-title`">
                 {{ room.title }}
               </h2>
@@ -89,12 +90,6 @@ useOverlayDialog({
   width: 100%;
   max-height: 100svh;
   border-radius: 1.5rem 1.5rem 0 0;
-  background:
-    radial-gradient(circle at top right, rgba(121, 217, 202, 0.14), transparent 26%),
-    radial-gradient(circle at 10% 100%, rgba(255, 211, 142, 0.16), transparent 30%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.34), rgba(255, 255, 255, 0.12)),
-    rgba(249, 252, 255, 0.68);
-  box-shadow: 0 34px 76px rgba(0, 0, 0, 0.28);
   overflow: hidden;
 }
 
@@ -104,7 +99,7 @@ useOverlayDialog({
   justify-content: space-between;
   gap: 0.8rem;
   padding: 1rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.22);
+  border-bottom: 1px solid var(--paper-border-soft);
 }
 
 .dialog-head-copy {
@@ -131,18 +126,12 @@ useOverlayDialog({
   justify-content: center;
   width: 2.6rem;
   height: 2.6rem;
-  border: 1px solid rgba(255, 255, 255, 0.24);
+  border: 1px solid var(--paper-border-soft);
   border-radius: 999px;
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.72), rgba(239, 247, 250, 0.5)),
-    rgba(255, 255, 255, 0.28);
+  background: var(--surface-field-fill);
   color: var(--text-strong);
   font-size: 1.35rem;
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.58),
-    0 10px 22px rgba(0, 0, 0, 0.08);
-  -webkit-backdrop-filter: blur(12px) saturate(165%);
-  backdrop-filter: blur(12px) saturate(165%);
+  box-shadow: var(--shadow-field);
 }
 
 .dialog-fade-enter-active,

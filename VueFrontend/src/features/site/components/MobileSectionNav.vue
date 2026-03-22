@@ -99,13 +99,10 @@ onBeforeUnmount(() => {
   gap: 0.45rem;
   padding: 0.45rem;
   overflow-x: auto;
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  border: 1px solid var(--glass-stroke-dark);
   border-radius: 999px;
-  background:
-    radial-gradient(circle at top right, rgba(121, 217, 202, 0.14), transparent 34%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.04)),
-    rgba(7, 18, 26, 0.82);
-  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.28);
+  background: var(--surface-dark-fill);
+  box-shadow: var(--shadow-dark);
   -webkit-backdrop-filter: blur(18px) saturate(150%);
   backdrop-filter: blur(18px) saturate(150%);
   opacity: 0;
@@ -131,9 +128,9 @@ onBeforeUnmount(() => {
   flex: 1 0 auto;
   min-width: max-content;
   padding: 0.72rem 0.92rem;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.05);
   color: var(--text-inverse);
   font-size: 0.74rem;
   font-weight: 800;

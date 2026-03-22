@@ -21,6 +21,7 @@ import MobileSectionNav from '@/features/site/components/MobileSectionNav.vue'
 import SiteFooter from '@/features/site/components/SiteFooter.vue'
 import { mobileSectionNavItems } from '@/features/site/config/navigation'
 import {
+  buildStickyContactOptions,
   getCallHref,
   getPageOgImage,
   getWhatsAppHref,
@@ -30,20 +31,7 @@ import {
 
 const callHref = getCallHref()
 const defaultWhatsAppHref = getWhatsAppHref()
-const stickyContactOptions = [
-  {
-    label: 'Call now',
-    href: callHref,
-    meta: siteConfig.phoneDisplay,
-    tone: 'primary',
-  },
-  {
-    label: 'WhatsApp',
-    href: defaultWhatsAppHref,
-    meta: 'Message directly',
-    blank: true,
-  },
-]
+const stickyContactOptions = buildStickyContactOptions(callHref, defaultWhatsAppHref)
 const siteUrl = resolveSiteUrl(import.meta.env.VITE_SITE_URL)
 const ogImage = getPageOgImage(siteUrl)
 
@@ -137,10 +125,11 @@ useHead(() => ({
 
     <MobileEnquiryBar
       :primary-href="'/rooms?availability=available'"
-      primary-label="Open rooms"
-      secondary-label="Contact"
+      :primary-label="siteConfig.uiText.actions.viewOpenRooms"
+      :secondary-label="siteConfig.uiText.actions.talkToUs"
       :secondary-menu-options="stickyContactOptions"
-      secondary-menu-summary="Call directly or send a WhatsApp message."
+      :secondary-menu-title="siteConfig.uiText.contactSheet.title"
+      :secondary-menu-summary="siteConfig.uiText.contactSheet.summary"
     />
   </main>
 </template>

@@ -20,7 +20,7 @@ defineProps({
         <article
           v-for="(step, index) in site.processSteps"
           :key="step.title"
-          class="surface-panel process-card"
+          class="surface-panel surface-soft-panel process-card"
         >
           <span class="process-index">0{{ index + 1 }}</span>
           <h3>{{ step.title }}</h3>
@@ -41,9 +41,6 @@ defineProps({
   display: grid;
   gap: 0.7rem;
   padding: 1rem;
-  border: 1px solid rgba(121, 217, 202, 0.16);
-  background:
-    linear-gradient(180deg, rgba(249, 252, 255, 0.98), rgba(240, 247, 250, 0.96));
 }
 
 .process-index {

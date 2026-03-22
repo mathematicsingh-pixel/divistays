@@ -1,6 +1,7 @@
 <script setup>
 import CatalogFilterSheet from '@/features/rooms/components/catalog/CatalogFilterSheet.vue'
 import CatalogFiltersDesktop from '@/features/rooms/components/catalog/CatalogFiltersDesktop.vue'
+import { siteConfig } from '@/features/site/config/site'
 
 const props = defineProps({
   filters: {
@@ -81,7 +82,7 @@ const emit = defineEmits(['update:sheet-open', 'toggle-desktop-filters'])
 </script>
 
 <template>
-  <div class="catalog-toolbar surface-panel glass-panel">
+  <div class="catalog-toolbar surface-panel surface-paper-panel">
     <div class="toolbar-top">
       <div class="toolbar-copy">
         <p class="toolbar-label">Showing</p>
@@ -93,7 +94,7 @@ const emit = defineEmits(['update:sheet-open', 'toggle-desktop-filters'])
     </div>
 
     <div class="control-rail">
-      <div class="control-card availability-card">
+      <div class="control-card surface-field-panel availability-card">
         <span class="toolbar-label">Availability</span>
         <div class="availability-row">
           <button
@@ -110,7 +111,7 @@ const emit = defineEmits(['update:sheet-open', 'toggle-desktop-filters'])
         </div>
       </div>
 
-      <label class="control-card sort-card">
+      <label class="control-card surface-field-panel sort-card">
         <span class="toolbar-label">Sort by</span>
         <select
           :value="filters.sort"
@@ -128,27 +129,39 @@ const emit = defineEmits(['update:sheet-open', 'toggle-desktop-filters'])
 
       <button
         type="button"
-        class="control-card filter-trigger"
+        class="control-card surface-field-panel filter-trigger"
         aria-controls="catalog-filters"
         :aria-expanded="isSheetOpen ? 'true' : 'false'"
         @click="emit('update:sheet-open', true)"
       >
-        <span class="toolbar-label">Mobile filters</span>
-        <strong>{{ advancedFilterCount ? `${advancedFilterCount} selected` : 'More filters' }}</strong>
-        <span class="control-note">Budget, setup, and room type</span>
+        <span class="toolbar-label">Filters</span>
+        <strong>
+          {{
+            advancedFilterCount
+              ? `${advancedFilterCount} ${advancedFilterCount === 1 ? 'filter selected' : 'filters selected'}`
+              : siteConfig.uiText.actions.chooseFilters
+          }}
+        </strong>
+        <span class="control-note">{{ siteConfig.uiText.catalog.mobileFiltersSummary }}</span>
       </button>
 
       <button
         type="button"
-        class="control-card desktop-filter-toggle"
+        class="control-card surface-field-panel desktop-filter-toggle"
         :class="{ active: isDesktopFiltersOpen || advancedFilterCount }"
         :aria-expanded="isDesktopFiltersOpen ? 'true' : 'false'"
         aria-controls="catalog-filter-panel"
         @click="emit('toggle-desktop-filters')"
       >
-        <span class="toolbar-label">Desktop filters</span>
-        <strong>{{ advancedFilterCount ? `${advancedFilterCount} selected` : 'More filters' }}</strong>
-        <span class="control-note">Budget, setup, and room type</span>
+        <span class="toolbar-label">Filters</span>
+        <strong>
+          {{
+            advancedFilterCount
+              ? `${advancedFilterCount} ${advancedFilterCount === 1 ? 'filter selected' : 'filters selected'}`
+              : siteConfig.uiText.actions.chooseFilters
+          }}
+        </strong>
+        <span class="control-note">{{ siteConfig.uiText.catalog.mobileFiltersSummary }}</span>
       </button>
     </div>
 
@@ -184,7 +197,7 @@ const emit = defineEmits(['update:sheet-open', 'toggle-desktop-filters'])
         type="button"
         @click="actions.resetFilters()"
       >
-        Reset all
+        {{ siteConfig.uiText.actions.clearFilters }}
       </button>
     </div>
   </div>
@@ -210,12 +223,6 @@ const emit = defineEmits(['update:sheet-open', 'toggle-desktop-filters'])
   gap: 0.85rem;
   padding: 1rem;
   overflow: hidden;
-  background:
-    radial-gradient(circle at top right, rgba(121, 217, 202, 0.14), transparent 28%),
-    radial-gradient(circle at 15% 100%, rgba(255, 211, 142, 0.18), transparent 26%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.28), rgba(255, 255, 255, 0.08)),
-    linear-gradient(180deg, rgba(249, 252, 255, 0.74), rgba(240, 247, 250, 0.52));
-  box-shadow: 0 28px 64px rgba(0, 0, 0, 0.18);
 }
 
 .toolbar-top,
@@ -225,7 +232,7 @@ const emit = defineEmits(['update:sheet-open', 'toggle-desktop-filters'])
 }
 
 .toolbar-label {
-  color: var(--muted);
+  color: var(--text);
   font-size: 0.78rem;
   font-weight: 800;
   letter-spacing: 0.12em;
@@ -238,7 +245,7 @@ const emit = defineEmits(['update:sheet-open', 'toggle-desktop-filters'])
 }
 
 .toolbar-note {
-  color: var(--muted);
+  color: var(--text);
 }
 
 .control-rail {
@@ -251,16 +258,7 @@ const emit = defineEmits(['update:sheet-open', 'toggle-desktop-filters'])
   gap: 0.48rem;
   min-height: 100%;
   padding: 0.8rem 0.9rem;
-  border: 1px solid rgba(255, 255, 255, 0.22);
   border-radius: 1.15rem;
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.42), rgba(255, 255, 255, 0.18)),
-    rgba(255, 255, 255, 0.22);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.62),
-    0 16px 32px rgba(0, 0, 0, 0.08);
-  -webkit-backdrop-filter: blur(12px) saturate(170%);
-  backdrop-filter: blur(12px) saturate(170%);
 }
 
 .availability-row,
@@ -276,18 +274,12 @@ const emit = defineEmits(['update:sheet-open', 'toggle-desktop-filters'])
   gap: 0.45rem;
   min-height: 2.7rem;
   padding: 0.55rem 0.9rem;
-  border: 1px solid rgba(255, 255, 255, 0.24);
+  border: 1px solid var(--paper-border-soft);
   border-radius: 0.95rem;
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.66), rgba(244, 249, 252, 0.42)),
-    rgba(255, 255, 255, 0.3);
+  background: var(--surface-field-fill);
   color: var(--text-strong);
   font-weight: 700;
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.6),
-    0 10px 22px rgba(0, 0, 0, 0.06);
-  -webkit-backdrop-filter: blur(10px) saturate(165%);
-  backdrop-filter: blur(10px) saturate(165%);
+  box-shadow: var(--shadow-field);
   transition:
     border-color 0.18s ease,
     background-color 0.18s ease,
@@ -296,21 +288,17 @@ const emit = defineEmits(['update:sheet-open', 'toggle-desktop-filters'])
 
 .chip-button.active,
 .desktop-filter-toggle.active {
-  border-color: rgba(255, 186, 124, 0.38);
-  background:
-    linear-gradient(180deg, rgba(255, 249, 241, 0.72), rgba(255, 225, 194, 0.44)),
-    rgba(255, 122, 26, 0.08);
-  color: var(--accent-deep);
+  border-color: rgba(44, 161, 142, 0.26);
+  background: rgba(121, 217, 202, 0.12);
+  color: var(--brand-strong);
 }
 
 .sort-card select {
   min-height: 2.9rem;
   padding: 0 0.9rem;
-  border: 1px solid rgba(255, 255, 255, 0.24);
+  border: 1px solid var(--paper-border-soft);
   border-radius: 0.95rem;
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.66), rgba(244, 249, 252, 0.42)),
-    rgba(255, 255, 255, 0.3);
+  background: var(--surface-field-fill);
   color: var(--text-strong);
 }
 
@@ -326,7 +314,7 @@ const emit = defineEmits(['update:sheet-open', 'toggle-desktop-filters'])
 }
 
 .control-note {
-  color: var(--muted);
+  color: var(--text);
   font-size: 0.9rem;
 }
 
