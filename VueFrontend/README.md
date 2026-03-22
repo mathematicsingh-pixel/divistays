@@ -13,12 +13,17 @@ Feature-first Vue app. Room content lives in one place, so new room adds stay sm
 
 ## Add a new room
 
+Detailed guide: `docs/add-room.md`
+
+Quick path:
+
 1. Create `src/features/rooms/content/<room-slug>/index.js`
 2. Add raw files in `assets/rooms/<room-slug>/`
 3. Export the room with `defineRoom(...)`
 4. Point each gallery/video `source` to `assets/rooms/<room-slug>/<file>`
 5. Add the import + entry in `src/features/rooms/content/registry.js`
-6. Run `npm run build`
+6. Run `npm run validate:rooms`
+7. Run `npm run build`
 
 `registry.js` controls listing order, route order, sitemap order, and media build order.
 

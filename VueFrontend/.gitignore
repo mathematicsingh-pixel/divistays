@@ -15,6 +15,7 @@ dist
 dist-ssr
 output
 tmp
+public/media/rooms
 *.local
 scripts/.cache
 .playwright-cli
