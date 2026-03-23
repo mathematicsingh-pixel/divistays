@@ -1,8 +1,10 @@
 <script setup>
+import { computed } from 'vue'
 import RoomReferenceBadge from '@/features/rooms/components/RoomReferenceBadge.vue'
 import BrandMark from '@/features/site/components/brand/BrandMark.vue'
+import { mobileSectionNavItems } from '@/features/site/config/navigation'
 
-defineProps({
+const props = defineProps({
   site: {
     type: Object,
     required: true,
@@ -20,6 +22,18 @@ defineProps({
     default: () => [],
   },
 })
+
+const footerBrowseLinks = mobileSectionNavItems
+
+const footerTickerBaseRooms = computed(() => props.rooms.slice(0, 6))
+
+const footerTickerLoops = computed(() => footerTickerBaseRooms.value.length > 1)
+
+const footerTickerRooms = computed(() =>
+  footerTickerLoops.value
+    ? [...footerTickerBaseRooms.value, ...footerTickerBaseRooms.value]
+    : footerTickerBaseRooms.value,
+)
 </script>
 
 <template>
@@ -75,12 +89,6 @@ defineProps({
             <p class="footer-section-kicker">Start here</p>
             <h3>{{ site.uiText.footer.headline }}</h3>
           </div>
-          <a
-            class="footer-phone"
-            :href="callHref"
-          >
-            {{ site.phoneDisplay }}
-          </a>
         </div>
 
         <div class="footer-grid">
@@ -88,16 +96,12 @@ defineProps({
             <p class="footer-group-label">Browse</p>
             <div class="footer-chip-grid">
               <RouterLink
+                v-for="item in footerBrowseLinks"
+                :key="item.label"
                 class="footer-chip"
-                to="/rooms?availability=available"
+                :to="item.to"
               >
-                Available rooms
-              </RouterLink>
-              <RouterLink
-                class="footer-chip"
-                :to="{ path: '/', hash: '#faqs' }"
-              >
-                FAQ
+                {{ item.label }}
               </RouterLink>
             </div>
           </div>
@@ -139,23 +143,28 @@ defineProps({
             </RouterLink>
           </div>
 
-          <div class="footer-room-list">
-            <RouterLink
-              v-for="room in rooms.slice(0, 3)"
-              :key="room.slug"
-              class="room-link"
-              :to="room.detailsHref"
+          <div class="footer-room-ticker-mask">
+            <div
+              class="footer-room-ticker-track"
+              :class="{ 'footer-room-ticker-track-loop': footerTickerLoops }"
             >
-              <div class="room-link-main">
-                <RoomReferenceBadge
-                  :room="room"
-                  inverse
-                  compact
-                />
-                <span class="room-link-title">{{ room.title }}</span>
-              </div>
-              <span class="room-link-cta">{{ site.uiText.actions.viewRoom }}</span>
-            </RouterLink>
+              <RouterLink
+                v-for="(room, index) in footerTickerRooms"
+                :key="`${room.slug}-${index}`"
+                class="room-ticker-link"
+                :to="room.detailsHref"
+              >
+                <div class="room-ticker-main">
+                  <RoomReferenceBadge
+                    :room="room"
+                    inverse
+                    compact
+                  />
+                  <span class="room-ticker-title">{{ room.title }}</span>
+                </div>
+                <span class="room-ticker-cta">{{ site.uiText.actions.viewRoom }}</span>
+              </RouterLink>
+            </div>
           </div>
         </div>
       </div>
@@ -228,8 +237,7 @@ defineProps({
 
 .footer-shell-head,
 .footer-grid,
-.footer-action-grid,
-.footer-room-list {
+.footer-action-grid {
   display: grid;
   gap: 0.8rem;
 }
@@ -246,7 +254,7 @@ defineProps({
 .footer-section-kicker,
 .footer-group-label,
 .footer-action-label,
-.room-link-cta,
+.room-ticker-cta,
 .footer-inline-link {
   font-size: 0.7rem;
   font-weight: 800;
@@ -257,7 +265,7 @@ defineProps({
 .footer-section-kicker,
 .footer-group-label,
 .footer-action-label,
-.room-link-cta {
+.room-ticker-cta {
   color: rgba(236, 246, 252, 0.74);
 }
 
@@ -265,19 +273,7 @@ defineProps({
   color: var(--text-inverse);
   font-size: clamp(1.45rem, 6vw, 2.2rem);
   line-height: 0.95;
-}
-
-.footer-phone {
-  display: inline-flex;
-  align-items: center;
-  width: fit-content;
-  min-height: 2.5rem;
-  padding: 0.55rem 0.85rem;
-  border: 1px solid rgba(255, 122, 26, 0.2);
-  border-radius: 999px;
-  background: rgba(255, 122, 26, 0.08);
-  color: #ffd7af;
-  font-weight: 800;
+  max-width: 15ch;
 }
 
 .footer-group {
@@ -299,7 +295,7 @@ defineProps({
 .footer-mobile-link,
 .footer-chip,
 .footer-action,
-.room-link {
+.room-ticker-link {
   border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 1.15rem;
   transition:
@@ -333,6 +329,7 @@ defineProps({
 .footer-chip {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   min-height: 3rem;
   padding: 0.85rem 0.95rem;
   background: rgba(255, 255, 255, 0.04);
@@ -378,37 +375,95 @@ defineProps({
   color: var(--sun);
 }
 
-.room-link {
-  display: grid;
-  gap: 0.65rem;
-  padding: 0.75rem 0.8rem;
+.footer-room-ticker-mask {
+  position: relative;
+  overflow: hidden;
+}
+
+.footer-room-ticker-mask::before,
+.footer-room-ticker-mask::after {
+  content: '';
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 2.5rem;
+  z-index: 2;
+  pointer-events: none;
+  background: linear-gradient(90deg, rgba(7, 18, 26, 0.96), rgba(7, 18, 26, 0));
+}
+
+.footer-room-ticker-mask::after {
+  inset: 0 0 0 auto;
+  background: linear-gradient(270deg, rgba(7, 18, 26, 0.96), rgba(7, 18, 26, 0));
+}
+
+.footer-room-ticker-track {
+  display: flex;
+  gap: 0.8rem;
+  width: max-content;
+}
+
+.footer-room-ticker-track-loop {
+  animation: footer-room-ticker 26s linear infinite;
+}
+
+.room-ticker-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.85rem;
+  min-width: clamp(15rem, 24vw, 19rem);
+  padding: 0.82rem 0.95rem;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
   background: rgba(255, 255, 255, 0.05);
   color: var(--text-inverse);
+  transition:
+    transform 0.18s ease,
+    border-color 0.18s ease,
+    background-color 0.18s ease;
 }
 
-.room-link-main {
-  display: grid;
-  gap: 0.5rem;
+.room-ticker-main {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
   min-width: 0;
+  flex: 1;
 }
 
-.room-link-title {
+.room-ticker-title {
+  min-width: 0;
+  overflow: hidden;
   font-weight: 700;
-  line-height: 1.25;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-.room-link-cta {
-  justify-self: start;
+.room-ticker-cta {
+  color: #ffd7af;
   white-space: nowrap;
+}
+
+@keyframes footer-room-ticker {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(calc(-50% - 0.4rem));
+  }
 }
 
 @media (hover: hover) {
   .footer-mobile-link:hover,
   .footer-chip:hover,
   .footer-action:hover,
-  .room-link:hover {
+  .room-ticker-link:hover {
     transform: translateY(-2px);
     border-color: rgba(255, 255, 255, 0.22);
+  }
+
+  .footer-room-ticker-mask:hover .footer-room-ticker-track-loop {
+    animation-play-state: paused;
   }
 }
 
@@ -428,29 +483,19 @@ defineProps({
     padding: 1.2rem;
   }
 
-  .footer-shell-head,
   .footer-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     align-items: start;
   }
 
-  .footer-shell-head {
-    gap: 1rem;
-  }
-
-  .footer-phone {
-    justify-self: end;
-  }
-
-  .footer-room-list {
+  .footer-chip-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
+}
 
-  .room-link {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    min-height: 100%;
+@media (prefers-reduced-motion: reduce) {
+  .footer-room-ticker-track-loop {
+    animation: none;
   }
 }
 </style>

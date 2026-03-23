@@ -1,12 +1,23 @@
 import { mkdir, writeFile } from 'node:fs/promises'
 import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { roomCatalog } from '../src/features/rooms/index.js'
-import { resolveSiteUrl } from '../src/features/site/config/site.js'
+import { loadRoomSummaryCatalog } from './lib/load-room-content.mjs'
 
 const scriptDir = dirname(fileURLToPath(import.meta.url))
 const rootDir = resolve(scriptDir, '..')
 const distDir = resolve(rootDir, 'dist')
+const defaultSiteUrl = 'https://www.cozyrooms.example'
+const roomCatalog = await loadRoomSummaryCatalog()
+
+function resolveSiteUrl(candidate) {
+  try {
+    return new URL(candidate || defaultSiteUrl).toString().replace(/\/$/, '')
+  }
+  catch {
+    return defaultSiteUrl
+  }
+}
+
 const siteUrl = resolveSiteUrl(process.env.VITE_SITE_URL)
 const pages = [
   { path: '/', changefreq: 'weekly', priority: '1.0' },

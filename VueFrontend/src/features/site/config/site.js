@@ -1,12 +1,74 @@
+import {
+  availableRoomCount,
+  availableStartingPriceLabel,
+  occupancyOptions,
+  roomCount,
+} from '../../rooms/model/catalog.js'
+import { siteFaqs } from '../content/faqs.js'
+
+function formatCountLabel(count, singular, plural = `${singular}s`) {
+  return `${count} ${count === 1 ? singular : plural}`
+}
+
+function lowercaseLeading(value) {
+  if (!value) {
+    return value
+  }
+
+  return `${value.charAt(0).toLowerCase()}${value.slice(1)}`
+}
+
+function formatList(values) {
+  if (!values.length) {
+    return ''
+  }
+
+  if (values.length === 1) {
+    return values[0]
+  }
+
+  if (values.length === 2) {
+    return `${values[0]} and ${values[1]}`
+  }
+
+  return `${values.slice(0, -1).join(', ')}, and ${values.at(-1)}`
+}
+
+function buildAvailableRoomsSummary() {
+  if (!roomCount) {
+    return 'Room listings will appear here once the catalog is ready.'
+  }
+
+  if (!availableRoomCount) {
+    return `No rooms are currently marked available. You can still browse all ${roomCount} listed rooms and ask for the next opening.`
+  }
+
+  return `Right now ${availableRoomCount} of ${roomCount} listed rooms are available${availableStartingPriceLabel ? `, starting from ${availableStartingPriceLabel}` : ''}.`
+}
+
+const occupancySummary = occupancyOptions.length
+  ? formatList(occupancyOptions.map((item) => lowercaseLeading(item.label)))
+  : 'different occupancy setups'
+const availabilitySummary = buildAvailableRoomsSummary()
+const siteAvailabilityLine = availableRoomCount
+  ? `${formatCountLabel(availableRoomCount, 'room')} available now${availableStartingPriceLabel ? ` from ${availableStartingPriceLabel}` : ''}.`
+  : 'Call or WhatsApp for the next opening.'
+const catalogDefaultNote = availableRoomCount
+  ? `Available rooms show first (${availableRoomCount} live now). Use filters only if you need them.`
+  : 'Open all rooms and use filters only if you need to narrow the list.'
+const mobileFiltersSummary = occupancyOptions.length
+  ? `Budget, setup, and ${formatCountLabel(occupancyOptions.length, 'occupancy type')}`
+  : 'Budget and room setup'
+
 export const siteConfig = {
   name: 'CozyRooms',
   shortName: 'CozyRooms',
   defaultTitle: 'Student Rooms in Kakadeo, Kanpur | CozyRooms',
   roomsTitle: 'Compare Student Rooms in Kakadeo, Kanpur | CozyRooms',
   description:
-    'Browse student rooms in Kakadeo, Kanpur with photos, monthly rent, occupancy, kitchen, washroom, and live availability. Call or WhatsApp CozyRooms directly.',
+    `Browse ${formatCountLabel(roomCount, 'student room')} in Kakadeo, Kanpur with photos, monthly rent, occupancy, kitchen, washroom, and live availability. ${siteAvailabilityLine}`,
   roomsDescription:
-    'Browse student rooms in Kakadeo by rent, occupancy, kitchen, washroom, and current availability.',
+    `Compare ${formatCountLabel(roomCount, 'student room')} in Kakadeo by rent, occupancy, kitchen, washroom, and current availability. ${siteAvailabilityLine}`,
   defaultSiteUrl: 'https://www.cozyrooms.example',
   themeColor: '#07121a',
   ogImagePath: '/og-default.svg',
@@ -27,8 +89,7 @@ export const siteConfig = {
   heroCallLabel: 'Call us',
   homeRoomsEyebrow: 'Available rooms',
   homeRoomsTitle: 'Rooms open right now',
-  homeRoomsSummary:
-    'These are the rooms currently available. Need more options? Open the full list and filter by budget, occupancy, kitchen, and washroom.',
+  homeRoomsSummary: `${availabilitySummary} Need more options? Open the full list and filter by budget, occupancy, kitchen, and washroom.`,
   proofEyebrow: 'Why it helps',
   proofTitle: 'Everything important is visible up front',
   proofSummary:
@@ -36,7 +97,7 @@ export const siteConfig = {
   proofCards: [
     {
       title: 'Setup is obvious',
-      body: 'You can tell at a glance if the room is single, double, studio, and whether the kitchen and washroom are private or shared.',
+      body: `You can compare ${formatCountLabel(roomCount, 'room listing')} across ${occupancySummary}. Kitchen and washroom details stay visible on every room.`,
     },
     {
       title: 'Rent stays visible',
@@ -72,32 +133,7 @@ export const siteConfig = {
   faqEyebrow: 'FAQs',
   faqTitle: 'Common questions',
   faqSummary: 'Quick answers first. Then call or message if you want details.',
-  faqs: [
-    {
-      question: 'Can I see only rooms that are available now?',
-      answer: 'Yes. The comparison page opens with available rooms first, and you can switch to all rooms any time.',
-    },
-    {
-      question: 'What room types can I compare?',
-      answer: 'You can compare single, double, studio, and 1 RK-style options with kitchen and washroom details shown clearly.',
-    },
-    {
-      question: 'What is included in the monthly rent?',
-      answer: 'Each room page shows what is included in that setup. If you need charge-by-charge confirmation, use the room-specific WhatsApp action before you visit.',
-    },
-    {
-      question: 'Can I visit before I decide?',
-      answer: 'Yes. Open the room you want, then call or WhatsApp CozyRooms to confirm current availability and visit timing.',
-    },
-    {
-      question: 'What should I do if the room I want is occupied?',
-      answer: 'Occupied room pages stay live and point you to similar available rooms so you can keep comparing instead of starting over.',
-    },
-    {
-      question: 'Which rooms have a private kitchen?',
-      answer: 'Use the kitchen filter on the rooms page or open a room page to see whether the kitchen is private or common.',
-    },
-  ],
+  faqs: siteFaqs,
   ctaEyebrow: 'Direct contact',
   ctaTitle: 'Ask what is free today',
   ctaSummary:
@@ -146,10 +182,12 @@ export const siteConfig = {
     },
     catalog: {
       title: 'Find your room',
-      summary: 'Start with rooms that are free now. Narrow the list only if you need to.',
-      defaultNote: 'Open rooms show first. Use filters only if you need them.',
+      summary: availableRoomCount
+        ? `Start with ${formatCountLabel(availableRoomCount, 'room')} that ${availableRoomCount === 1 ? 'is' : 'are'} free now. Narrow the list only if you need to.`
+        : 'No rooms are currently marked available. Open the full list and call for the next opening.',
+      defaultNote: catalogDefaultNote,
       mobileFiltersLabel: 'Filters',
-      mobileFiltersSummary: 'Budget, setup, and room type',
+      mobileFiltersSummary,
     },
     room: {
       similarTitle: 'You may like these too',

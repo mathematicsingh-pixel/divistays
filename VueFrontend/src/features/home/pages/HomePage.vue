@@ -13,7 +13,7 @@ import {
   availableRoomCount,
   availableRooms,
   availableStartingPriceLabel,
-  roomTypeCount,
+  roomCount,
   startingPriceLabel,
 } from '@/features/rooms'
 import MobileEnquiryBar from '@/features/site/components/MobileEnquiryBar.vue'
@@ -91,7 +91,7 @@ useHead(() => ({
       :site="siteConfig"
       :available-room-count="availableRoomCount"
       :available-starting-price-label="availableStartingPriceLabel"
-      :room-type-count="roomTypeCount"
+      :room-count="roomCount"
       :starting-price-label="startingPriceLabel"
       :call-href="callHref"
       :whatsapp-href="defaultWhatsAppHref"

@@ -1,8 +1,8 @@
 import { access, constants } from 'node:fs/promises'
 import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { roomSourceCatalog } from '../src/features/rooms/content/registry.js'
-import { roomSummarySourceCatalog } from '../src/features/rooms/content/summary-registry.js'
+import { toRoomSummaryRecord } from '../src/features/rooms/model/room-record.js'
+import { loadRoomSourceCatalog } from './lib/load-room-content.mjs'
 
 const requiredRoomFields = [
   'id',
@@ -88,23 +88,15 @@ async function fileExists(path) {
   }
 }
 
-function matchesValue(left, right) {
-  return JSON.stringify(left) === JSON.stringify(right)
-}
+const roomSourceCatalog = await loadRoomSourceCatalog()
 
 if (!roomSourceCatalog.length) {
-  note('room registry is empty')
+  note('room catalog is empty')
 }
-
-if (roomSummarySourceCatalog.length !== roomSourceCatalog.length) {
-  note(`summary registry count mismatch (${roomSummarySourceCatalog.length} summaries, ${roomSourceCatalog.length} room modules)`)
-}
-
-const summaryBySlug = new Map(roomSummarySourceCatalog.map((room) => [room.slug, room]))
 
 for (const [roomIndex, room] of roomSourceCatalog.entries()) {
   const roomLabel = `room[${roomIndex}] ${room.slug || '<missing-slug>'}`
-  const summary = summaryBySlug.get(room.slug)
+  const summary = toRoomSummaryRecord(room)
 
   count(idCounts, room.id)
   count(slugCounts, room.slug)
@@ -156,50 +148,26 @@ for (const [roomIndex, room] of roomSourceCatalog.entries()) {
     }
   }
 
-  if (!summary) {
-    note(`${roomLabel}: missing runtime summary entry`)
-  }
-  else {
-    requiredSummaryFields.forEach((field) => {
-      if (!hasValue(summary[field])) {
-        note(`${roomLabel}: summary missing ${field}`)
-      }
-    })
-
-    const expectedSummary = {
-      id: room.id,
-      slug: room.slug,
-      title: room.title,
-      summary: room.summary,
-      fitSummary: room.fitSummary,
-      priceMonthly: room.priceMonthly,
-      available: room.available,
-      updatedAt: room.updatedAt,
-      availabilityUpdatedAt: room.availabilityUpdatedAt,
-      occupancy: room.occupancy,
-      occupancyLabel: room.occupancyLabel,
-      kitchenType: room.kitchenType,
-      kitchenLabel: room.kitchenLabel,
-      washroomType: room.washroomType,
-      washroomLabel: room.washroomLabel,
-      highlightLabel: room.highlightLabel,
-      bestFor: room.bestFor,
-      included: room.included,
-      extraNotes: room.extraNotes,
-      galleryCount: room.gallery.length,
-      gallery: [
-        {
-          key: room.gallery[0]?.key,
-          alt: room.gallery[0]?.alt,
-        },
-      ],
+  requiredSummaryFields.forEach((field) => {
+    if (!hasValue(summary[field])) {
+      note(`${roomLabel}: derived summary missing ${field}`)
     }
+  })
 
-    Object.entries(expectedSummary).forEach(([field, value]) => {
-      if (!matchesValue(summary[field], value)) {
-        note(`${roomLabel}: summary ${field} is out of sync`)
-      }
-    })
+  if (summary.galleryCount !== room.gallery.length) {
+    note(`${roomLabel}: derived summary galleryCount does not match gallery length`)
+  }
+
+  if (summary.gallery.length !== 1) {
+    note(`${roomLabel}: derived summary must expose exactly one cover image`)
+  }
+
+  if (summary.gallery[0]?.key !== room.gallery[0]?.key) {
+    note(`${roomLabel}: derived summary cover image key does not match gallery`)
+  }
+
+  if (summary.gallery[0]?.alt !== room.gallery[0]?.alt) {
+    note(`${roomLabel}: derived summary cover image alt does not match gallery`)
   }
 }
 

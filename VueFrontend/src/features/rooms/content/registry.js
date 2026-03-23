@@ -1,16 +1,21 @@
-import budgetSingleAttached from './budget-single-attached/index.js'
-import compactSoloGarden from './compact-solo-garden/index.js'
-import gardenViewStudio from './garden-view-studio/index.js'
-import oneRkStudio from './one-rk-studio/index.js'
-import sampleStudySingle from './sample-study-single/index.js'
-import vibrantStudio from './vibrant-studio/index.js'
+import { sortRoomRecords } from '../model/room-record.js'
 
-// Add new room modules here. Registry order controls catalog + route order.
-export const roomSourceCatalog = [
-  vibrantStudio,
-  gardenViewStudio,
-  oneRkStudio,
-  budgetSingleAttached,
-  compactSoloGarden,
-  sampleStudySingle,
-]
+function extractRoomSlug(path) {
+  return path.replace('./', '').replace('/index.js', '')
+}
+
+const eagerRoomModules = import.meta.glob('./*/index.js', { eager: true, import: 'default' })
+const lazyRoomModules = import.meta.glob('./*/index.js', { import: 'default' })
+
+const sortedRoomEntries = Object.entries(eagerRoomModules)
+  .map(([path, room]) => ({ path, room }))
+  .sort((left, right) =>
+    sortRoomRecords(left.room, right.room)
+    || extractRoomSlug(left.path).localeCompare(extractRoomSlug(right.path)),
+  )
+
+export const roomSourceCatalog = sortedRoomEntries.map((entry) => entry.room)
+
+export const roomSourceLoaders = Object.fromEntries(
+  Object.entries(lazyRoomModules).map(([path, load]) => [extractRoomSlug(path), load]),
+)

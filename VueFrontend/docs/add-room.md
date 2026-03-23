@@ -6,24 +6,40 @@ Use this flow inside `VueFrontend`. Ignore the old `Frontend` folder.
 
 - `assets/rooms/<room-slug>/`: raw source images and videos
 - `src/features/rooms/content/<room-slug>/index.js`: room definition
-- `src/features/rooms/content/registry.js`: import + catalog order
 
-`registry.js` order drives:
+No manual registry file.
 
-- rooms listing order
+The app and scripts auto-pick every `src/features/rooms/content/*/index.js`.
+
+That single room file now drives:
+
+- rooms listing
+- room detail loading
 - generated room routes
-- sitemap order
-- media build order
+- filter options and room counts
+- footer room ticker input
+- sitemap input
+- media build input
 
 ## Step by step
 
 1. Pick a new unique `id` and kebab-case `slug`.
 2. Add raw media in `assets/rooms/<room-slug>/`.
 3. Create `src/features/rooms/content/<room-slug>/index.js`.
-4. Export the room with `defineRoom(...)`.
-5. Add the new import and entry in `src/features/rooms/content/registry.js`.
+4. Default-export the room with `defineRoom(...)`.
+5. Point each image/video `source` at `assets/rooms/<room-slug>/<file>`.
 6. Run `npm run validate:rooms`.
 7. Run `npm run build`.
+
+## Ordering
+
+Manual ordering is gone.
+
+Default sort:
+
+- `featured` first
+- then `available`
+- then `id`
 
 ## Required room shape
 
@@ -53,6 +69,12 @@ Each gallery item needs:
 Optional:
 
 - `video`, with `key`, `source`, `label`
+
+One source of truth:
+
+- keep the full room data in this one file
+- do not add a second summary object
+- do not add a second loader map entry anywhere
 
 ## Media rules
 
@@ -113,8 +135,21 @@ export default defineRoom({
 ## Common mistakes
 
 - Reusing an existing `id` or `slug`
-- Forgetting the registry import
+- Forgetting the default export
+- Using a `source` path outside `assets/rooms/<room-slug>/`
 - Typing a `source` path that does not exist
 - Leaving `gallery` empty
 - Missing `updatedAt` or `availabilityUpdatedAt`
 - Skipping `npm run validate:rooms` before build
+
+## Edit FAQs
+
+FAQs are separate on purpose.
+
+Edit `src/features/site/content/faqs.js`.
+
+That file feeds:
+
+- the FAQ section
+- `siteConfig.faqs`
+- FAQ structured data

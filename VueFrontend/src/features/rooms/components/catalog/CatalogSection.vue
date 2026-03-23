@@ -1,6 +1,6 @@
 <script setup>
 import { computed, ref, watch } from 'vue'
-import { priceBands } from '@/features/rooms'
+import { kitchenOptions, occupancyOptions, priceBands, washroomOptions } from '@/features/rooms'
 import { siteConfig } from '@/features/site/config/site'
 import CatalogResults from '@/features/rooms/components/catalog/CatalogResults.vue'
 import CatalogToolbar from '@/features/rooms/components/catalog/CatalogToolbar.vue'
@@ -46,22 +46,6 @@ const availabilityOptions = computed(() => {
     { value: 'all', label: `All rooms (${props.allRooms.length})` },
   ]
 })
-
-const occupancyOptions = [
-  { value: 'single', label: 'Single' },
-  { value: 'double', label: 'Double' },
-  { value: 'flex', label: 'Double / triple' },
-]
-
-const kitchenOptions = [
-  { value: 'private', label: 'Private kitchen' },
-  { value: 'common', label: 'Common kitchen' },
-]
-
-const washroomOptions = [
-  { value: 'attached', label: 'Attached washroom' },
-  { value: 'common', label: 'Common washroom' },
-]
 
 const sortOptions = [
   { value: 'available-first', label: 'Available first' },

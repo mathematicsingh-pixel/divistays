@@ -1,4 +1,5 @@
 <script setup>
+import { computed } from 'vue'
 import BrandMark from '@/features/site/components/brand/BrandMark.vue'
 
 function formatPhoneDisplay(value) {
@@ -11,7 +12,7 @@ function formatPhoneDisplay(value) {
   return value
 }
 
-defineProps({
+const props = defineProps({
   site: {
     type: Object,
     required: true,
@@ -22,15 +23,15 @@ defineProps({
   },
   availableStartingPriceLabel: {
     type: String,
-    required: true,
+    default: '',
   },
-  roomTypeCount: {
+  roomCount: {
     type: Number,
     required: true,
   },
   startingPriceLabel: {
     type: String,
-    required: true,
+    default: '',
   },
   callHref: {
     type: String,
@@ -41,6 +42,18 @@ defineProps({
     required: true,
   },
 })
+
+const availablePricingNote = computed(() =>
+  props.availableStartingPriceLabel
+    ? `From ${props.availableStartingPriceLabel}`
+    : 'Check current availability',
+)
+
+const overallPricingNote = computed(() =>
+  props.startingPriceLabel
+    ? `All rooms from ${props.startingPriceLabel}`
+    : 'Browse all room details',
+)
 </script>
 
 <template>
@@ -67,14 +80,14 @@ defineProps({
         <div class="hero-proof-row">
           <div class="hero-proof-card surface-field-panel">
             <dt>{{ availableRoomCount }} rooms available now</dt>
-            <dd>From {{ availableStartingPriceLabel }}</dd>
+            <dd>{{ availablePricingNote }}</dd>
           </div>
           <div class="hero-proof-card surface-field-panel">
-            <dt>{{ roomTypeCount }} room options</dt>
+            <dt>{{ roomCount }} room options</dt>
             <dd>Compare by occupancy and setup</dd>
           </div>
           <div class="hero-proof-card surface-field-panel">
-            <dt>All rooms from {{ startingPriceLabel }}</dt>
+            <dt>{{ overallPricingNote }}</dt>
             <dd>Call or WhatsApp directly</dd>
           </div>
         </div>

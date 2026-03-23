@@ -1,6 +1,6 @@
 # CozyRooms VueFrontend
 
-Feature-first Vue app. Room content lives in one place, so new room adds stay small.
+Feature-first Vue app. One room file per room. FAQ copy in one site data file.
 
 ## Structure
 
@@ -19,13 +19,38 @@ Quick path:
 
 1. Create `src/features/rooms/content/<room-slug>/index.js`
 2. Add raw files in `assets/rooms/<room-slug>/`
-3. Export the room with `defineRoom(...)`
+3. Default-export the room with `defineRoom(...)`
 4. Point each gallery/video `source` to `assets/rooms/<room-slug>/<file>`
-5. Add the import + entry in `src/features/rooms/content/registry.js`
-6. Run `npm run validate:rooms`
-7. Run `npm run build`
+5. Run `npm run validate:rooms`
+6. Run `npm run build`
 
-`registry.js` controls listing order, route order, sitemap order, and media build order.
+Room discovery is automatic from `src/features/rooms/content/*/index.js`.
+
+These derive automatically:
+
+- room listing
+- room detail loading
+- room routes
+- room filters and counts
+- footer room ticker
+- sitemap input
+- media build input
+
+Default room sort:
+
+- `featured` first
+- then `available`
+- then `id`
+
+## Edit FAQs
+
+Edit `src/features/site/content/faqs.js`.
+
+That file feeds:
+
+- FAQ section copy
+- `siteConfig.faqs`
+- FAQ structured data output
 
 ## Checks
 

@@ -1,11 +1,8 @@
 import { roomSummarySourceCatalog } from '../content/summary-registry.js'
-
-const money = new Intl.NumberFormat('en-IN')
-const dateFormatter = new Intl.DateTimeFormat('en-IN', {
-  day: 'numeric',
-  month: 'short',
-  year: 'numeric',
-})
+import { decorateRoomRecord, formatPriceLabel } from './room-record.js'
+const occupancyOrder = ['single', 'double', 'flex']
+const kitchenOrder = ['private', 'common']
+const washroomOrder = ['attached', 'common']
 
 export const priceBands = [
   { value: 'under-4000', label: 'Under ₹4,000' },
@@ -13,48 +10,59 @@ export const priceBands = [
   { value: '8000-plus', label: '₹8,000+' },
 ]
 
-function formatPriceLabel(priceMonthly) {
-  return `₹${money.format(priceMonthly)} / month`
-}
-
-function formatDateLabel(value) {
-  return dateFormatter.format(new Date(`${value}T00:00:00`))
-}
-
-function formatRoomReferenceCode(id) {
-  return String(id).padStart(2, '0')
-}
-
-export function getRoomPath(slug) {
-  return `/rooms/${slug}`
-}
-
-export function decorateRoomRecord(definition) {
-  const referenceCode = formatRoomReferenceCode(definition.id)
-
-  return {
-    ...definition,
-    referenceCode,
-    referenceLabel: `Room ID ${referenceCode}`,
-    detailsHref: getRoomPath(definition.slug),
-    priceLabel: formatPriceLabel(definition.priceMonthly),
-    availabilityLabel: definition.available ? 'Available now' : 'Currently occupied',
-    availabilityShortLabel: definition.available ? 'Available now' : 'Occupied',
-    updatedLabel: formatDateLabel(definition.updatedAt),
-    availabilityUpdatedLabel: formatDateLabel(definition.availabilityUpdatedAt),
-    amenities: [...definition.included, ...definition.extraNotes],
+function getMinimumPrice(rooms) {
+  if (!rooms.length) {
+    return null
   }
+
+  return Math.min(...rooms.map((room) => room.priceMonthly))
+}
+
+function buildOptionCatalog(rooms, valueKey, labelKey, preferredOrder = []) {
+  const optionsByValue = new Map()
+
+  rooms.forEach((room) => {
+    const value = room[valueKey]
+    const label = room[labelKey]
+
+    if (!value || !label || optionsByValue.has(value)) {
+      return
+    }
+
+    optionsByValue.set(value, { value, label })
+  })
+
+  return [...optionsByValue.values()].sort((left, right) => {
+    const leftIndex = preferredOrder.indexOf(left.value)
+    const rightIndex = preferredOrder.indexOf(right.value)
+
+    if (leftIndex === -1 && rightIndex === -1) {
+      return left.label.localeCompare(right.label)
+    }
+
+    if (leftIndex === -1) {
+      return 1
+    }
+
+    if (rightIndex === -1) {
+      return -1
+    }
+
+    return leftIndex - rightIndex
+  })
 }
 
 export const roomCatalog = roomSummarySourceCatalog.map(decorateRoomRecord)
 export const availableRooms = roomCatalog.filter((room) => room.available)
 export const roomCount = roomCatalog.length
-export const roomTypeCount = roomCatalog.length
 export const availableRoomCount = availableRooms.length
-export const startingPrice = Math.min(...roomCatalog.map((room) => room.priceMonthly))
-export const availableStartingPrice = Math.min(...availableRooms.map((room) => room.priceMonthly))
-export const startingPriceLabel = formatPriceLabel(startingPrice)
-export const availableStartingPriceLabel = formatPriceLabel(availableStartingPrice)
+export const startingPrice = getMinimumPrice(roomCatalog)
+export const availableStartingPrice = getMinimumPrice(availableRooms)
+export const startingPriceLabel = startingPrice === null ? null : formatPriceLabel(startingPrice)
+export const availableStartingPriceLabel = availableStartingPrice === null ? null : formatPriceLabel(availableStartingPrice)
+export const occupancyOptions = buildOptionCatalog(roomCatalog, 'occupancy', 'occupancyLabel', occupancyOrder)
+export const kitchenOptions = buildOptionCatalog(roomCatalog, 'kitchenType', 'kitchenLabel', kitchenOrder)
+export const washroomOptions = buildOptionCatalog(roomCatalog, 'washroomType', 'washroomLabel', washroomOrder)
 
 export function roomMatchesPriceBand(room, band) {
   if (band === 'under-4000') {

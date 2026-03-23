@@ -1,18 +1,10 @@
-import { decorateRoomRecord } from './catalog.js'
-
-const roomDetailLoaders = {
-  'budget-single-attached': () => import('../content/budget-single-attached/index.js'),
-  'compact-solo-garden': () => import('../content/compact-solo-garden/index.js'),
-  'garden-view-studio': () => import('../content/garden-view-studio/index.js'),
-  'one-rk-studio': () => import('../content/one-rk-studio/index.js'),
-  'sample-study-single': () => import('../content/sample-study-single/index.js'),
-  'vibrant-studio': () => import('../content/vibrant-studio/index.js'),
-}
+import { roomSourceLoaders } from '../content/registry.js'
+import { decorateRoomRecord } from './room-record.js'
 
 const roomDetailCache = new Map()
 
 export function hasRoomDetailLoader(slug) {
-  return Boolean(roomDetailLoaders[slug])
+  return Boolean(roomSourceLoaders[slug])
 }
 
 export function loadRoomDetail(slug) {
@@ -23,7 +15,7 @@ export function loadRoomDetail(slug) {
   if (!roomDetailCache.has(slug)) {
     roomDetailCache.set(
       slug,
-      roomDetailLoaders[slug]().then((module) => decorateRoomRecord(module.default)),
+      roomSourceLoaders[slug]().then((room) => decorateRoomRecord(room)),
     )
   }
 
