@@ -40,7 +40,12 @@ const callHref = getCallHref()
 
     <div class="detail-topline">
       <p class="dialog-price">{{ room.priceLabel }}</p>
-      <span class="availability-pill glass-chip">{{ room.availabilityLabel }}</span>
+      <span
+        class="availability-pill glass-chip"
+        :class="{ 'availability-pill--occupied': !room.available }"
+      >
+        {{ room.availabilityLabel }}
+      </span>
     </div>
 
     <p class="detail-summary">
@@ -187,6 +192,12 @@ const callHref = getCallHref()
   font-weight: 800;
   letter-spacing: 0.08em;
   text-transform: uppercase;
+}
+
+.availability-pill--occupied {
+  border-color: rgba(219, 98, 16, 0.24);
+  background: rgba(255, 122, 26, 0.12);
+  color: var(--accent-deep);
 }
 
 .detail-summary {

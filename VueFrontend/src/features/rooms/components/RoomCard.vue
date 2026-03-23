@@ -65,7 +65,10 @@ const quickFacts = (room) => [room.occupancyLabel, room.kitchenLabel, room.washr
 
         <div class="room-price-wrap">
           <p class="room-price">{{ room.priceLabel }}</p>
-          <span class="room-status">
+          <span
+            class="room-status"
+            :class="{ 'room-status--occupied': !room.available }"
+          >
             {{ room.availabilityShortLabel }}
           </span>
         </div>
@@ -216,6 +219,10 @@ const quickFacts = (room) => [room.occupancyLabel, room.kitchenLabel, room.washr
   color: var(--brand-strong);
   font-size: 0.82rem;
   font-weight: 800;
+}
+
+.room-status--occupied {
+  color: var(--accent-deep);
 }
 
 .room-summary {
