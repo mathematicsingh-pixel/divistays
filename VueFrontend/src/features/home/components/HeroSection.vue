@@ -57,7 +57,7 @@ const availablePricingNote = computed(() =>
 
 const overallPricingNote = computed(() =>
   props.startingPriceLabel
-    ? `All rooms from ${props.startingPriceLabel}`
+    ? `From ${props.startingPriceLabel}`
     : 'Browse all room details',
 )
 
@@ -82,23 +82,37 @@ const quickFacts = computed(() => {
           <span class="eyebrow hero-eyebrow hero-top-note">{{ site.heroEyebrow }}</span>
         </div>
 
-        <p class="hero-brand-line">{{ site.brandLine }}</p>
-        <h1>{{ site.heroTitle }}</h1>
+        <p class="hero-brand-line"><span class="hero-brand-line-text">{{ site.brandLine }}</span></p>
+
+        <div class="hero-heading-wrap">
+          <h1>{{ site.heroTitle }}</h1>
+        </div>
+
         <p class="hero-summary">
           {{ site.heroSummary }}
         </p>
 
         <div class="hero-proof-row">
           <div class="hero-proof-card surface-field-panel">
-            <dt>{{ availableRoomCount }} rooms available now</dt>
+            <dt>
+              <span class="hero-proof-icon">🏠</span>
+              <span class="hero-proof-live-dot" aria-hidden="true" />
+              {{ availableRoomCount }} rooms available now
+            </dt>
             <dd>{{ availablePricingNote }}</dd>
           </div>
           <div class="hero-proof-card surface-field-panel">
-            <dt>{{ roomCount }} room options</dt>
+            <dt>
+              <span class="hero-proof-icon">📋</span>
+              {{ roomCount }} room options
+            </dt>
             <dd>Compare by occupancy and setup</dd>
           </div>
           <div class="hero-proof-card surface-field-panel">
-            <dt>{{ overallPricingNote }}</dt>
+            <dt>
+              <span class="hero-proof-icon">💰</span>
+              {{ overallPricingNote }}
+            </dt>
             <dd>Call or WhatsApp directly</dd>
           </div>
         </div>
@@ -216,8 +230,8 @@ const quickFacts = computed(() => {
 .hero-copy {
   position: relative;
   display: grid;
-  gap: 1.1rem;
-  padding: 1.15rem;
+  gap: 1.25rem;
+  padding: 1.25rem;
   border-radius: var(--radius-xl);
   color: var(--text-inverse);
   overflow: hidden;
@@ -233,19 +247,21 @@ const quickFacts = computed(() => {
 .hero-copy::before {
   top: -3.5rem;
   right: -2.5rem;
-  width: 13rem;
-  height: 13rem;
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  width: 15rem;
+  height: 15rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 999px 999px 0 0;
+  animation: hero-orbit 18s linear infinite;
 }
 
 .hero-copy::after {
   right: 1.25rem;
   bottom: -3rem;
-  width: 11rem;
-  height: 11rem;
+  width: 14rem;
+  height: 14rem;
   border-radius: 999px;
-  background: radial-gradient(circle, rgba(255, 211, 142, 0.18), transparent 68%);
+  background: radial-gradient(circle, rgba(255, 211, 142, 0.22), transparent 65%);
+  animation: hero-glow-pulse 4s ease-in-out infinite alternate;
 }
 
 .hero-topbar,
@@ -272,56 +288,151 @@ const quickFacts = computed(() => {
   white-space: nowrap;
 }
 
+/* ── Brand line with shimmer ─────────────────── */
 .hero-brand-line {
-  color: rgba(255, 211, 142, 0.95);
+  position: relative;
   font-size: 0.94rem;
   font-weight: 800;
   letter-spacing: 0.12em;
   text-transform: uppercase;
+  overflow: hidden;
+}
+
+.hero-brand-line-text {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 211, 142, 0.95) 0%,
+    rgba(255, 211, 142, 0.95) 40%,
+    #fff 50%,
+    rgba(255, 211, 142, 0.95) 60%,
+    rgba(255, 211, 142, 0.95) 100%
+  );
+  background-size: 200% 100%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  animation: hero-shimmer 3.6s ease-in-out infinite;
+}
+
+/* ── Heading area with glow ──────────────────── */
+.hero-heading-wrap {
+  position: relative;
+  z-index: 1;
+}
+
+.hero-heading-wrap::before {
+  position: absolute;
+  content: '';
+  top: 50%;
+  left: 20%;
+  width: 60%;
+  height: 100%;
+  transform: translateY(-50%);
+  background: radial-gradient(ellipse, rgba(255, 122, 26, 0.12), transparent 70%);
+  pointer-events: none;
+  filter: blur(30px);
+}
+
+.hero-copy h1 {
+  position: relative;
+  color: var(--text-inverse);
 }
 
 .hero-summary {
   max-width: 42rem;
   color: var(--muted-inverse);
   font-size: 1.02rem;
+  line-height: 1.55;
 }
 
-.hero-copy h1 {
-  color: var(--text-inverse);
-}
-
+/* ── Proof cards ─────────────────────────────── */
 .hero-proof-row {
-  display: grid;
-  gap: 0.75rem;
+  display: flex;
+  gap: 0.65rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  padding-bottom: 0.25rem;
+}
+
+.hero-proof-row::-webkit-scrollbar {
+  display: none;
 }
 
 .hero-proof-card {
-  padding: var(--card-pad);
+  flex: 0 0 82%;
+  min-width: 0;
+  scroll-snap-align: start;
+  padding: 0.85rem 1rem;
   border-radius: var(--radius-lg);
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0.06)),
     rgba(255, 255, 255, 0.07);
   box-shadow: var(--shadow-chip);
+  transition: transform 0.18s ease;
+}
+
+.hero-proof-icon {
+  font-size: 1.15rem;
+  margin-right: 0.3rem;
+  vertical-align: -0.08em;
+}
+
+.hero-proof-live-dot {
+  display: inline-block;
+  width: 0.5rem;
+  height: 0.5rem;
+  margin-right: 0.25rem;
+  border-radius: 999px;
+  background: var(--brand);
+  box-shadow: 0 0 0.6rem rgba(121, 217, 202, 0.5);
+  vertical-align: 0.06em;
+  animation: hero-live-pulse 2s ease-in-out infinite;
 }
 
 .hero-proof-row dt {
+  display: flex;
+  align-items: center;
   color: var(--text-inverse);
   font-weight: 800;
+  font-size: 0.95rem;
+  white-space: nowrap;
 }
 
 .hero-proof-row dd {
-  margin: 0.25rem 0 0;
+  margin: 0.3rem 0 0;
   color: var(--muted-inverse);
+  font-size: 0.88rem;
 }
 
+/* ── Hero actions ────────────────────────────── */
 .hero-actions {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0.7rem;
+  gap: 0.65rem;
 }
 
 .hero-primary-action {
-  grid-column: 1 / -1;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-primary-action::after {
+  position: absolute;
+  content: '';
+  top: -50%;
+  left: -75%;
+  width: 50%;
+  height: 200%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.28),
+    transparent
+  );
+  transform: skewX(-18deg);
+  animation: hero-btn-shine 3.4s ease-in-out infinite;
 }
 
 .hero-secondary {
@@ -338,13 +449,12 @@ const quickFacts = computed(() => {
 .hero-call-action {
   position: relative;
   display: grid;
-  align-content: center;
-  justify-items: start;
-  justify-content: center;
-  gap: 0.18rem;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 0.5rem;
   min-height: 3.35rem;
   min-width: 0;
-  padding: 0.94rem 1rem 0.96rem;
+  padding: 0.78rem 1rem;
   border-color: rgba(255, 211, 142, 0.24);
   background:
     radial-gradient(circle at top right, rgba(255, 211, 142, 0.18), transparent 42%),
@@ -357,16 +467,14 @@ const quickFacts = computed(() => {
 }
 
 .hero-call-signal {
-  position: absolute;
-  top: 0.88rem;
-  right: 0.96rem;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 0.74rem;
-  height: 0.74rem;
+  width: 2.2rem;
+  height: 2.2rem;
   border-radius: 999px;
   background: rgba(255, 211, 142, 0.12);
+  position: relative;
 }
 
 .hero-call-signal::after {
@@ -379,8 +487,8 @@ const quickFacts = computed(() => {
 }
 
 .hero-call-dot {
-  width: 0.5rem;
-  height: 0.5rem;
+  width: 0.55rem;
+  height: 0.55rem;
   border-radius: 999px;
   background: linear-gradient(135deg, var(--sun), var(--accent));
   box-shadow: 0 0 0.75rem rgba(255, 211, 142, 0.44);
@@ -410,6 +518,7 @@ const quickFacts = computed(() => {
   white-space: nowrap;
 }
 
+/* ── Featured room card ──────────────────────── */
 .hero-featured {
   position: relative;
   display: grid;
@@ -560,38 +669,82 @@ const quickFacts = computed(() => {
   font-weight: 700;
 }
 
+/* ── Keyframes ───────────────────────────────── */
+@keyframes hero-shimmer {
+  0%, 100% {
+    background-position: 100% 0;
+  }
+  50% {
+    background-position: -100% 0;
+  }
+}
+
+@keyframes hero-orbit {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes hero-glow-pulse {
+  from { opacity: 0.7; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1.08); }
+}
+
+@keyframes hero-live-pulse {
+  0%, 100% {
+    opacity: 1;
+    box-shadow: 0 0 0.6rem rgba(121, 217, 202, 0.5);
+  }
+  50% {
+    opacity: 0.6;
+    box-shadow: 0 0 1rem rgba(121, 217, 202, 0.8);
+  }
+}
+
+@keyframes hero-btn-shine {
+  0%, 100% { left: -75%; }
+  50% { left: 125%; }
+}
+
 @keyframes hero-call-ring {
   0% {
     opacity: 0.65;
     transform: scale(0.76);
   }
-
-  70%,
-  100% {
+  70%, 100% {
     opacity: 0;
     transform: scale(1.65);
   }
 }
 
 @keyframes hero-call-dot {
-  0%,
-  100% {
+  0%, 100% {
     transform: scale(0.92);
     filter: saturate(0.92);
   }
-
   50% {
     transform: scale(1.08);
     filter: saturate(1.08);
   }
 }
 
+/* ── Mobile (<960px) ─────────────────────────── */
 @media (max-width: 959px) {
   .hero-actions {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-secondary,
+  .hero-call-action {
     display: none;
+  }
+
+  .hero-primary-action {
+    font-size: 1.05rem;
+    min-height: 3.4rem;
   }
 }
 
+/* ── Desktop (≥960px) ────────────────────────── */
 @media (min-width: 960px) {
   .hero-grid {
     grid-template-columns: minmax(0, 1.15fr) minmax(20rem, 0.85fr);
@@ -599,7 +752,14 @@ const quickFacts = computed(() => {
   }
 
   .hero-proof-row {
+    display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
+    overflow: visible;
+  }
+
+  .hero-proof-card {
+    flex: none;
+    scroll-snap-align: unset;
   }
 
   .hero-actions {
@@ -613,7 +773,7 @@ const quickFacts = computed(() => {
   }
 
   .hero-call-action {
-    padding: 0.96rem 1.14rem 0.98rem;
+    padding: 0.78rem 1.14rem;
   }
 
   .featured-media {
