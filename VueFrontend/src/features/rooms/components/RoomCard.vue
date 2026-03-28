@@ -20,7 +20,7 @@ defineProps({
 
 defineEmits(['preview'])
 
-const quickFacts = (room) => [room.occupancyLabel, room.kitchenLabel, room.washroomLabel]
+const topFacts = (room) => [room.occupancyLabel, room.washroomLabel]
 </script>
 
 <template>
@@ -52,50 +52,33 @@ const quickFacts = (room) => [room.occupancyLabel, room.kitchenLabel, room.washr
     </div>
 
     <div class="room-body">
-      <div class="room-head">
-        <div class="room-copy">
-          <p class="room-kicker">{{ room.highlightLabel }}</p>
-          <h3>
-            <RouterLink :to="room.detailsHref">
-              {{ room.title }}
-            </RouterLink>
-          </h3>
-        </div>
-
-        <div class="room-price-wrap">
-          <p class="room-price">{{ room.priceLabel }}</p>
-          <span
-            class="room-status"
-            :class="{ 'room-status--occupied': !room.available }"
-          >
-            {{ room.availabilityShortLabel }}
-          </span>
-        </div>
+      <div class="room-copy">
+        <p class="room-kicker">{{ room.highlightLabel }}</p>
+        <h3>
+          <RouterLink :to="room.detailsHref">
+            {{ room.title }}
+          </RouterLink>
+        </h3>
       </div>
+
+      <div class="room-price-line">
+        <span class="room-price">{{ room.priceLabel }}</span>
+        <span class="room-price-sep" aria-hidden="true">·</span>
+        <span
+          class="room-status"
+          :class="{ 'room-status--occupied': !room.available }"
+        >
+          {{ room.availabilityShortLabel }}
+        </span>
+      </div>
+
+      <p class="room-facts">
+        {{ topFacts(room).join(' · ') }}
+      </p>
 
       <p class="room-summary">
         {{ room.fitSummary }}
       </p>
-
-      <div class="fact-row">
-        <span
-          v-for="fact in quickFacts(room)"
-          :key="fact"
-          class="fact-pill"
-        >
-          {{ fact }}
-        </span>
-      </div>
-
-      <div class="amenity-row">
-        <span
-          v-for="amenity in room.extraNotes.slice(0, 2)"
-          :key="amenity"
-          class="soft-chip"
-        >
-          {{ amenity }}
-        </span>
-      </div>
 
       <div class="room-actions">
         <RouterLink
@@ -153,7 +136,7 @@ const quickFacts = (room) => [room.occupancyLabel, room.kitchenLabel, room.washr
 }
 
 .preview-pill {
-  display: inline-flex;
+  display: none;
   align-items: center;
   min-height: 2.75rem;
   padding: 0.36rem 0.7rem;
@@ -168,21 +151,13 @@ const quickFacts = (room) => [room.occupancyLabel, room.kitchenLabel, room.washr
   transition: transform 0.18s ease, background-color 0.18s ease;
 }
 
-.preview-pill {
-  display: none;
-}
+/* ── body ── */
 
 .room-body {
   display: grid;
-  gap: 0.9rem;
+  gap: 0.55rem;
   padding: var(--card-pad);
   border-top: 1px solid var(--paper-border-soft);
-  background: transparent;
-}
-
-.room-head {
-  display: grid;
-  gap: 0.75rem;
 }
 
 .room-copy {
@@ -202,9 +177,12 @@ const quickFacts = (room) => [room.occupancyLabel, room.kitchenLabel, room.washr
   color: var(--text-strong);
 }
 
-.room-price-wrap {
-  display: grid;
-  gap: 0.18rem;
+/* price + availability on one line */
+.room-price-line {
+  display: flex;
+  align-items: baseline;
+  gap: 0.45rem;
+  flex-wrap: wrap;
 }
 
 .room-price {
@@ -212,6 +190,11 @@ const quickFacts = (room) => [room.occupancyLabel, room.kitchenLabel, room.washr
   font-size: 1.18rem;
   font-weight: 800;
   white-space: nowrap;
+}
+
+.room-price-sep {
+  color: var(--muted);
+  font-weight: 700;
 }
 
 .room-status {
@@ -224,29 +207,27 @@ const quickFacts = (room) => [room.occupancyLabel, room.kitchenLabel, room.washr
   color: var(--accent-deep);
 }
 
-.room-summary {
-  color: var(--muted);
+/* compact fact text line */
+.room-facts {
+  color: var(--text-strong);
+  font-size: 0.84rem;
+  font-weight: 600;
 }
 
-.fact-row,
-.amenity-row,
+.room-summary {
+  color: var(--muted);
+  font-size: 0.88rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
 .room-actions {
   display: flex;
   flex-wrap: wrap;
   gap: 0.55rem;
-}
-
-.fact-pill {
-  display: inline-flex;
-  align-items: center;
-  min-height: 2.75rem;
-  padding: 0.45rem 0.72rem;
-  border: 1px solid var(--paper-border-soft);
-  border-radius: 999px;
-  background: var(--surface-field-fill);
-  color: var(--text-strong);
-  font-size: 0.82rem;
-  font-weight: 700;
+  margin-top: 0.35rem;
 }
 
 .room-actions > * {
@@ -257,21 +238,10 @@ const quickFacts = (room) => [room.occupancyLabel, room.kitchenLabel, room.washr
   .preview-pill:hover {
     background: rgba(7, 18, 26, 0.82);
   }
-
-  .fact-pill:hover {
-    border-color: var(--line-strong);
-  }
 }
 
 .preview-pill:active {
   transform: scale(0.97);
-}
-
-@media (min-width: 760px) {
-  .room-head {
-    grid-template-columns: minmax(0, 1fr) auto;
-    align-items: start;
-  }
 }
 
 @media (min-width: 960px) {
