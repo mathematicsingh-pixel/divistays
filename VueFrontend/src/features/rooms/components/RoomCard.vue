@@ -40,7 +40,6 @@ const quickFacts = (room) => [room.occupancyLabel, room.kitchenLabel, room.washr
           :room="room"
           inverse
         />
-        <span class="gallery-pill">{{ room.galleryCount || room.gallery.length }} photos</span>
         <button
           v-if="showQuickPreview"
           class="preview-pill"
@@ -153,7 +152,6 @@ const quickFacts = (room) => [room.occupancyLabel, room.kitchenLabel, room.washr
   gap: 0.45rem;
 }
 
-.gallery-pill,
 .preview-pill {
   display: inline-flex;
   align-items: center;
@@ -256,7 +254,6 @@ const quickFacts = (room) => [room.occupancyLabel, room.kitchenLabel, room.washr
 }
 
 @media (hover: hover) {
-  .gallery-pill:hover,
   .preview-pill:hover {
     background: rgba(7, 18, 26, 0.82);
   }
@@ -266,7 +263,6 @@ const quickFacts = (room) => [room.occupancyLabel, room.kitchenLabel, room.washr
   }
 }
 
-.gallery-pill:active,
 .preview-pill:active {
   transform: scale(0.97);
 }

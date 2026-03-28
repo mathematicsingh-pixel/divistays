@@ -170,7 +170,6 @@ const quickFacts = computed(() => {
               :room="featuredRoom"
               inverse
             />
-            <span class="featured-gallery-count">{{ featuredRoom.galleryCount || featuredRoom.gallery.length }} photos</span>
           </div>
         </div>
 
@@ -578,21 +577,6 @@ const quickFacts = computed(() => {
   display: flex;
   flex-wrap: wrap;
   gap: 0.45rem;
-}
-
-.featured-gallery-count {
-  display: inline-flex;
-  align-items: center;
-  min-height: 2.75rem;
-  padding: 0.36rem 0.7rem;
-  border-radius: 999px;
-  border: 1px solid var(--glass-stroke-light);
-  background: rgba(7, 18, 26, 0.7);
-  color: var(--text-inverse);
-  font-size: 0.74rem;
-  font-weight: 800;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
 }
 
 .featured-body {
