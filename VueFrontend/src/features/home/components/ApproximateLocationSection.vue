@@ -1,5 +1,5 @@
 <script setup>
-import { computed, ref } from 'vue'
+import { computed } from 'vue'
 
 const props = defineProps({
   site: {
@@ -8,12 +8,15 @@ const props = defineProps({
   },
 })
 
-const mapEmbedUrl = computed(() =>
-  `https://www.google.com/maps?q=${encodeURIComponent(props.site.locationLabel)}&z=14&output=embed`,
-)
-
 const mapOpenUrl = computed(() =>
   props.site.localityPage?.mapUrl || `https://maps.google.com/?q=${encodeURIComponent(props.site.locationLabel)}`,
+)
+
+const mapPreviewSrc = computed(() => props.site.localityPage?.placeholderImagePath || '/location-placeholder-map.webp')
+
+const mapPreviewAlt = computed(() =>
+  props.site.localityPage?.placeholderImageAlt
+  || 'Stylized approximate neighborhood map with a highlighted area pin.',
 )
 
 const mapHighlights = computed(() => [
@@ -21,12 +24,6 @@ const mapHighlights = computed(() => [
   'Google Maps area pin',
   'Exact building on enquiry',
 ])
-
-const isMapReady = ref(false)
-
-function loadMap() {
-  isMapReady.value = true
-}
 </script>
 
 <template>
@@ -61,7 +58,13 @@ function loadMap() {
             </div>
           </div>
 
-          <article class="surface-panel location-map page-rise-delay-1">
+          <a
+            class="surface-panel location-map location-map-link page-rise-delay-1"
+            :href="mapOpenUrl"
+            target="_blank"
+            rel="noreferrer"
+            :aria-label="`Open approximate CozyRooms location in Google Maps for ${site.locationLabel}`"
+          >
             <div class="location-map-head">
               <div class="location-map-copy">
                 <span class="eyebrow map-panel-eyebrow">Google Maps</span>
@@ -72,41 +75,26 @@ function loadMap() {
             </div>
 
             <div class="location-frame">
-              <iframe
-                v-if="isMapReady"
-                :src="mapEmbedUrl"
-                title="Approximate CozyRooms location in Kakadeo, Kanpur"
+              <img
+                class="location-map-image"
+                :src="mapPreviewSrc"
+                :alt="mapPreviewAlt"
+                width="2752"
+                height="1536"
                 loading="lazy"
-                allowfullscreen
-                referrerpolicy="no-referrer-when-downgrade"
-              />
-              <button
-                v-else
-                class="map-placeholder"
-                type="button"
-                @click="loadMap"
+                decoding="async"
               >
+              <div class="location-map-overlay">
                 <span class="map-placeholder-kicker">Approximate area only</span>
-                <strong>Load Google Map</strong>
-                <small>Tap only if you want the embed. The direct Maps link is below.</small>
-              </button>
+                <strong>Open in Google Maps</strong>
+                <small>Tap the card to check commute, coaching belt, and nearby landmarks.</small>
+              </div>
             </div>
 
             <p class="location-map-note">
               Area only. Exact pin shared once you pick a room.
             </p>
-          </article>
-
-          <div class="location-action-wrap">
-            <a
-              class="button-primary location-action"
-              :href="mapOpenUrl"
-              target="_blank"
-              rel="noreferrer"
-            >
-              Open in Google Maps
-            </a>
-          </div>
+          </a>
         </div>
       </article>
     </div>
@@ -208,15 +196,6 @@ function loadMap() {
   color: #fff0d4;
 }
 
-.location-action {
-  position: relative;
-  width: fit-content;
-}
-
-.location-action-wrap {
-  position: relative;
-}
-
 .location-map {
   position: relative;
   display: grid;
@@ -229,6 +208,27 @@ function loadMap() {
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.68),
     0 24px 44px rgba(5, 14, 24, 0.22);
+}
+
+.location-map-link {
+  text-decoration: none;
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease,
+    border-color 0.18s ease;
+}
+
+.location-map-link:hover {
+  transform: translateY(-2px);
+  border-color: rgba(121, 217, 202, 0.24);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.68),
+    0 30px 54px rgba(5, 14, 24, 0.26);
+}
+
+.location-map-link:focus-visible {
+  outline: 3px solid rgba(255, 122, 26, 0.28);
+  outline-offset: 4px;
 }
 
 .location-map-head {
@@ -270,6 +270,7 @@ function loadMap() {
 }
 
 .location-frame {
+  position: relative;
   overflow: hidden;
   min-height: 17rem;
   border: 1px solid rgba(11, 23, 32, 0.08);
@@ -277,50 +278,64 @@ function loadMap() {
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
 }
 
-.location-frame iframe,
-.map-placeholder {
+.location-map-image,
+.location-map-overlay {
   width: 100%;
   min-height: 17rem;
 }
 
-.map-placeholder {
+.location-map-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 17rem;
+  object-fit: cover;
+  transform: scale(1.01);
+  transition:
+    transform 0.22s ease,
+    filter 0.22s ease;
+}
+
+.location-map-link:hover .location-map-image,
+.location-map-link:focus-visible .location-map-image {
+  transform: scale(1.04);
+  filter: saturate(1.04) contrast(1.02);
+}
+
+.location-map-overlay {
+  position: absolute;
+  inset: 0;
   display: grid;
-  place-content: center;
+  align-content: end;
   gap: 0.45rem;
-  padding: 1.25rem;
+  padding: 1.15rem;
   background:
-    radial-gradient(circle at top right, rgba(121, 217, 202, 0.16), transparent 24%),
-    linear-gradient(180deg, rgba(11, 23, 32, 0.05), rgba(11, 23, 32, 0.02));
-  color: var(--text-strong);
-  text-align: center;
+    linear-gradient(180deg, rgba(7, 18, 26, 0.06), rgba(7, 18, 26, 0.16) 45%, rgba(7, 18, 26, 0.78)),
+    radial-gradient(circle at top right, rgba(121, 217, 202, 0.16), transparent 24%);
+  color: var(--text-inverse);
+  text-align: left;
 }
 
 .map-placeholder-kicker {
-  color: var(--accent-deep);
+  color: #fff0d4;
   font-size: var(--text-kicker);
   font-weight: 800;
   letter-spacing: 0.12em;
   text-transform: uppercase;
 }
 
-.map-placeholder strong {
+.location-map-overlay strong {
   font-family: 'Syne', sans-serif;
-  font-size: clamp(1.5rem, 6vw, 2.2rem);
+  font-size: clamp(1.55rem, 6vw, 2.35rem);
   line-height: 0.98;
+  letter-spacing: -0.05em;
 }
 
-.map-placeholder small {
-  color: var(--muted);
+.location-map-overlay small {
+  max-width: 24rem;
+  color: rgba(236, 246, 252, 0.86);
   font-size: var(--text-meta);
   font-weight: 700;
-}
-
-.location-frame iframe {
-  display: block;
-  width: 100%;
-  height: 100%;
-  min-height: 17rem;
-  border: 0;
 }
 
 .location-map-note {
@@ -332,9 +347,7 @@ function loadMap() {
 @media (min-width: 960px) {
   .location-grid {
     grid-template-columns: minmax(0, 0.92fr) minmax(22rem, 0.88fr);
-    grid-template-areas:
-      'copy map'
-      'action map';
+    grid-template-areas: 'copy map';
     align-items: stretch;
   }
 
@@ -347,17 +360,14 @@ function loadMap() {
     padding: 0.2rem 0;
   }
 
-  .location-action-wrap {
-    grid-area: action;
-  }
-
   .location-map {
     grid-area: map;
     padding: 1rem;
   }
 
   .location-frame,
-  .location-frame iframe {
+  .location-map-image,
+  .location-map-overlay {
     min-height: 21rem;
   }
 }

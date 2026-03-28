@@ -184,6 +184,9 @@ export const siteConfig = {
   },
   localityPage: {
     mapUrl: 'https://maps.google.com/?q=Kakadeo+Kanpur',
+    placeholderImagePath: '/location-placeholder-map.webp',
+    placeholderImageAlt:
+      'Stylized approximate neighborhood map for Kakadeo, Kanpur with a highlighted area pin.',
   },
 }
 

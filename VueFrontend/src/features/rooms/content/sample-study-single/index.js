@@ -24,7 +24,7 @@ export default defineRoom({
     'Example single room entry with an attached washroom, common kitchen access, and a straightforward study-first setup.',
   fitSummary: 'Example single setup with an attached washroom and simple furniture.',
   priceMonthly: 4299,
-  available: false,
+  available: true,
   featured: false,
   updatedAt: '2026-03-23',
   availabilityUpdatedAt: '2026-03-23',

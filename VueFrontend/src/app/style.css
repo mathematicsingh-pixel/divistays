@@ -165,8 +165,13 @@ video {
 
 main {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: 2rem;
   padding: 0.9rem 0 calc(7.25rem + env(safe-area-inset-bottom));
+}
+
+main > * {
+  min-width: 0;
 }
 
 .container {

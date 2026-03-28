@@ -120,9 +120,6 @@ function scrollTrack(dir) {
   scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
-  /* bleed past container padding on mobile */
-  margin-inline: calc(-1 * var(--container-pad, 1rem));
-  padding-inline: var(--container-pad, 1rem);
   padding-bottom: 0.5rem;
 }
 
@@ -151,11 +148,6 @@ function scrollTrack(dir) {
 
 /* ── Desktop ─────────────────────────────────── */
 @media (min-width: 960px) {
-  .room-track {
-    margin-inline: 0;
-    padding-inline: 0;
-  }
-
   .room-track-item {
     flex: 0 0 30%;
   }
