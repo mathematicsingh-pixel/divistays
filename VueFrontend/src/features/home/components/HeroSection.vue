@@ -1,6 +1,8 @@
 <script setup>
 import { computed } from 'vue'
 import BrandMark from '@/features/site/components/brand/BrandMark.vue'
+import RoomReferenceBadge from '@/features/rooms/components/RoomReferenceBadge.vue'
+import ResponsiveImage from '@/shared/ui/ResponsiveImage.vue'
 
 function formatPhoneDisplay(value) {
   const digits = value.replace(/\D/g, '')
@@ -41,6 +43,10 @@ const props = defineProps({
     type: String,
     required: true,
   },
+  featuredRoom: {
+    type: Object,
+    default: null,
+  },
 })
 
 const availablePricingNote = computed(() =>
@@ -54,6 +60,11 @@ const overallPricingNote = computed(() =>
     ? `All rooms from ${props.startingPriceLabel}`
     : 'Browse all room details',
 )
+
+const quickFacts = computed(() => {
+  if (!props.featuredRoom) return []
+  return [props.featuredRoom.occupancyLabel, props.featuredRoom.kitchenLabel, props.featuredRoom.washroomLabel]
+})
 </script>
 
 <template>
@@ -125,28 +136,67 @@ const overallPricingNote = computed(() =>
         </div>
       </div>
 
-      <aside class="hero-panel surface-paper-panel page-rise-delay-1">
-        <span class="hero-panel-badge">{{ site.uiText.heroPanel.badge }}</span>
-        <h2>{{ site.uiText.heroPanel.title }}</h2>
-        <p>{{ site.uiText.heroPanel.summary }}</p>
+      <aside
+        v-if="featuredRoom"
+        class="hero-featured surface-panel surface-soft-panel page-rise-delay-1"
+      >
+        <span class="featured-badge">Featured</span>
 
-        <div class="hero-checklist">
-          <div
-            v-for="item in site.uiText.heroPanel.points"
-            :key="item.title"
-            class="hero-check surface-field-panel"
-          >
-            <strong>{{ item.title }}</strong>
-            <span>{{ item.body }}</span>
+        <div class="featured-media">
+          <RouterLink :to="featuredRoom.detailsHref">
+            <ResponsiveImage
+              :room-slug="featuredRoom.slug"
+              :media="featuredRoom.gallery[0]"
+              eager
+              sizes="(min-width: 960px) 34vw, 92vw"
+            />
+          </RouterLink>
+          <div class="featured-overlay">
+            <RoomReferenceBadge
+              :room="featuredRoom"
+              inverse
+            />
+            <span class="featured-gallery-count">{{ featuredRoom.galleryCount || featuredRoom.gallery.length }} photos</span>
           </div>
         </div>
 
-        <RouterLink
-          class="button-primary"
-          to="/rooms?availability=available"
-        >
-          {{ site.uiText.actions.viewOpenRooms }}
-        </RouterLink>
+        <div class="featured-body">
+          <p class="featured-kicker">{{ featuredRoom.highlightLabel }}</p>
+          <h2>
+            <RouterLink :to="featuredRoom.detailsHref">
+              {{ featuredRoom.title }}
+            </RouterLink>
+          </h2>
+
+          <div class="featured-price-row">
+            <span class="featured-price">{{ featuredRoom.priceLabel }}</span>
+            <span
+              class="featured-status"
+              :class="{ 'featured-status--occupied': !featuredRoom.available }"
+            >
+              {{ featuredRoom.availabilityShortLabel }}
+            </span>
+          </div>
+
+          <p class="featured-summary">{{ featuredRoom.fitSummary }}</p>
+
+          <div class="featured-facts">
+            <span
+              v-for="fact in quickFacts"
+              :key="fact"
+              class="fact-pill"
+            >
+              {{ fact }}
+            </span>
+          </div>
+
+          <RouterLink
+            class="button-primary"
+            :to="featuredRoom.detailsHref"
+          >
+            {{ featuredRoom.available ? site.uiText.actions.viewRoom : site.uiText.actions.viewSimilarRooms }}
+          </RouterLink>
+        </div>
       </aside>
     </div>
   </section>
@@ -360,53 +410,154 @@ const overallPricingNote = computed(() =>
   white-space: nowrap;
 }
 
-.hero-panel {
+.hero-featured {
+  position: relative;
   display: grid;
-  gap: 0.9rem;
   overflow: hidden;
-  padding: var(--card-pad);
 }
 
-.hero-panel-badge {
+.hero-featured::before {
+  position: absolute;
+  inset: 0 0 auto;
+  z-index: 1;
+  height: 0.35rem;
+  content: '';
+  background: linear-gradient(90deg, var(--accent) 0%, var(--sun) 45%, var(--brand) 100%);
+}
+
+.featured-badge {
+  position: absolute;
+  top: 0.35rem;
+  right: 0;
+  z-index: 2;
   display: inline-flex;
-  width: fit-content;
   align-items: center;
   min-height: 2rem;
-  padding: 0.42rem 0.85rem;
-  border: 1px solid rgba(255, 122, 26, 0.16);
-  border-radius: 999px;
-  background: rgba(255, 122, 26, 0.12);
-  color: var(--accent-deep);
+  padding: 0.38rem 0.85rem;
+  border-radius: 0 0 0 0.75rem;
+  background: linear-gradient(135deg, var(--sun), var(--accent));
+  color: #fff;
   font-size: var(--text-kicker);
   font-weight: 800;
   letter-spacing: 0.12em;
   text-transform: uppercase;
 }
 
-.hero-panel h2 {
-  font-size: clamp(1.8rem, 7vw, 2.8rem);
-  line-height: 0.98;
+.featured-media {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 5 / 4;
 }
 
-.hero-checklist {
-  display: grid;
-  gap: 0.7rem;
+.featured-media a,
+.featured-media :deep(picture),
+.featured-media :deep(img) {
+  display: block;
+  width: 100%;
+  height: 100%;
 }
 
-.hero-check {
+.featured-media :deep(img) {
+  object-fit: cover;
+}
+
+.featured-overlay {
+  position: absolute;
+  top: 0.85rem;
+  left: 0.85rem;
+  z-index: 1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.featured-gallery-count {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.75rem;
+  padding: 0.36rem 0.7rem;
+  border-radius: 999px;
+  border: 1px solid var(--glass-stroke-light);
+  background: rgba(7, 18, 26, 0.7);
+  color: var(--text-inverse);
+  font-size: 0.74rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.featured-body {
   display: grid;
-  gap: 0.2rem;
+  gap: 0.75rem;
   padding: var(--card-pad);
-  border-radius: 1.1rem;
+  border-top: 1px solid var(--paper-border-soft);
 }
 
-.hero-check strong {
+.featured-kicker {
+  color: var(--accent-deep);
+  font-size: var(--text-kicker);
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.featured-body h2 {
+  font-size: clamp(1.35rem, 4.5vw, 1.75rem);
+  line-height: 1.1;
+}
+
+.featured-body h2 a {
   color: var(--text-strong);
 }
 
-.hero-check span,
-.hero-panel p {
-  color: var(--text);
+.featured-price-row {
+  display: flex;
+  align-items: baseline;
+  gap: 0.65rem;
+}
+
+.featured-price {
+  color: var(--text-strong);
+  font-size: 1.18rem;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.featured-status {
+  color: var(--brand-strong);
+  font-size: 0.82rem;
+  font-weight: 800;
+}
+
+.featured-status--occupied {
+  color: var(--accent-deep);
+}
+
+.featured-summary {
+  color: var(--muted);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.featured-facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.featured-facts .fact-pill {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.35rem;
+  padding: 0.35rem 0.65rem;
+  border: 1px solid var(--paper-border-soft);
+  border-radius: 999px;
+  background: var(--surface-field-fill);
+  color: var(--text-strong);
+  font-size: 0.78rem;
+  font-weight: 700;
 }
 
 @keyframes hero-call-ring {
@@ -444,7 +595,7 @@ const overallPricingNote = computed(() =>
 @media (min-width: 960px) {
   .hero-grid {
     grid-template-columns: minmax(0, 1.15fr) minmax(20rem, 0.85fr);
-    align-items: stretch;
+    align-items: start;
   }
 
   .hero-proof-row {
@@ -463,6 +614,10 @@ const overallPricingNote = computed(() =>
 
   .hero-call-action {
     padding: 0.96rem 1.14rem 0.98rem;
+  }
+
+  .featured-media {
+    aspect-ratio: 16 / 10;
   }
 }
 </style>

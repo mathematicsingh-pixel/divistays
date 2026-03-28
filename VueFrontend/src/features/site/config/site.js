@@ -162,23 +162,7 @@ export const siteConfig = {
       whatsappMeta: 'Quick reply on WhatsApp',
     },
     heroPanel: {
-      badge: 'Open now',
-      title: 'See the room before you call',
-      summary: 'Photos, rent, and room setup first. Then decide if you want to talk.',
-      points: [
-        {
-          title: 'Rent stays visible',
-          body: 'No price chasing once you open a room.',
-        },
-        {
-          title: 'Kitchen and washroom are clear',
-          body: 'Private or shared is easy to spot.',
-        },
-        {
-          title: 'Talk directly',
-          body: 'Call or WhatsApp once the room looks right.',
-        },
-      ],
+      badge: 'Featured',
     },
     catalog: {
       title: 'Find your room',

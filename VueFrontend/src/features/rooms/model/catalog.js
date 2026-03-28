@@ -80,6 +80,8 @@ export function roomMatchesPriceBand(room, band) {
   return true
 }
 
+export const featuredRoom = availableRooms.find((r) => r.featured) || availableRooms[0] || roomCatalog[0] || null
+
 export function findRoomSummaryBySlug(slug) {
   return roomCatalog.find((room) => room.slug === slug) || null
 }

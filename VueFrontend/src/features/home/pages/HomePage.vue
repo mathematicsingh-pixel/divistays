@@ -13,6 +13,7 @@ import {
   availableRoomCount,
   availableRooms,
   availableStartingPriceLabel,
+  featuredRoom,
   roomCount,
   startingPriceLabel,
 } from '@/features/rooms'
@@ -95,6 +96,7 @@ useHead(() => ({
       :starting-price-label="startingPriceLabel"
       :call-href="callHref"
       :whatsapp-href="defaultWhatsAppHref"
+      :featured-room="featuredRoom"
     />
 
     <AvailableRoomsSection
