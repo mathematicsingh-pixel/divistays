@@ -23,10 +23,6 @@ const props = defineProps({
     type: Number,
     required: true,
   },
-  availableStartingPriceLabel: {
-    type: String,
-    default: '',
-  },
   roomCount: {
     type: Number,
     required: true,
@@ -50,8 +46,8 @@ const props = defineProps({
 })
 
 const availablePricingNote = computed(() =>
-  props.availableStartingPriceLabel
-    ? `From ${props.availableStartingPriceLabel}`
+  props.startingPriceLabel
+    ? `From ${props.startingPriceLabel}`
     : 'Check current availability',
 )
 

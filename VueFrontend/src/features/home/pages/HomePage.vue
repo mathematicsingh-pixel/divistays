@@ -12,7 +12,6 @@ import { buildHomeStructuredData } from '@/features/home/seo'
 import {
   availableRoomCount,
   availableRooms,
-  availableStartingPriceLabel,
   featuredRoom,
   roomCount,
   startingPriceLabel,
@@ -91,7 +90,6 @@ useHead(() => ({
     <HeroSection
       :site="siteConfig"
       :available-room-count="availableRoomCount"
-      :available-starting-price-label="availableStartingPriceLabel"
       :room-count="roomCount"
       :starting-price-label="startingPriceLabel"
       :call-href="callHref"
