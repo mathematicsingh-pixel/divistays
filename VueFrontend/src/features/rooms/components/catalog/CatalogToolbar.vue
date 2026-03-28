@@ -236,7 +236,7 @@ const emit = defineEmits(['update:sheet-open', 'toggle-desktop-filters'])
 
 .toolbar-label {
   color: var(--text);
-  font-size: 0.78rem;
+  font-size: var(--text-kicker);
   font-weight: 800;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -260,7 +260,7 @@ const emit = defineEmits(['update:sheet-open', 'toggle-desktop-filters'])
   display: grid;
   gap: 0.48rem;
   min-height: 100%;
-  padding: 0.8rem 0.9rem;
+  padding: var(--card-pad);
   border-radius: 1.15rem;
 }
 
@@ -286,12 +286,13 @@ const emit = defineEmits(['update:sheet-open', 'toggle-desktop-filters'])
   transition:
     border-color 0.18s ease,
     background-color 0.18s ease,
+    color 0.18s ease,
     transform 0.18s ease;
 }
 
 .chip-button.active,
 .desktop-filter-toggle.active {
-  border-color: rgba(44, 161, 142, 0.26);
+  border-color: rgba(44, 161, 142, 0.3);
   background: rgba(121, 217, 202, 0.12);
   color: var(--brand-strong);
 }
@@ -361,6 +362,10 @@ const emit = defineEmits(['update:sheet-open', 'toggle-desktop-filters'])
   .chip-button:hover {
     transform: translateY(-2px);
   }
+}
+
+.chip-button:active {
+  transform: scale(0.97);
 }
 
 @media (min-width: 960px) {

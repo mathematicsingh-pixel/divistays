@@ -201,9 +201,9 @@ const footerTickerRooms = computed(() =>
 .footer-location {
   width: fit-content;
   padding: 0.28rem 0.62rem;
-  border: 1px solid rgba(255, 255, 255, 0.14);
+  border: 1px solid var(--glass-stroke-light);
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--glass-fill-light);
   font-size: 0.82rem;
   letter-spacing: 0.02em;
 }
@@ -217,7 +217,7 @@ const footerTickerRooms = computed(() =>
   position: relative;
   gap: 1rem;
   overflow: hidden;
-  padding: 1rem;
+  padding: var(--card-pad);
   isolation: isolate;
 }
 
@@ -256,7 +256,7 @@ const footerTickerRooms = computed(() =>
 .footer-action-label,
 .room-ticker-cta,
 .footer-inline-link {
-  font-size: 0.7rem;
+  font-size: var(--text-kicker);
   font-weight: 800;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -296,7 +296,7 @@ const footerTickerRooms = computed(() =>
 .footer-chip,
 .footer-action,
 .room-ticker-link {
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  border: 1px solid var(--glass-stroke-light);
   border-radius: 1.15rem;
   transition:
     transform 0.18s ease,
@@ -412,9 +412,9 @@ const footerTickerRooms = computed(() =>
   gap: 0.85rem;
   min-width: clamp(15rem, 24vw, 19rem);
   padding: 0.82rem 0.95rem;
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  border: 1px solid var(--glass-stroke-light);
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--glass-fill-light);
   color: var(--text-inverse);
   transition:
     transform 0.18s ease,

@@ -242,10 +242,10 @@ const {
 }
 
 .stage-hint {
-  min-height: 1.9rem;
+  min-height: 2.75rem;
   padding: 0.38rem 0.68rem;
   color: var(--text-strong);
-  font-size: 0.76rem;
+  font-size: var(--text-kicker);
   font-weight: 800;
   letter-spacing: 0.04em;
   background: var(--surface-field-fill);
@@ -324,18 +324,18 @@ const {
 }
 
 .stage-reset {
-  min-height: 2rem;
+  min-height: 2.75rem;
   padding: 0.38rem 0.72rem;
   border-radius: 999px;
   color: var(--text-strong);
-  font-size: 0.76rem;
+  font-size: var(--text-kicker);
   font-weight: 800;
   letter-spacing: 0.04em;
 }
 
 .detail-kicker {
   color: var(--brand-strong);
-  font-size: 0.76rem;
+  font-size: var(--text-kicker);
   font-weight: 800;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -359,7 +359,7 @@ const {
 .video-trigger {
   position: relative;
   overflow: hidden;
-  border-radius: 1rem;
+  border-radius: var(--radius-md);
   border: 1px solid var(--paper-border-soft);
   background: rgba(7, 18, 26, 0.9);
   box-shadow: var(--shadow-paper);
@@ -368,7 +368,7 @@ const {
 .video-poster,
 .video-card video {
   width: 100%;
-  border-radius: 1rem;
+  border-radius: var(--radius-md);
 }
 
 .video-play-pill {
@@ -388,6 +388,16 @@ const {
   font-weight: 800;
   letter-spacing: 0.08em;
   text-transform: uppercase;
+}
+
+@media (hover: hover) {
+  .stage-reset:hover {
+    border-color: var(--line-strong);
+  }
+}
+
+.stage-reset:active {
+  transform: scale(0.97);
 }
 
 @media (min-width: 960px) {

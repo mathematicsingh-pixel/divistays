@@ -239,7 +239,7 @@ useOverlayDialog({
   width: 100%;
   max-height: min(44rem, 92svh);
   padding: 1rem 1rem calc(1rem + env(safe-area-inset-bottom));
-  border-radius: 1.5rem 1.5rem 0 0;
+  border-radius: var(--radius-sheet) var(--radius-sheet) 0 0;
 }
 
 .sheet-head {
@@ -251,7 +251,7 @@ useOverlayDialog({
 
 .sheet-kicker {
   color: var(--brand-strong);
-  font-size: 0.76rem;
+  font-size: var(--text-kicker);
   font-weight: 800;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -288,7 +288,7 @@ useOverlayDialog({
 .sheet-group span,
 .sort-field span {
   color: var(--muted);
-  font-size: 0.8rem;
+  font-size: var(--text-meta);
   font-weight: 800;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -309,6 +309,7 @@ useOverlayDialog({
   color: var(--text-strong);
   font-weight: 700;
   box-shadow: var(--shadow-field);
+  transition: border-color 0.18s ease, background-color 0.18s ease, color 0.18s ease;
 }
 
 .chip-button.active {
@@ -353,7 +354,7 @@ useOverlayDialog({
   .sheet-panel {
     width: min(40rem, 100%);
     max-height: 90svh;
-    border-radius: 1.5rem;
+    border-radius: var(--radius-sheet);
   }
 }
 </style>

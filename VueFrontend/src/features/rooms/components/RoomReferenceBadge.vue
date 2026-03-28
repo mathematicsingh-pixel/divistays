@@ -34,7 +34,7 @@ defineProps({
   align-items: center;
   gap: 0.45rem;
   width: fit-content;
-  min-height: 2rem;
+  min-height: 2.75rem;
   padding: 0.38rem 0.72rem;
   border: 1px solid var(--paper-border-soft);
   border-radius: 999px;
@@ -45,7 +45,7 @@ defineProps({
 
 .room-reference-label,
 .room-reference strong {
-  font-size: 0.72rem;
+  font-size: var(--text-kicker);
   font-weight: 800;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -60,9 +60,9 @@ defineProps({
 }
 
 .room-reference-inverse {
-  border-color: rgba(255, 255, 255, 0.16);
+  border-color: var(--glass-stroke-light);
   background: rgba(7, 18, 26, 0.72);
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.18);
+  box-shadow: var(--shadow-chip);
 }
 
 .room-reference-inverse .room-reference-label {

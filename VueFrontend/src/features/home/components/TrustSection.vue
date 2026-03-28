@@ -46,7 +46,7 @@ defineProps({
 .trust-card {
   display: grid;
   gap: 0.6rem;
-  padding: 1rem;
+  padding: var(--card-pad);
 }
 
 .trust-card p {

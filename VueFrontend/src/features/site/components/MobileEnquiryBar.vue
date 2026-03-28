@@ -144,7 +144,7 @@ watch(
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 0.7rem;
-  padding: 0.6rem;
+  padding: 0.7rem;
   margin-bottom: calc(0.8rem + env(safe-area-inset-bottom));
   border-radius: 1.4rem;
   transition:
@@ -162,15 +162,15 @@ watch(
 }
 
 .mobile-bar .button-secondary {
-  min-height: 3rem;
-  background: rgba(255, 255, 255, 0.08);
+  min-height: 3.2rem;
+  background: var(--glass-fill-light);
   color: var(--text-inverse);
-  border-color: rgba(255, 255, 255, 0.16);
+  border-color: var(--glass-stroke-light);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12);
 }
 
 .mobile-bar .button-primary {
-  min-height: 3rem;
+  min-height: 3.2rem;
 }
 
 .mobile-bar-hidden {

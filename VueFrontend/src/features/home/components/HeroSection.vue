@@ -168,7 +168,7 @@ const overallPricingNote = computed(() =>
   display: grid;
   gap: 1.1rem;
   padding: 1.15rem;
-  border-radius: 2rem;
+  border-radius: var(--radius-xl);
   color: var(--text-inverse);
   overflow: hidden;
 }
@@ -213,8 +213,8 @@ const overallPricingNote = computed(() =>
 }
 
 .hero-eyebrow {
-  border-color: rgba(255, 255, 255, 0.18);
-  background: rgba(255, 255, 255, 0.08);
+  border-color: var(--glass-stroke-light);
+  background: var(--glass-fill-light);
 }
 
 .hero-top-note {
@@ -246,14 +246,12 @@ const overallPricingNote = computed(() =>
 }
 
 .hero-proof-card {
-  padding: 0.95rem;
+  padding: var(--card-pad);
   border-radius: var(--radius-lg);
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0.06)),
     rgba(255, 255, 255, 0.07);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.18),
-    0 12px 24px rgba(0, 0, 0, 0.12);
+  box-shadow: var(--shadow-chip);
 }
 
 .hero-proof-row dt {
@@ -277,7 +275,7 @@ const overallPricingNote = computed(() =>
 }
 
 .hero-secondary {
-  border-color: rgba(255, 255, 255, 0.18);
+  border-color: var(--glass-stroke-light);
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.08)),
     rgba(255, 255, 255, 0.08);
@@ -354,7 +352,7 @@ const overallPricingNote = computed(() =>
 
 .hero-call-copy small {
   color: rgba(247, 251, 255, 0.68);
-  font-size: 0.72rem;
+  font-size: var(--text-kicker);
   font-weight: 700;
   letter-spacing: 0.12em;
   line-height: 1.1;
@@ -366,7 +364,7 @@ const overallPricingNote = computed(() =>
   display: grid;
   gap: 0.9rem;
   overflow: hidden;
-  padding: 1rem;
+  padding: var(--card-pad);
 }
 
 .hero-panel-badge {
@@ -379,7 +377,7 @@ const overallPricingNote = computed(() =>
   border-radius: 999px;
   background: rgba(255, 122, 26, 0.12);
   color: var(--accent-deep);
-  font-size: 0.72rem;
+  font-size: var(--text-kicker);
   font-weight: 800;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -398,7 +396,7 @@ const overallPricingNote = computed(() =>
 .hero-check {
   display: grid;
   gap: 0.2rem;
-  padding: 0.9rem;
+  padding: var(--card-pad);
   border-radius: 1.1rem;
 }
 

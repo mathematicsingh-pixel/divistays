@@ -66,6 +66,20 @@
   --radius-xl: 1.9rem;
   --radius-lg: 1.45rem;
   --radius-md: 1rem;
+  --radius-sheet: var(--radius-lg);
+  --space-xs: 0.45rem;
+  --space-sm: 0.65rem;
+  --space-md: 0.9rem;
+  --space-lg: 1.15rem;
+  --space-xl: 1.5rem;
+  --card-pad: 1rem;
+  --text-kicker: 0.74rem;
+  --text-meta: 0.78rem;
+  --shadow-chip:
+    inset 0 1px 0 rgba(255, 255, 255, 0.18),
+    0 12px 24px rgba(0, 0, 0, 0.12);
+  --glass-stroke-light: rgba(255, 255, 255, 0.16);
+  --glass-fill-light: rgba(255, 255, 255, 0.08);
   color: var(--text);
   background: var(--bg);
   font: 16px/1.6 'Manrope', sans-serif;
@@ -252,7 +266,7 @@ main {
 
 .section-heading {
   display: grid;
-  gap: 0.85rem;
+  gap: var(--space-md);
   margin-bottom: 1rem;
 }
 
@@ -272,12 +286,12 @@ main {
   align-items: center;
   gap: 0.35rem;
   width: fit-content;
-  min-height: 2rem;
+  min-height: 2.75rem;
   padding: 0.42rem 0.82rem;
   border: 1px solid rgba(121, 217, 202, 0.24);
   border-radius: 999px;
   background: rgba(121, 217, 202, 0.1);
-  font-size: 0.72rem;
+  font-size: var(--text-kicker);
   font-weight: 800;
   letter-spacing: 0.13em;
   text-transform: uppercase;
@@ -363,7 +377,7 @@ p {
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
-  min-height: 2.2rem;
+  min-height: 2.75rem;
   padding: 0.5rem 0.75rem;
   border: 1px solid var(--paper-border-soft);
   border-radius: 999px;
@@ -372,6 +386,10 @@ p {
   font-size: 0.82rem;
   font-weight: 700;
   box-shadow: var(--shadow-field);
+  transition:
+    transform 0.18s ease,
+    border-color 0.18s ease,
+    background-color 0.18s ease;
 }
 
 .page-rise,
@@ -433,6 +451,11 @@ summary:focus-visible {
     box-shadow: 0 14px 28px rgba(255, 122, 26, 0.35);
   }
 
+  .soft-chip:hover {
+    transform: translateY(-2px);
+    border-color: var(--line-strong);
+  }
+
   .surface-panel:hover {
     box-shadow: 0 22px 56px rgba(0, 0, 0, 0.22);
   }
@@ -441,6 +464,13 @@ summary:focus-visible {
   .glass-panel-dark:hover {
     box-shadow: 0 30px 80px rgba(0, 0, 0, 0.28);
   }
+}
+
+.button-primary:active,
+.button-secondary:active,
+.button-tertiary:active,
+.soft-chip:active {
+  transform: scale(0.97);
 }
 
 @supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {

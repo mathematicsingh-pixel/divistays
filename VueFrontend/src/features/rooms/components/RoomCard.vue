@@ -157,16 +157,17 @@ const quickFacts = (room) => [room.occupancyLabel, room.kitchenLabel, room.washr
 .preview-pill {
   display: inline-flex;
   align-items: center;
-  min-height: 1.95rem;
+  min-height: 2.75rem;
   padding: 0.36rem 0.7rem;
   border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.16);
+  border: 1px solid var(--glass-stroke-light);
   background: rgba(7, 18, 26, 0.7);
   color: var(--text-inverse);
   font-size: 0.74rem;
   font-weight: 800;
   letter-spacing: 0.08em;
   text-transform: uppercase;
+  transition: transform 0.18s ease, background-color 0.18s ease;
 }
 
 .preview-pill {
@@ -176,7 +177,7 @@ const quickFacts = (room) => [room.occupancyLabel, room.kitchenLabel, room.washr
 .room-body {
   display: grid;
   gap: 0.9rem;
-  padding: 1.05rem;
+  padding: var(--card-pad);
   border-top: 1px solid var(--paper-border-soft);
   background: transparent;
 }
@@ -193,7 +194,7 @@ const quickFacts = (room) => [room.occupancyLabel, room.kitchenLabel, room.washr
 
 .room-kicker {
   color: var(--accent-deep);
-  font-size: 0.72rem;
+  font-size: var(--text-kicker);
   font-weight: 800;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -240,7 +241,7 @@ const quickFacts = (room) => [room.occupancyLabel, room.kitchenLabel, room.washr
 .fact-pill {
   display: inline-flex;
   align-items: center;
-  min-height: 2.1rem;
+  min-height: 2.75rem;
   padding: 0.45rem 0.72rem;
   border: 1px solid var(--paper-border-soft);
   border-radius: 999px;
@@ -252,6 +253,22 @@ const quickFacts = (room) => [room.occupancyLabel, room.kitchenLabel, room.washr
 
 .room-actions > * {
   flex: 1 1 11rem;
+}
+
+@media (hover: hover) {
+  .gallery-pill:hover,
+  .preview-pill:hover {
+    background: rgba(7, 18, 26, 0.82);
+  }
+
+  .fact-pill:hover {
+    border-color: var(--line-strong);
+  }
+}
+
+.gallery-pill:active,
+.preview-pill:active {
+  transform: scale(0.97);
 }
 
 @media (min-width: 760px) {

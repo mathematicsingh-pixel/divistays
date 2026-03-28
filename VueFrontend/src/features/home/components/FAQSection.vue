@@ -48,17 +48,19 @@ defineProps({
 
 .faq-list {
   display: grid;
-  gap: 0.85rem;
+  gap: var(--space-md);
 }
 
 .faq-item {
-  padding: 1rem 1.1rem;
+  padding: var(--card-pad);
 }
 
 .faq-item summary {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  min-height: 2.75rem;
+  gap: 0.75rem;
   cursor: pointer;
   color: var(--text-strong);
   font-weight: 800;
@@ -74,7 +76,7 @@ defineProps({
   font-size: 1.35rem;
   line-height: 1;
   color: var(--accent-deep);
-  transition: transform 0.2s ease;
+  transition: transform 0.18s ease;
 }
 
 .faq-item[open] summary::after {
@@ -88,6 +90,12 @@ defineProps({
   border-radius: 1rem;
   background: var(--surface-field-fill);
   color: var(--muted);
+}
+
+@media (hover: hover) {
+  .faq-item summary:hover {
+    color: var(--accent-deep);
+  }
 }
 
 @media (min-width: 960px) {

@@ -183,8 +183,8 @@ function loadMap() {
 }
 
 .location-chip {
-  border-color: rgba(255, 255, 255, 0.16);
-  background: rgba(255, 255, 255, 0.08);
+  border-color: var(--glass-stroke-light);
+  background: var(--glass-fill-light);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.1),
     0 8px 18px rgba(0, 0, 0, 0.14);
@@ -196,9 +196,9 @@ function loadMap() {
   display: grid;
   gap: 0.55rem;
   padding: 0.95rem;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--glass-stroke-light);
   border-radius: var(--radius-lg);
-  background: rgba(255, 255, 255, 0.06);
+  background: var(--glass-fill-light);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
 
@@ -257,13 +257,13 @@ function loadMap() {
 .location-map-badge {
   display: inline-flex;
   align-items: center;
-  min-height: 2rem;
+  min-height: 2.75rem;
   padding: 0.42rem 0.78rem;
   border: 1px solid rgba(11, 23, 32, 0.1);
   border-radius: 999px;
   background: rgba(11, 23, 32, 0.04);
   color: var(--muted);
-  font-size: 0.76rem;
+  font-size: var(--text-kicker);
   font-weight: 800;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -273,7 +273,7 @@ function loadMap() {
   overflow: hidden;
   min-height: 17rem;
   border: 1px solid rgba(11, 23, 32, 0.08);
-  border-radius: 1.6rem 1.6rem 0.95rem 0.95rem;
+  border-radius: var(--radius-lg) var(--radius-lg) var(--radius-md) var(--radius-md);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
 }
 
@@ -297,7 +297,7 @@ function loadMap() {
 
 .map-placeholder-kicker {
   color: var(--accent-deep);
-  font-size: 0.74rem;
+  font-size: var(--text-kicker);
   font-weight: 800;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -311,7 +311,7 @@ function loadMap() {
 
 .map-placeholder small {
   color: var(--muted);
-  font-size: 0.86rem;
+  font-size: var(--text-meta);
   font-weight: 700;
 }
 

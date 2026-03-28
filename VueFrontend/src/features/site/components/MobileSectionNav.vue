@@ -109,8 +109,8 @@ onBeforeUnmount(() => {
   pointer-events: none;
   transform: translateY(calc(-100% - 1rem));
   transition:
-    transform 0.22s ease,
-    opacity 0.22s ease;
+    transform 0.18s ease,
+    opacity 0.18s ease;
   scrollbar-width: none;
 }
 
@@ -127,12 +127,13 @@ onBeforeUnmount(() => {
 .mobile-section-link {
   flex: 1 0 auto;
   min-width: max-content;
+  min-height: 2.75rem;
   padding: 0.72rem 0.92rem;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--glass-stroke-light);
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--glass-fill-light);
   color: var(--text-inverse);
-  font-size: 0.74rem;
+  font-size: var(--text-kicker);
   font-weight: 800;
   letter-spacing: 0.12em;
   line-height: 1;
@@ -146,6 +147,10 @@ onBeforeUnmount(() => {
     background: rgba(255, 255, 255, 0.1);
     border-color: rgba(255, 255, 255, 0.16);
   }
+}
+
+.mobile-section-link:active {
+  transform: scale(0.97);
 }
 
 @media (min-width: 960px) {

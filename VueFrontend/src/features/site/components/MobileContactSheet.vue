@@ -110,8 +110,8 @@ useOverlayDialog({
 .contact-sheet {
   display: grid;
   gap: 1rem;
-  padding: 1rem;
-  border-radius: 1.5rem;
+  padding: var(--card-pad);
+  border-radius: var(--radius-sheet);
 }
 
 .contact-sheet-head {
@@ -128,7 +128,7 @@ useOverlayDialog({
 
 .contact-sheet-kicker {
   color: var(--accent-deep);
-  font-size: 0.72rem;
+  font-size: var(--text-kicker);
   font-weight: 800;
   letter-spacing: 0.13em;
   text-transform: uppercase;
@@ -176,7 +176,7 @@ useOverlayDialog({
 }
 
 .contact-option-meta {
-  font-size: 0.78rem;
+  font-size: var(--text-meta);
   color: inherit;
   opacity: 0.78;
 }

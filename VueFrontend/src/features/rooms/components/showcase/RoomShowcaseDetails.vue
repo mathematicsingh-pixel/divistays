@@ -144,7 +144,7 @@ const callHref = getCallHref()
 
 .detail-kicker {
   color: var(--brand-strong);
-  font-size: 0.76rem;
+  font-size: var(--text-kicker);
   font-weight: 800;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -161,7 +161,7 @@ const callHref = getCallHref()
 .detail-copy :deep(h2) {
   color: var(--text-strong);
   font-size: clamp(2.15rem, 11vw, 4.25rem);
-  line-height: 0.96;
+  line-height: 0.98;
   text-wrap: balance;
 }
 
@@ -182,13 +182,13 @@ const callHref = getCallHref()
 .availability-pill {
   display: inline-flex;
   align-items: center;
-  min-height: 2rem;
+  min-height: 2.75rem;
   padding: 0.35rem 0.72rem;
   border: 1px solid rgba(44, 161, 142, 0.28);
   border-radius: 999px;
   background: rgba(121, 217, 202, 0.14);
   color: var(--brand-strong);
-  font-size: 0.8rem;
+  font-size: var(--text-meta);
   font-weight: 800;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -227,7 +227,7 @@ const callHref = getCallHref()
 .spec-grid dt {
   margin-bottom: 0.3rem;
   color: var(--muted);
-  font-size: 0.78rem;
+  font-size: var(--text-meta);
   font-weight: 800;
   letter-spacing: 0.12em;
   text-transform: uppercase;

@@ -40,12 +40,12 @@ defineProps({
 .process-card {
   display: grid;
   gap: 0.7rem;
-  padding: 1rem;
+  padding: var(--card-pad);
 }
 
 .process-index {
   color: var(--accent-deep);
-  font-size: 0.72rem;
+  font-size: var(--text-kicker);
   font-weight: 800;
   letter-spacing: 0.14em;
   text-transform: uppercase;
