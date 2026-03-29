@@ -3,6 +3,8 @@ import { computed } from 'vue'
 import BrandMark from '@/features/site/components/brand/BrandMark.vue'
 import RoomReferenceBadge from '@/features/rooms/components/RoomReferenceBadge.vue'
 import ResponsiveImage from '@/shared/ui/ResponsiveImage.vue'
+import ShowerIcon from '@/shared/icons/ShowerIcon.vue'
+import OvenIcon from '@/shared/icons/OvenIcon.vue'
 
 function formatPhoneDisplay(value) {
   const digits = value.replace(/\D/g, '')
@@ -59,8 +61,21 @@ const overallPricingNote = computed(() =>
 
 const quickFacts = computed(() => {
   if (!props.featuredRoom) return []
-  return [props.featuredRoom.occupancyLabel, props.featuredRoom.kitchenLabel, props.featuredRoom.washroomLabel]
+  return [
+    { path: 'M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4-4v2m8-4a4 4 0 100-8 4 4 0 000 8zm13 8v-2a4 4 0 00-3-3.87m-4-12a4 4 0 010 7.75', label: props.featuredRoom.occupancyLabel },
+    { component: 'oven', label: props.featuredRoom.kitchenLabel },
+    { component: 'shower', label: props.featuredRoom.washroomLabel },
+  ]
 })
+
+const propertyAmenities = [
+  { path: 'M5 12.55a11 11 0 0114 0M8.53 16.11a6 6 0 016.95 0M12 20h.01', label: 'High-speed WiFi' },
+  { path: 'M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2zM12 17a4 4 0 100-8 4 4 0 000 8z', label: '24/7 CCTV' },
+  { path: 'M12 2.69l5.66 5.66a8 8 0 11-11.31 0z', label: 'Water purifier' },
+  { path: 'M13 2L3 14h9l-1 8 10-12h-9z', label: 'Power backup' },
+  { path: 'M3 3v18h18V3zm9 14a5 5 0 110-10 5 5 0 010 10z', label: 'Laundry area' },
+  { path: 'M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z', label: 'Secure premises' },
+]
 </script>
 
 <template>
@@ -91,7 +106,7 @@ const quickFacts = computed(() => {
         <div class="hero-proof-row">
           <div class="hero-proof-card surface-field-panel">
             <dt>
-              <span class="hero-proof-icon">🏠</span>
+              <svg class="hero-proof-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" /><polyline points="9 22 9 12 15 12 15 22" /></svg>
               <span class="hero-proof-live-dot" aria-hidden="true" />
               {{ availableRoomCount }} rooms available now
             </dt>
@@ -99,14 +114,14 @@ const quickFacts = computed(() => {
           </div>
           <div class="hero-proof-card surface-field-panel">
             <dt>
-              <span class="hero-proof-icon">📋</span>
+              <svg class="hero-proof-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 012 2v14a2 2 0 01-2 2H6a2 2 0 01-2-2V6a2 2 0 012-2h2" /><rect x="8" y="2" width="8" height="4" rx="1" /></svg>
               {{ roomCount }} room options
             </dt>
             <dd>Compare by occupancy and setup</dd>
           </div>
           <div class="hero-proof-card surface-field-panel">
             <dt>
-              <span class="hero-proof-icon">💰</span>
+              <svg class="hero-proof-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23" /><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6" /></svg>
               {{ overallPricingNote }}
             </dt>
             <dd>Call or WhatsApp directly</dd>
@@ -192,10 +207,13 @@ const quickFacts = computed(() => {
           <div class="featured-facts">
             <span
               v-for="fact in quickFacts"
-              :key="fact"
+              :key="fact.label"
               class="fact-pill"
             >
-              {{ fact }}
+              <ShowerIcon v-if="fact.component === 'shower'" class="fact-icon" />
+              <OvenIcon v-else-if="fact.component === 'oven'" class="fact-icon" />
+              <svg v-else class="fact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path :d="fact.path" /></svg>
+              {{ fact.label }}
             </span>
           </div>
 
@@ -207,6 +225,33 @@ const quickFacts = computed(() => {
           </RouterLink>
         </div>
       </aside>
+    </div>
+
+    <div class="amenities-strip">
+      <div class="amenities-track">
+        <span
+          v-for="item in propertyAmenities"
+          :key="item.label"
+          class="amenity-chip"
+        >
+          <svg class="amenity-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path :d="item.path" />
+          </svg>
+          <span class="amenity-label">{{ item.label }}</span>
+        </span>
+        <!-- duplicate for seamless loop on mobile -->
+        <span
+          v-for="item in propertyAmenities"
+          :key="item.label + '-dup'"
+          class="amenity-chip ticker-dup"
+          aria-hidden="true"
+        >
+          <svg class="amenity-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path :d="item.path" />
+          </svg>
+          <span class="amenity-label">{{ item.label }}</span>
+        </span>
+      </div>
     </div>
   </section>
 </template>
@@ -370,9 +415,12 @@ const quickFacts = computed(() => {
 }
 
 .hero-proof-icon {
-  font-size: 1.15rem;
+  width: 1.1rem;
+  height: 1.1rem;
   margin-right: 0.3rem;
-  vertical-align: -0.08em;
+  vertical-align: -0.15em;
+  flex-shrink: 0;
+  opacity: 0.85;
 }
 
 .hero-proof-live-dot {
@@ -639,6 +687,7 @@ const quickFacts = computed(() => {
 .featured-facts .fact-pill {
   display: inline-flex;
   align-items: center;
+  gap: 0.35rem;
   min-height: 2.35rem;
   padding: 0.35rem 0.65rem;
   border: 1px solid var(--paper-border-soft);
@@ -647,6 +696,78 @@ const quickFacts = computed(() => {
   color: var(--text-strong);
   font-size: 0.78rem;
   font-weight: 700;
+}
+
+.featured-facts .fact-icon {
+  width: 0.9rem;
+  height: 0.9rem;
+  flex-shrink: 0;
+  opacity: 0.7;
+}
+
+/* ── Amenities strip ─────────────────────────── */
+.amenities-strip {
+  overflow: hidden;
+  margin-top: 1rem;
+  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
+
+.amenities-track {
+  display: flex;
+  gap: 0.5rem;
+  width: max-content;
+  animation: ticker 18s linear infinite;
+}
+
+.amenity-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  flex-shrink: 0;
+  padding: 0.4rem 0.75rem;
+  border: 1px solid color-mix(in srgb, var(--text-inverse) 15%, transparent);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--text-inverse) 6%, transparent);
+  color: var(--text-inverse);
+  font-size: 0.72rem;
+  font-weight: 600;
+  backdrop-filter: blur(4px);
+}
+
+.amenity-icon {
+  width: 0.9rem;
+  height: 0.9rem;
+  flex-shrink: 0;
+  opacity: 0.85;
+}
+
+.amenity-label {
+  white-space: nowrap;
+}
+
+@keyframes ticker {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* desktop: no ticker, centered wrap */
+@media (min-width: 768px) {
+  .amenities-strip {
+    mask-image: none;
+    -webkit-mask-image: none;
+  }
+
+  .amenities-track {
+    flex-wrap: wrap;
+    justify-content: center;
+    width: auto;
+    animation: none;
+  }
+
+  .ticker-dup {
+    display: none;
+  }
 }
 
 /* ── Keyframes ───────────────────────────────── */
