@@ -22,7 +22,7 @@ const mapPreviewAlt = computed(() =>
 const mapHighlights = computed(() => [
   props.site.locationShort,
   'Google Maps area pin',
-  'Exact building on enquiry',
+  'Exact building shared on enquiry',
 ])
 </script>
 
@@ -39,7 +39,7 @@ const mapHighlights = computed(() => [
             <h2>Check the area before you visit.</h2>
             <p>
               The map shows the wider Kakadeo area, not the exact building. We share the precise
-              pin once you pick a room to discuss.
+              pin once you shortlist a room or studio to discuss.
             </p>
 
             <div class="location-highlights">
@@ -54,7 +54,7 @@ const mapHighlights = computed(() => [
 
             <div class="location-note">
               <span class="label-upper label-pill">Area pin only</span>
-              <p>Useful for commute checks, coaching-belt proximity, and nearby landmarks.</p>
+              <p>Useful for commute checks, nearby landmarks, and a quick feel for the area.</p>
             </div>
           </div>
 
@@ -63,7 +63,7 @@ const mapHighlights = computed(() => [
             :href="mapOpenUrl"
             target="_blank"
             rel="noreferrer"
-            :aria-label="`Open approximate CozyRooms location in Google Maps for ${site.locationLabel}`"
+            :aria-label="`Open approximate ${site.name} location in Google Maps for ${site.locationLabel}`"
           >
             <div class="location-map-head">
               <div class="location-map-copy">
@@ -92,7 +92,7 @@ const mapHighlights = computed(() => [
             </div>
 
             <p class="location-map-note">
-              Area only. Exact pin shared once you pick a room.
+              Area only. Exact pin shared once you shortlist a place.
             </p>
           </a>
         </div>

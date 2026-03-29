@@ -43,7 +43,7 @@ export default defineRoom({
   washroomLabel: 'Common washroom',
   highlightLabel: 'Lowest monthly rent',
   facingLabel: 'Garden-facing',
-  bestFor: 'Students who want the lowest rent and are comfortable with shared kitchen and washroom access.',
+  bestFor: 'Anyone who wants the lowest rent and is comfortable with shared kitchen and washroom access.',
   included,
   extraNotes,
   visitNextStep: 'Use the similar-room CTA to ask which low-rent room is open now.',

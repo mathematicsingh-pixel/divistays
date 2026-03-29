@@ -1,4 +1,4 @@
-# UI Style Guide — CozyRooms
+# UI Style Guide — DiviStays
 
 Source of truth for all visual decisions. Every agent and contributor must read this before making UI changes.
 
@@ -6,7 +6,7 @@ Source of truth for all visual decisions. Every agent and contributor must read 
 
 ## 1. Brand & Design Intent
 
-CozyRooms is a student room rental site for Kakadeo, Kanpur. The interface must feel:
+DiviStays is a room and studio apartment rental site for Kakadeo, Kanpur. The interface must feel:
 
 - **Premium but restrained** — quality through hierarchy and space, not decoration
 - **Room-first** — real imagery leads; copy supports
@@ -294,7 +294,7 @@ Same structure as room card but larger, with optional badge overlay on image.
 
 ## 14. Motion Rules
 
-Animations are a core part of the CozyRooms identity. Keep them.
+Animations are a core part of the DiviStays identity. Keep them.
 
 ### Existing animations (preserve all)
 - `page-rise`: entrance stagger for section content.

@@ -26,7 +26,7 @@ export default defineRoom({
   slug: 'budget-single-attached',
   title: 'Budget single room',
   summary:
-    'Entry-level single student room with an attached washroom, common kitchen access, and a simpler stay format for budget-sensitive enquiries.',
+    'Entry-level single room with an attached washroom, common kitchen access, and a simpler stay format for budget-sensitive enquiries.',
   fitSummary: 'Single room with attached washroom for a tighter monthly budget.',
   priceMonthly: 3999,
   available: false,
@@ -41,7 +41,7 @@ export default defineRoom({
   washroomLabel: 'Attached washroom',
   highlightLabel: 'Attached washroom',
   facingLabel: 'Budget-focused',
-  bestFor: 'Students who want an attached washroom without moving into a higher rent band.',
+  bestFor: 'Anyone who wants an attached washroom without moving into a higher rent band.',
   included,
   extraNotes,
   visitNextStep: 'Ask for a similar available budget room before you plan a visit.',

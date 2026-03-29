@@ -61,15 +61,15 @@ const mobileFiltersSummary = occupancyOptions.length
   : 'Budget and room setup'
 
 export const siteConfig = {
-  name: 'CozyRooms',
-  shortName: 'CozyRooms',
-  defaultTitle: 'Student Rooms in Kakadeo, Kanpur | CozyRooms',
-  roomsTitle: 'Compare Student Rooms in Kakadeo, Kanpur | CozyRooms',
+  name: 'DiviStays',
+  shortName: 'DiviStays',
+  defaultTitle: 'Rooms and Studio Apartments in Kakadeo, Kanpur | DiviStays',
+  roomsTitle: 'Compare Rooms and Studio Apartments in Kakadeo, Kanpur | DiviStays',
   description:
-    `Browse ${formatCountLabel(roomCount, 'student room')} in Kakadeo, Kanpur with photos, monthly rent, occupancy, kitchen, washroom, and live availability. ${siteAvailabilityLine}`,
+    `Browse furnished rooms and studio apartments in Kakadeo, Kanpur with photos, monthly rent, occupancy, kitchen, washroom, and live availability. ${siteAvailabilityLine}`,
   roomsDescription:
-    `Compare ${formatCountLabel(roomCount, 'student room')} in Kakadeo by rent, occupancy, kitchen, washroom, and current availability. ${siteAvailabilityLine}`,
-  defaultSiteUrl: 'https://www.cozyrooms.example',
+    `Compare furnished rooms and studio apartments in Kakadeo, Kanpur by rent, occupancy, kitchen, washroom, and current availability. ${siteAvailabilityLine}`,
+  defaultSiteUrl: 'https://www.divistays.example',
   themeColor: '#07121a',
   ogImagePath: '/og-default.svg',
   phoneDisplay: '8306709248',
@@ -77,13 +77,13 @@ export const siteConfig = {
   whatsappNumber: '918306709248',
   locationLabel: 'Kakadeo, Kanpur, Uttar Pradesh',
   locationShort: 'Kakadeo, Kanpur',
-  audienceLabel: 'Students in Kakadeo',
-  brandLine: 'Real rooms. Real rent.',
-  supportLine: 'Furnished student rooms in Kakadeo, Kanpur.',
+  audienceLabel: 'Room and studio seekers in Kakadeo',
+  brandLine: 'Comfortable stays. Clear pricing.',
+  supportLine: 'Furnished rooms and studio apartments in Kakadeo, Kanpur.',
   heroEyebrow: 'Available now',
-  heroTitle: 'Furnished student rooms in Kakadeo',
+  heroTitle: 'Rooms & studios in Kakadeo',
   heroSummary:
-    'See photos, rent, occupancy, kitchen, and washroom details before you call. If a room works, message or ring us directly.',
+    'See photos, rent, and setup up front. If a place feels right, message or call us directly.',
   heroPrimaryLabel: 'View open rooms',
   heroSecondaryLabel: 'Ask on WhatsApp',
   heroCallLabel: 'Call us',
@@ -109,7 +109,7 @@ export const siteConfig = {
     },
     {
       title: 'Direct line',
-      body: 'Call or WhatsApp CozyRooms without a form, lead wall, or callback loop.',
+      body: 'Call or WhatsApp DiviStays without a form, lead wall, or callback loop.',
     },
   ],
   processEyebrow: 'How it works',
@@ -135,14 +135,14 @@ export const siteConfig = {
   faqSummary: 'Quick answers first. Then call or message if you want details.',
   faqs: siteFaqs,
   ctaEyebrow: 'Direct contact',
-  ctaTitle: 'Ask what is free today',
+  ctaTitle: 'Ask what is open today',
   ctaSummary:
     'Send the room ID you like. If that one is taken, we will point you to the closest open option.',
   ctaPrimaryLabel: 'Ask on WhatsApp',
   ctaSecondaryLabel: 'Call us',
-  footerDescriptor: 'Furnished student rooms in Kakadeo, Kanpur.',
+  footerDescriptor: 'Furnished rooms and studio apartments in Kakadeo, Kanpur.',
   footerSummary:
-    'CozyRooms keeps it simple: photos, rent, room setup, and a direct phone or WhatsApp line.',
+    'DiviStays keeps it simple: photos, rent, room setup, and a direct phone or WhatsApp line.',
   uiText: {
     actions: {
       viewOpenRooms: 'View open rooms',
@@ -153,11 +153,11 @@ export const siteConfig = {
       viewRoom: 'View room',
       viewSimilarRooms: 'View similar rooms',
       askOnWhatsApp: 'Ask on WhatsApp',
-      callCozyRooms: 'Call us',
+      callDirect: 'Call us',
     },
     contactSheet: {
       eyebrow: 'Talk to us',
-      title: 'Talk to CozyRooms',
+      title: 'Talk to DiviStays',
       summary: 'Call us directly or send a quick WhatsApp message.',
       whatsappMeta: 'Quick reply on WhatsApp',
     },
@@ -206,7 +206,7 @@ export function getCallHref() {
 export function buildStickyContactOptions(callHref, whatsappHref) {
   return [
     {
-      label: siteConfig.uiText.actions.callCozyRooms,
+      label: siteConfig.uiText.actions.callDirect,
       href: callHref,
       meta: siteConfig.phoneDisplay,
       tone: 'primary',
@@ -221,7 +221,7 @@ export function buildStickyContactOptions(callHref, whatsappHref) {
 }
 
 export function buildGenericEnquiry() {
-  return 'Hi, I’m looking for a student room in Kakadeo. Please share the room IDs available now, monthly rent, and visit timing.'
+  return "Hi, I'm looking for a room or studio apartment in Kakadeo. Please share what is available now, the monthly rent, and visit timing."
 }
 
 export function buildRoomEnquiry(room) {
@@ -245,9 +245,9 @@ export function getPageOgImage(siteUrl, path = siteConfig.ogImagePath) {
 }
 
 export function getRoomPageTitle(room) {
-  return `${room.title} in Kakadeo, Kanpur | ${room.priceLabel} | CozyRooms`
+  return `${room.title} in Kakadeo, Kanpur | ${room.priceLabel} | DiviStays`
 }
 
 export function getRoomPageDescription(room) {
-  return `See photos, monthly rent, availability, occupancy, kitchen, and washroom details for ${room.title} in Kakadeo, Kanpur. Call or WhatsApp CozyRooms directly.`
+  return `See photos, monthly rent, availability, occupancy, kitchen, and washroom details for ${room.title} in Kakadeo, Kanpur. Call or WhatsApp DiviStays directly.`
 }

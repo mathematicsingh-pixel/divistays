@@ -1,4 +1,4 @@
-# UI Audit — CozyRooms VueFrontend
+# UI Audit — DiviStays VueFrontend
 
 Snapshot of inconsistencies and redundant patterns found during the design-system normalization.
 

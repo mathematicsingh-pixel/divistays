@@ -25,7 +25,7 @@ const props = defineProps({
 })
 
 const resolvedTone = computed(() => (props.inverted ? 'light' : props.tone || 'dark'))
-const label = computed(() => props.strap || props.tag || 'Student stays')
+const label = computed(() => props.strap || props.tag || 'Rooms & studio stays')
 </script>
 
 <template>
@@ -78,7 +78,7 @@ const label = computed(() => props.strap || props.tag || 'Student stays')
 
     <span class="brand-copy">
       <span class="brand-name">
-        <span class="brand-name-cozy">Cozy</span><span class="brand-name-rooms">Rooms</span>
+        <span class="brand-name-divi">Divi</span><span class="brand-name-stays">Stays</span>
       </span>
       <span
         v-if="!compact"
@@ -194,7 +194,7 @@ const label = computed(() => props.strap || props.tag || 'Student stays')
   text-shadow: var(--word-shadow);
 }
 
-.brand-name-cozy {
+.brand-name-divi {
   font-weight: 700;
 }
 

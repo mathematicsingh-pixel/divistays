@@ -138,7 +138,7 @@ useHead(() => ({
       :primary-label="siteConfig.uiText.actions.askOnWhatsApp"
       primary-blank
       :secondary-href="callHref"
-      :secondary-label="siteConfig.uiText.actions.callCozyRooms"
+      :secondary-label="siteConfig.uiText.actions.callDirect"
     />
   </main>
 </template>

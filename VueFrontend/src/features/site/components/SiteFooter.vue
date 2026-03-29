@@ -42,7 +42,7 @@ const footerTickerRooms = computed(() =>
       <div class="footer-copy">
         <BrandMark
           inverted
-          tag="Student stays"
+          tag="Rooms & studio stays"
         />
         <p class="footer-descriptor">{{ site.footerDescriptor }}</p>
         <p class="footer-location">{{ site.locationLabel }}</p>

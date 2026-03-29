@@ -22,7 +22,6 @@ defineProps({
     <div class="container">
       <div class="cta-banner page-rise">
         <div class="cta-copy">
-          <span class="label-upper cta-eyebrow">{{ site.ctaEyebrow }}</span>
           <BrandMark
             compact
             tag="Direct line"

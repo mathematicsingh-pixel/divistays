@@ -5,7 +5,7 @@ export const siteFaqs = [
   },
   {
     question: 'What details can I compare before I call?',
-    answer: 'You can compare rent, occupancy, kitchen, washroom, photos, and availability before you contact CozyRooms.',
+    answer: 'You can compare rent, occupancy, kitchen, washroom, photos, and availability before you contact DiviStays.',
   },
   {
     question: 'What is included in the monthly rent?',
@@ -13,7 +13,7 @@ export const siteFaqs = [
   },
   {
     question: 'Can I visit before I decide?',
-    answer: 'Yes. Open the room you want, then call or WhatsApp CozyRooms to confirm current availability and visit timing.',
+    answer: 'Yes. Open the room you want, then call or WhatsApp DiviStays to confirm current availability and visit timing.',
   },
   {
     question: 'What should I do if the room I want is occupied?',
@@ -21,6 +21,6 @@ export const siteFaqs = [
   },
   {
     question: 'How should I ask about a room quickly?',
-    answer: 'Open the room you like and send the room ID on WhatsApp or call directly so CozyRooms can confirm the current status faster.',
+    answer: 'Open the room you like and send the room ID on WhatsApp or call directly so DiviStays can confirm the current status faster.',
   },
 ]

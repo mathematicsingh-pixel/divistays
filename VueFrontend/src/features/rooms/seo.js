@@ -107,7 +107,7 @@ export function buildRoomsStructuredData({ site, siteUrl, rooms }) {
     {
       '@context': 'https://schema.org',
       '@type': 'ItemList',
-      name: 'Student rooms in Kakadeo',
+      name: 'Rooms and studio apartments in Kakadeo',
       itemListElement: rooms.map((room, index) => ({
         '@type': 'ListItem',
         position: index + 1,

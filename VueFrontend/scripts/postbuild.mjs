@@ -6,7 +6,7 @@ import { loadRoomSummaryCatalog } from './lib/load-room-content.mjs'
 const scriptDir = dirname(fileURLToPath(import.meta.url))
 const rootDir = resolve(scriptDir, '..')
 const distDir = resolve(rootDir, 'dist')
-const defaultSiteUrl = 'https://www.cozyrooms.example'
+const defaultSiteUrl = 'https://www.divistays.example'
 const roomCatalog = await loadRoomSummaryCatalog()
 
 function resolveSiteUrl(candidate) {

@@ -1,4 +1,4 @@
-# CozyRooms VueFrontend
+# DiviStays VueFrontend
 
 Feature-first Vue app. One room file per room. FAQ copy in one site data file.
 

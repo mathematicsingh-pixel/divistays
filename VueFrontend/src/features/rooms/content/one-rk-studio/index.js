@@ -15,7 +15,7 @@ const extraNotes = [
 const gallery = [
   image('01', 'assets/rooms/one-rk-studio/01.jpg', '1 RK studio view with bed and long interior layout.', 'Main room view'),
   image('02', 'assets/rooms/one-rk-studio/02.jpg', 'Study furniture and room depth inside the 1 RK studio.', 'Work corner'),
-  image('03', 'assets/rooms/one-rk-studio/03.jpg', 'Kitchen-side view inside the 1 RK student studio.', 'Kitchen side'),
+  image('03', 'assets/rooms/one-rk-studio/03.jpg', 'Kitchen-side view inside the 1 RK studio.', 'Kitchen side'),
   image('04', 'assets/rooms/one-rk-studio/04.jpg', 'Wide interior angle showing furnished 1 RK layout.', 'Wide interior'),
   image('05', 'assets/rooms/one-rk-studio/05.jpg', 'Bed and storage alignment inside the 1 RK room.', 'Sleeping zone'),
   image('06', 'assets/rooms/one-rk-studio/06.jpg', 'Clean line-of-sight across the 1 RK studio.', 'Open sightline'),
@@ -29,8 +29,8 @@ export default defineRoom({
   slug: 'one-rk-studio',
   title: '1 RK studio apartment',
   summary:
-    'Furnished 1 RK-style student stay with a private kitchen, attached washroom, and a room layout that works well for a double setup.',
-  fitSummary: '1 RK-style setup for students who want a more self-contained room.',
+    'Furnished 1 RK-style stay with a private kitchen, attached washroom, and a room layout that works well for a double setup.',
+  fitSummary: '1 RK-style setup for anyone who wants a more self-contained room.',
   priceMonthly: 7999,
   available: false,
   featured: false,
@@ -44,7 +44,7 @@ export default defineRoom({
   washroomLabel: 'Attached washroom',
   highlightLabel: 'Private 1 RK feel',
   facingLabel: 'Garden-facing',
-  bestFor: 'Two students who want a more self-contained 1 RK-style setup.',
+  bestFor: 'Two people who want a more self-contained 1 RK-style setup.',
   included,
   extraNotes,
   visitNextStep: 'Use the room page CTA to ask for the closest available match before you plan a visit.',

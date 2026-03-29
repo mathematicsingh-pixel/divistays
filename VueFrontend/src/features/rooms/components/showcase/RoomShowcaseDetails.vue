@@ -122,7 +122,7 @@ const callHref = getCallHref()
         :target="preview ? '_blank' : undefined"
         :rel="preview ? 'noreferrer' : undefined"
       >
-        {{ preview ? siteConfig.uiText.actions.askOnWhatsApp : siteConfig.uiText.actions.callCozyRooms }}
+        {{ preview ? siteConfig.uiText.actions.askOnWhatsApp : siteConfig.uiText.actions.callDirect }}
       </a>
     </div>
 
@@ -131,7 +131,7 @@ const callHref = getCallHref()
       class="detail-link"
       :href="callHref"
     >
-      {{ siteConfig.uiText.actions.callCozyRooms }}
+      {{ siteConfig.uiText.actions.callDirect }}
     </a>
   </div>
 </template>

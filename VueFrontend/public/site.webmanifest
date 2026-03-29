@@ -1,7 +1,7 @@
 {
-  "name": "CozyRooms",
-  "short_name": "CozyRooms",
-  "description": "Furnished student rooms in Kakadeo, Kanpur with direct mobile enquiry.",
+  "name": "DiviStays",
+  "short_name": "DiviStays",
+  "description": "Furnished rooms and studio apartments in Kakadeo, Kanpur with direct mobile enquiry.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#07121a",

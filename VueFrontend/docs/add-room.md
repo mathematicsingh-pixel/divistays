@@ -114,7 +114,7 @@ export default defineRoom({
   washroomLabel: 'Attached washroom',
   highlightLabel: 'Simple single setup',
   facingLabel: 'Daylit interior',
-  bestFor: 'Students who want a simple single room with an attached washroom at a modest monthly rent.',
+  bestFor: 'Anyone who wants a simple single room with an attached washroom at a modest monthly rent.',
   included: [
     'Single bed, study desk, and chair',
     'Attached washroom',

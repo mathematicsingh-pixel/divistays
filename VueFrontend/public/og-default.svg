@@ -10,10 +10,10 @@
   <path d="M353 356H392C433.421 356 467 389.579 467 431V486H353V356Z" fill="#FFF5E8"/>
   <rect x="655" y="150" width="160" height="36" rx="18" fill="rgba(255,255,255,0.12)" stroke="rgba(255,255,255,0.14)"/>
   <text x="684" y="174" fill="#79D9CA" font-family="Manrope, sans-serif" font-size="16" font-weight="800" letter-spacing="2.2">KAKADEO, KANPUR</text>
-  <text x="655" y="264" fill="#FFD38E" font-family="Manrope, sans-serif" font-size="22" font-weight="800" letter-spacing="3.6">COZYROOMS</text>
+  <text x="655" y="264" fill="#FFD38E" font-family="Manrope, sans-serif" font-size="22" font-weight="800" letter-spacing="3.6">DIVISTAYS</text>
   <text x="655" y="350" fill="#F7FBFF" font-family="Georgia, 'Times New Roman', serif" font-size="72" font-weight="700">See the room.</text>
   <text x="655" y="426" fill="#F7FBFF" font-family="Georgia, 'Times New Roman', serif" font-size="72" font-weight="700">Know the rent.</text>
-  <text x="655" y="486" fill="rgba(247,251,255,0.72)" font-family="Manrope, sans-serif" font-size="24" font-weight="700">Furnished student rooms in Kakadeo, Kanpur</text>
+  <text x="655" y="486" fill="rgba(247,251,255,0.72)" font-family="Manrope, sans-serif" font-size="22" font-weight="700">Rooms and studio apartments in Kakadeo, Kanpur</text>
   <defs>
     <linearGradient id="bg" x1="600" y1="0" x2="600" y2="630" gradientUnits="userSpaceOnUse">
       <stop stop-color="#0A1821"/>
