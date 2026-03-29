@@ -85,6 +85,29 @@ const propertyAmenities = [
   >
     <div class="container hero-grid">
       <div class="hero-copy surface-dark page-rise">
+        <!-- Ambient pin-search animation -->
+        <div class="hero-ambient" aria-hidden="true">
+          <svg viewBox="0 0 200 220" fill="none">
+            <circle class="hero-ring hero-ring--1" cx="100" cy="85" r="32" />
+            <circle class="hero-ring hero-ring--2" cx="100" cy="85" r="56" />
+            <circle class="hero-ring hero-ring--3" cx="100" cy="85" r="80" />
+            <path
+              class="hero-pin"
+              d="M100 175 C88 140 55 112 55 85 A45 45 0 1 1 145 85 C145 112 112 140 100 175Z"
+            />
+            <path
+              class="hero-house"
+              d="M100 68 L84 80 V96 H93 V87 H107 V96 H116 V80 Z"
+            />
+            <circle class="hero-mote hero-mote--1" cx="38" cy="52" r="1.5" />
+            <circle class="hero-mote hero-mote--2" cx="162" cy="62" r="1" />
+            <circle class="hero-mote hero-mote--3" cx="52" cy="155" r="1.3" />
+            <circle class="hero-mote hero-mote--4" cx="150" cy="40" r="0.9" />
+            <circle class="hero-mote hero-mote--5" cx="30" cy="125" r="1.1" />
+            <circle class="hero-mote hero-mote--6" cx="170" cy="145" r="0.8" />
+          </svg>
+        </div>
+
         <div class="hero-topbar">
           <BrandMark
             compact
@@ -277,31 +300,84 @@ const propertyAmenities = [
   overflow: hidden;
 }
 
-.hero-copy::before,
+/* ── Ambient pin-search decoration ────────────── */
+.hero-ambient {
+  position: absolute;
+  top: -1.5rem;
+  right: -1.5rem;
+  width: 16rem;
+  height: 17.6rem;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.hero-ambient svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+/* Location pin – draws itself on load */
+.hero-pin {
+  stroke: rgba(255, 211, 142, 0.25);
+  stroke-width: 0.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  fill: none;
+  stroke-dasharray: 500;
+  stroke-dashoffset: 500;
+  animation: hero-draw 3s ease-out 0.6s forwards,
+    hero-breathe 6s ease-in-out 3.6s infinite alternate;
+}
+
+/* House icon – draws after pin completes */
+.hero-house {
+  stroke: rgba(255, 211, 142, 0.35);
+  stroke-width: 0.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  fill: none;
+  stroke-dasharray: 160;
+  stroke-dashoffset: 160;
+  animation: hero-draw-house 1.8s ease-out 2.4s forwards,
+    hero-breathe 5s ease-in-out 4.2s infinite alternate;
+}
+
+/* Concentric search-pulse rings */
+.hero-ring {
+  stroke: rgba(121, 217, 202, 0.12);
+  stroke-width: 0.5;
+  fill: none;
+  opacity: 0;
+  transform-origin: 100px 85px;
+}
+
+.hero-ring--1 { animation: hero-ring-expand 5s ease-out 1.2s infinite; }
+.hero-ring--2 { animation: hero-ring-expand 5s ease-out 2s infinite; }
+.hero-ring--3 { animation: hero-ring-expand 5s ease-out 2.8s infinite; }
+
+/* Warm floating motes */
+.hero-mote { fill: rgba(255, 211, 142, 0.25); }
+.hero-mote--1 { animation: hero-drift-a 9s ease-in-out infinite; }
+.hero-mote--2 { animation: hero-drift-b 11s ease-in-out 1.5s infinite; fill: rgba(121, 217, 202, 0.2); }
+.hero-mote--3 { animation: hero-drift-a 10s ease-in-out 3s infinite; }
+.hero-mote--4 { animation: hero-drift-b 8s ease-in-out 4.5s infinite; fill: rgba(121, 217, 202, 0.18); }
+.hero-mote--5 { animation: hero-drift-a 12s ease-in-out 6s infinite; }
+.hero-mote--6 { animation: hero-drift-b 9.5s ease-in-out 2s infinite; }
+
+/* Soft warm glow behind pin area */
 .hero-copy::after {
   position: absolute;
   content: '';
   pointer-events: none;
-}
-
-.hero-copy::before {
-  top: -3.5rem;
-  right: -2.5rem;
-  width: 15rem;
-  height: 15rem;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 999px 999px 0 0;
-  animation: hero-orbit 18s linear infinite;
-}
-
-.hero-copy::after {
-  right: 1.25rem;
-  bottom: -3rem;
-  width: 14rem;
-  height: 14rem;
+  top: -1rem;
+  right: 1rem;
+  width: 13rem;
+  height: 13rem;
   border-radius: 999px;
-  background: radial-gradient(circle, rgba(255, 211, 142, 0.22), transparent 65%);
-  animation: hero-glow-pulse 4s ease-in-out infinite alternate;
+  background: radial-gradient(circle, rgba(255, 211, 142, 0.16), transparent 60%);
+  animation: hero-glow-pulse 5s ease-in-out infinite alternate;
+  z-index: 0;
 }
 
 .hero-topbar,
@@ -776,14 +852,40 @@ const propertyAmenities = [
   }
 }
 
-@keyframes hero-orbit {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+@keyframes hero-draw {
+  to { stroke-dashoffset: 0; }
+}
+
+@keyframes hero-draw-house {
+  to { stroke-dashoffset: 0; }
+}
+
+@keyframes hero-breathe {
+  from { opacity: 1; }
+  to { opacity: 0.4; }
+}
+
+@keyframes hero-ring-expand {
+  0% { opacity: 0.4; transform: scale(0.9); }
+  60% { opacity: 0.06; transform: scale(1.15); }
+  100% { opacity: 0; transform: scale(1.25); }
+}
+
+@keyframes hero-drift-a {
+  0%, 100% { transform: translate(0, 0); opacity: 0.2; }
+  30% { transform: translate(4px, -10px); opacity: 0.45; }
+  60% { transform: translate(-3px, -6px); opacity: 0.18; }
+}
+
+@keyframes hero-drift-b {
+  0%, 100% { transform: translate(0, 0); opacity: 0.15; }
+  40% { transform: translate(-5px, -8px); opacity: 0.4; }
+  70% { transform: translate(3px, -12px); opacity: 0.2; }
 }
 
 @keyframes hero-glow-pulse {
   from { opacity: 0.7; transform: scale(0.95); }
-  to { opacity: 1; transform: scale(1.08); }
+  to { opacity: 1; transform: scale(1.06); }
 }
 
 @keyframes hero-live-pulse {
