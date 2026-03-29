@@ -84,13 +84,13 @@ const propertyAmenities = [
     class="hero-shell"
   >
     <div class="container hero-grid">
-      <div class="hero-copy surface-dark-shell page-rise">
+      <div class="hero-copy surface-dark page-rise">
         <div class="hero-topbar">
           <BrandMark
             compact
             inverted
           />
-          <span class="eyebrow hero-eyebrow hero-top-note">{{ site.heroEyebrow }}</span>
+          <span class="label-upper label-pill hero-eyebrow hero-top-note">{{ site.heroEyebrow }}</span>
         </div>
 
         <p class="hero-brand-line"><span class="hero-brand-line-text">{{ site.brandLine }}</span></p>
@@ -104,7 +104,7 @@ const propertyAmenities = [
         </p>
 
         <div class="hero-proof-row">
-          <div class="hero-proof-card surface-field-panel">
+          <div class="hero-proof-card surface-input">
             <dt>
               <svg class="hero-proof-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" /><polyline points="9 22 9 12 15 12 15 22" /></svg>
               <span class="hero-proof-live-dot" aria-hidden="true" />
@@ -112,14 +112,14 @@ const propertyAmenities = [
             </dt>
             <dd>{{ availablePricingNote }}</dd>
           </div>
-          <div class="hero-proof-card surface-field-panel">
+          <div class="hero-proof-card surface-input">
             <dt>
               <svg class="hero-proof-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 012 2v14a2 2 0 01-2 2H6a2 2 0 01-2-2V6a2 2 0 012-2h2" /><rect x="8" y="2" width="8" height="4" rx="1" /></svg>
               {{ roomCount }} room options
             </dt>
             <dd>Compare by occupancy and setup</dd>
           </div>
-          <div class="hero-proof-card surface-field-panel">
+          <div class="hero-proof-card surface-input">
             <dt>
               <svg class="hero-proof-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23" /><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6" /></svg>
               {{ overallPricingNote }}
@@ -163,7 +163,7 @@ const propertyAmenities = [
 
       <aside
         v-if="featuredRoom"
-        class="hero-featured surface-panel surface-soft-panel page-rise-delay-1"
+        class="hero-featured surface-card page-rise-delay-1"
       >
         <span class="featured-badge">Featured</span>
 
@@ -185,7 +185,7 @@ const propertyAmenities = [
         </div>
 
         <div class="featured-body">
-          <p class="featured-kicker">{{ featuredRoom.highlightLabel }}</p>
+          <p class="label-upper featured-kicker">{{ featuredRoom.highlightLabel }}</p>
           <h2>
             <RouterLink :to="featuredRoom.detailsHref">
               {{ featuredRoom.title }}
@@ -272,7 +272,7 @@ const propertyAmenities = [
   display: grid;
   gap: 1.25rem;
   padding: 1.25rem;
-  border-radius: var(--radius-xl);
+  border-radius: var(--radius-lg);
   color: var(--text-inverse);
   overflow: hidden;
 }
@@ -410,7 +410,7 @@ const propertyAmenities = [
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0.06)),
     rgba(255, 255, 255, 0.07);
-  box-shadow: var(--shadow-chip);
+  box-shadow: var(--shadow-sm);
   transition: transform 0.18s ease;
 }
 
@@ -553,7 +553,7 @@ const propertyAmenities = [
 
 .hero-call-copy small {
   color: rgba(247, 251, 255, 0.68);
-  font-size: var(--text-kicker);
+  font-size: var(--text-label);
   font-weight: 700;
   letter-spacing: 0.12em;
   line-height: 1.1;
@@ -589,7 +589,7 @@ const propertyAmenities = [
   border-radius: 0 0 0 0.75rem;
   background: linear-gradient(135deg, var(--sun), var(--accent));
   color: #fff;
-  font-size: var(--text-kicker);
+  font-size: var(--text-label);
   font-weight: 800;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -632,10 +632,6 @@ const propertyAmenities = [
 
 .featured-kicker {
   color: var(--accent-deep);
-  font-size: var(--text-kicker);
-  font-weight: 800;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
 }
 
 .featured-body h2 {

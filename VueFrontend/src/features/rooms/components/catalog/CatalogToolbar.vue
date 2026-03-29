@@ -84,10 +84,10 @@ const emit = defineEmits(['update:sheet-open', 'toggle-desktop-filters'])
 </script>
 
 <template>
-  <div class="catalog-toolbar surface-panel surface-paper-panel">
+  <div class="catalog-toolbar surface-card">
     <div class="toolbar-top">
       <div class="toolbar-copy">
-        <p class="toolbar-label">Showing</p>
+        <p class="label-upper toolbar-label">Showing</p>
         <strong>{{ resultLabel }}</strong>
         <p class="toolbar-note">
           {{ toolbarNote }}
@@ -96,8 +96,8 @@ const emit = defineEmits(['update:sheet-open', 'toggle-desktop-filters'])
     </div>
 
     <div class="control-rail">
-      <div class="control-card surface-field-panel availability-card">
-        <span class="toolbar-label">Availability</span>
+      <div class="control-card surface-input availability-card">
+        <span class="label-upper toolbar-label">Availability</span>
         <div class="availability-row">
           <button
             v-for="item in availabilityOptions"
@@ -113,8 +113,8 @@ const emit = defineEmits(['update:sheet-open', 'toggle-desktop-filters'])
         </div>
       </div>
 
-      <label class="control-card surface-field-panel sort-card">
-        <span class="toolbar-label">Sort by</span>
+      <label class="control-card surface-input sort-card">
+        <span class="label-upper toolbar-label">Sort by</span>
         <select
           :value="filters.sort"
           @change="actions.setSort($event.target.value)"
@@ -131,12 +131,12 @@ const emit = defineEmits(['update:sheet-open', 'toggle-desktop-filters'])
 
       <button
         type="button"
-        class="control-card surface-field-panel filter-trigger"
+        class="control-card surface-input filter-trigger"
         aria-controls="catalog-filters"
         :aria-expanded="isSheetOpen ? 'true' : 'false'"
         @click="emit('update:sheet-open', true)"
       >
-        <span class="toolbar-label">Filters</span>
+        <span class="label-upper toolbar-label">Filters</span>
         <strong>
           {{
             advancedFilterCount
@@ -149,13 +149,13 @@ const emit = defineEmits(['update:sheet-open', 'toggle-desktop-filters'])
 
       <button
         type="button"
-        class="control-card surface-field-panel desktop-filter-toggle"
+        class="control-card surface-input desktop-filter-toggle"
         :class="{ active: isDesktopFiltersOpen || advancedFilterCount }"
         :aria-expanded="isDesktopFiltersOpen ? 'true' : 'false'"
         aria-controls="catalog-filter-panel"
         @click="emit('toggle-desktop-filters')"
       >
-        <span class="toolbar-label">Filters</span>
+        <span class="label-upper toolbar-label">Filters</span>
         <strong>
           {{
             advancedFilterCount
@@ -182,12 +182,12 @@ const emit = defineEmits(['update:sheet-open', 'toggle-desktop-filters'])
       class="active-row"
     >
       <div class="active-copy">
-        <span class="toolbar-label">Selected</span>
+        <span class="label-upper toolbar-label">Selected</span>
         <div class="chip-row active-chip-row">
           <span
             v-for="label in activeLabels"
             :key="label"
-            class="soft-chip glass-chip"
+            class="chip"
           >
             {{ label }}
           </span>
@@ -236,10 +236,6 @@ const emit = defineEmits(['update:sheet-open', 'toggle-desktop-filters'])
 
 .toolbar-label {
   color: var(--text);
-  font-size: var(--text-kicker);
-  font-weight: 800;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
 }
 
 .toolbar-copy strong {
@@ -282,7 +278,7 @@ const emit = defineEmits(['update:sheet-open', 'toggle-desktop-filters'])
   background: var(--surface-field-fill);
   color: var(--text-strong);
   font-weight: 700;
-  box-shadow: var(--shadow-field);
+  box-shadow: var(--shadow-sm);
   transition:
     border-color 0.18s ease,
     background-color 0.18s ease,

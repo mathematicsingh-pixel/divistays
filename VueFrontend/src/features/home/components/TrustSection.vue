@@ -14,7 +14,7 @@ defineProps({
   >
     <div class="container">
       <div class="section-heading trust-heading">
-        <span class="eyebrow">{{ site.proofEyebrow }}</span>
+        <span class="label-upper label-pill">{{ site.proofEyebrow }}</span>
         <h2>{{ site.proofTitle }}</h2>
         <p>{{ site.proofSummary }}</p>
       </div>
@@ -23,7 +23,7 @@ defineProps({
         <article
           v-for="point in site.proofCards"
           :key="point.title"
-          class="surface-panel surface-soft-panel trust-card"
+          class="surface-card trust-card"
         >
           <h3>{{ point.title }}</h3>
           <p>{{ point.body }}</p>

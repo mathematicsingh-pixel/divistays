@@ -89,7 +89,7 @@ watch(
   />
 
   <div
-    class="mobile-bar surface-dark-shell"
+    class="mobile-bar surface-dark"
     :class="{ 'mobile-bar-hidden': hidden }"
   >
     <button

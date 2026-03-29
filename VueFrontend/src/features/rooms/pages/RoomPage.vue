@@ -102,7 +102,7 @@ useHead(() => ({
           ]"
         />
 
-        <div class="room-surface surface-soft-panel">
+        <div class="room-surface surface-card">
           <RoomShowcase :room="roomDetail" />
         </div>
       </div>
@@ -111,7 +111,7 @@ useHead(() => ({
     <section class="section-shell">
       <div class="container">
         <div class="section-heading">
-          <span class="eyebrow">Similar rooms</span>
+          <span class="label-upper label-pill">Similar rooms</span>
           <h2>{{ siteConfig.uiText.room.similarTitle }}</h2>
           <p>{{ siteConfig.uiText.room.similarSummary }}</p>
         </div>

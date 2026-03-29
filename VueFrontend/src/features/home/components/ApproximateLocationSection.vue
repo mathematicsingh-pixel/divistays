@@ -32,10 +32,10 @@ const mapHighlights = computed(() => [
     class="section-shell"
   >
     <div class="container location-shell">
-      <article class="location-stage glass-panel-dark page-rise">
+      <article class="location-stage surface-dark page-rise">
         <div class="location-grid">
           <div class="location-copy">
-            <span class="eyebrow location-eyebrow">Approximate location</span>
+            <span class="label-upper label-pill location-eyebrow">Approximate location</span>
             <h2>Check the area before you visit.</h2>
             <p>
               The map shows the wider Kakadeo area, not the exact building. We share the precise
@@ -46,20 +46,20 @@ const mapHighlights = computed(() => [
               <span
                 v-for="item in mapHighlights"
                 :key="item"
-                class="soft-chip glass-chip location-chip"
+                class="chip location-chip"
               >
                 {{ item }}
               </span>
             </div>
 
             <div class="location-note">
-              <span class="signal-pill">Area pin only</span>
+              <span class="label-upper label-pill">Area pin only</span>
               <p>Useful for commute checks, coaching-belt proximity, and nearby landmarks.</p>
             </div>
           </div>
 
           <a
-            class="surface-panel location-map location-map-link page-rise-delay-1"
+            class="surface-card location-map location-map-link page-rise-delay-1"
             :href="mapOpenUrl"
             target="_blank"
             rel="noreferrer"
@@ -67,7 +67,7 @@ const mapHighlights = computed(() => [
           >
             <div class="location-map-head">
               <div class="location-map-copy">
-                <span class="eyebrow map-panel-eyebrow">Google Maps</span>
+                <span class="label-upper label-pill map-panel-eyebrow">Google Maps</span>
                 <p>{{ site.locationLabel }}</p>
               </div>
 
@@ -190,7 +190,7 @@ const mapHighlights = computed(() => [
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
 }
 
-.location-note .signal-pill {
+.location-note .label-upper {
   border-color: rgba(255, 211, 142, 0.2);
   background: rgba(255, 211, 142, 0.12);
   color: #fff0d4;
@@ -263,7 +263,7 @@ const mapHighlights = computed(() => [
   border-radius: 999px;
   background: rgba(11, 23, 32, 0.04);
   color: var(--muted);
-  font-size: var(--text-kicker);
+  font-size: var(--text-label);
   font-weight: 800;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -318,7 +318,7 @@ const mapHighlights = computed(() => [
 
 .map-placeholder-kicker {
   color: #fff0d4;
-  font-size: var(--text-kicker);
+  font-size: var(--text-label);
   font-weight: 800;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -334,7 +334,7 @@ const mapHighlights = computed(() => [
 .location-map-overlay small {
   max-width: 24rem;
   color: rgba(236, 246, 252, 0.86);
-  font-size: var(--text-meta);
+  font-size: var(--text-label);
   font-weight: 700;
 }
 

@@ -56,3 +56,11 @@ That file feeds:
 
 - `npm run validate:rooms`: room content validation
 - `npm run build`: validate, build media, generate static site
+
+## Design system
+
+UI source of truth: [`docs/ui-style-guide.md`](docs/ui-style-guide.md)
+
+Agent rules: [`AGENTS.md`](../AGENTS.md) (root) — includes UI constraints.
+
+Current audit: [`docs/ui-audit.md`](docs/ui-audit.md)

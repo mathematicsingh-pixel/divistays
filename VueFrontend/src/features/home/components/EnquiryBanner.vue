@@ -22,7 +22,7 @@ defineProps({
     <div class="container">
       <div class="cta-banner page-rise">
         <div class="cta-copy">
-          <span class="eyebrow cta-eyebrow">{{ site.ctaEyebrow }}</span>
+          <span class="label-upper cta-eyebrow">{{ site.ctaEyebrow }}</span>
           <BrandMark
             compact
             tag="Direct line"
@@ -71,8 +71,6 @@ defineProps({
 }
 
 .cta-eyebrow {
-  border-color: rgba(7, 18, 26, 0.12);
-  background: rgba(255, 255, 255, 0.2);
   color: rgba(7, 18, 26, 0.78);
 }
 

@@ -67,20 +67,20 @@ useOverlayDialog({
     <transition name="sheet-fade">
       <div
         v-if="isOpen"
-        class="sheet-shell glass-overlay"
+        class="sheet-shell overlay-backdrop"
         @click.self="emit('close')"
       >
         <section
           id="catalog-filters"
           ref="panelRef"
-          class="sheet-panel surface-paper-panel"
+          class="sheet-panel surface-card"
           role="dialog"
           aria-modal="true"
           aria-labelledby="catalog-filters-title"
         >
           <div class="sheet-head">
             <div>
-              <p class="sheet-kicker">Filters</p>
+              <p class="label-upper sheet-kicker">Filters</p>
               <h3 id="catalog-filters-title">{{ siteConfig.uiText.actions.chooseFilters }}</h3>
             </div>
 
@@ -96,8 +96,8 @@ useOverlayDialog({
           </div>
 
           <div class="sheet-body">
-            <div class="sheet-group surface-field-panel">
-              <span>Availability</span>
+            <div class="sheet-group surface-input">
+              <span class="label-upper">Availability</span>
               <div class="chip-row">
                 <button
                   v-for="item in availabilityOptions"
@@ -113,8 +113,8 @@ useOverlayDialog({
               </div>
             </div>
 
-            <div class="sheet-group surface-field-panel">
-              <span>Occupancy</span>
+            <div class="sheet-group surface-input">
+              <span class="label-upper">Occupancy</span>
               <div class="chip-row">
                 <button
                   v-for="item in occupancyOptions"
@@ -130,8 +130,8 @@ useOverlayDialog({
               </div>
             </div>
 
-            <div class="sheet-group surface-field-panel">
-              <span>Kitchen</span>
+            <div class="sheet-group surface-input">
+              <span class="label-upper">Kitchen</span>
               <div class="chip-row">
                 <button
                   v-for="item in kitchenOptions"
@@ -147,8 +147,8 @@ useOverlayDialog({
               </div>
             </div>
 
-            <div class="sheet-group surface-field-panel">
-              <span>Washroom</span>
+            <div class="sheet-group surface-input">
+              <span class="label-upper">Washroom</span>
               <div class="chip-row">
                 <button
                   v-for="item in washroomOptions"
@@ -164,8 +164,8 @@ useOverlayDialog({
               </div>
             </div>
 
-            <div class="sheet-group surface-field-panel">
-              <span>Budget</span>
+            <div class="sheet-group surface-input">
+              <span class="label-upper">Budget</span>
               <div class="chip-row">
                 <button
                   v-for="item in priceOptions"
@@ -181,8 +181,8 @@ useOverlayDialog({
               </div>
             </div>
 
-            <label class="sort-field surface-field-panel">
-              <span>Sort by</span>
+            <label class="sort-field surface-input">
+              <span class="label-upper">Sort by</span>
               <select
                 :value="filters.sort"
                 @change="actions.setSort($event.target.value)"
@@ -239,7 +239,7 @@ useOverlayDialog({
   width: 100%;
   max-height: min(44rem, 92svh);
   padding: 1rem 1rem calc(1rem + env(safe-area-inset-bottom));
-  border-radius: var(--radius-sheet) var(--radius-sheet) 0 0;
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
 }
 
 .sheet-head {
@@ -251,10 +251,6 @@ useOverlayDialog({
 
 .sheet-kicker {
   color: var(--brand-strong);
-  font-size: var(--text-kicker);
-  font-weight: 800;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
 }
 
 .sheet-close {
@@ -268,7 +264,7 @@ useOverlayDialog({
   background: var(--surface-field-fill);
   color: var(--text-strong);
   font-size: 1.45rem;
-  box-shadow: var(--shadow-field);
+  box-shadow: var(--shadow-sm);
 }
 
 .sheet-body {
@@ -288,10 +284,6 @@ useOverlayDialog({
 .sheet-group span,
 .sort-field span {
   color: var(--muted);
-  font-size: var(--text-meta);
-  font-weight: 800;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
 }
 
 .chip-row {
@@ -308,7 +300,7 @@ useOverlayDialog({
   background: var(--surface-field-fill);
   color: var(--text-strong);
   font-weight: 700;
-  box-shadow: var(--shadow-field);
+  box-shadow: var(--shadow-sm);
   transition: border-color 0.18s ease, background-color 0.18s ease, color 0.18s ease;
 }
 
@@ -325,7 +317,7 @@ useOverlayDialog({
   border-radius: 0.95rem;
   background: var(--surface-field-fill);
   color: var(--text-strong);
-  box-shadow: var(--shadow-field);
+  box-shadow: var(--shadow-sm);
 }
 
 .sheet-actions {
@@ -354,7 +346,7 @@ useOverlayDialog({
   .sheet-panel {
     width: min(40rem, 100%);
     max-height: 90svh;
-    border-radius: var(--radius-sheet);
+    border-radius: var(--radius-lg);
   }
 }
 </style>

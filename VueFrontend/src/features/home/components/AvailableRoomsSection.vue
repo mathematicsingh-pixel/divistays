@@ -27,7 +27,7 @@ function scrollTrack(dir) {
     <div class="container">
       <div class="section-heading-row">
         <div class="section-heading">
-          <span class="eyebrow">{{ site.homeRoomsEyebrow }}</span>
+          <span class="label-upper label-pill">{{ site.homeRoomsEyebrow }}</span>
           <h2>{{ site.homeRoomsTitle }}</h2>
           <p>{{ site.homeRoomsSummary }}</p>
         </div>
@@ -108,7 +108,7 @@ function scrollTrack(dir) {
 }
 
 .scroll-arrow:hover {
-  background: var(--surface-panel-fill);
+  background: var(--surface-paper-fill);
   border-color: var(--line-strong);
 }
 

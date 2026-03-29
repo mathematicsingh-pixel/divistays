@@ -43,7 +43,7 @@ defineProps({
 
     <div
       v-else
-      class="empty-state surface-panel surface-soft-panel"
+      class="empty-state surface-card"
     >
       <h3>No rooms match those filters.</h3>
       <p>Clear a few filters or switch to all rooms.</p>

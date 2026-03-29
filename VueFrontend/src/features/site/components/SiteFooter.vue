@@ -49,8 +49,8 @@ const footerTickerRooms = computed(() =>
         <p class="footer-summary">{{ site.footerSummary }}</p>
       </div>
 
-      <div class="footer-mobile-card surface-dark-shell">
-        <p class="footer-section-kicker">Quick links</p>
+      <div class="footer-mobile-card surface-dark">
+        <p class="label-upper footer-section-kicker">Quick links</p>
 
         <div class="footer-mobile-grid">
           <RouterLink
@@ -83,17 +83,17 @@ const footerTickerRooms = computed(() =>
         </div>
       </div>
 
-      <div class="footer-shell surface-dark-shell">
+      <div class="footer-shell surface-dark">
         <div class="footer-shell-head">
           <div class="footer-shell-copy">
-            <p class="footer-section-kicker">Start here</p>
+            <p class="label-upper footer-section-kicker">Start here</p>
             <h3>{{ site.uiText.footer.headline }}</h3>
           </div>
         </div>
 
         <div class="footer-grid">
           <div class="footer-group">
-            <p class="footer-group-label">Browse</p>
+            <p class="label-upper footer-group-label">Browse</p>
             <div class="footer-chip-grid">
               <RouterLink
                 v-for="item in footerBrowseLinks"
@@ -107,7 +107,7 @@ const footerTickerRooms = computed(() =>
           </div>
 
           <div class="footer-group">
-            <p class="footer-group-label">Call or WhatsApp</p>
+            <p class="label-upper footer-group-label">Call or WhatsApp</p>
             <div class="footer-action-grid">
               <a
                 class="footer-action footer-action-call"
@@ -134,7 +134,7 @@ const footerTickerRooms = computed(() =>
           class="footer-rooms"
         >
           <div class="footer-rooms-head">
-            <p class="footer-group-label">Available now</p>
+            <p class="label-upper footer-group-label">Available now</p>
             <RouterLink
               class="footer-inline-link"
               to="/rooms?availability=available"
@@ -251,12 +251,10 @@ const footerTickerRooms = computed(() =>
   gap: 0.35rem;
 }
 
-.footer-section-kicker,
-.footer-group-label,
 .footer-action-label,
 .room-ticker-cta,
 .footer-inline-link {
-  font-size: var(--text-kicker);
+  font-size: var(--text-label);
   font-weight: 800;
   letter-spacing: 0.14em;
   text-transform: uppercase;

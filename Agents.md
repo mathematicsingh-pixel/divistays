@@ -34,6 +34,8 @@ Leave the Frontend Folder, that is old UI, just there for reference, unless i ex
 <frontend_aesthetics>
 Avoid “AI slop” UI. Be opinionated + distinctive.
 
+Read `VueFrontend/docs/ui-style-guide.md` before any UI work.
+
 Do:
 - Typography: pick a real font; avoid Inter/Roboto/Arial/system defaults.
 - Theme: commit to a palette; use CSS vars; bold accents > timid gradients.
@@ -42,6 +44,21 @@ Do:
 
 Avoid: purple-on-white clichés, generic component grids, predictable layouts.
 </frontend_aesthetics>
+
+## UI Design System
+
+Source of truth: `VueFrontend/docs/ui-style-guide.md`
+Audit/migration map: `VueFrontend/docs/ui-audit.md`
+
+Rules:
+- Read `docs/ui-style-guide.md` before any visual/CSS change.
+- If a new visual pattern is needed, update the style guide in the same change.
+- No ad hoc tokens, one-off shadows/radii, or undocumented primitives.
+- No new surface classes — use `surface-card`, `surface-input`, `surface-dark`, `overlay-backdrop`.
+- No new chip/badge variants — use `label-upper` or `chip`.
+- Syne only for h1/h2 (display). Manrope for everything else.
+- Orange = action. Mint = status. Sun = rare highlight. Don’t invent accent uses.
+- Validate after changes: `npm run validate:rooms && npm run build`
 
 To generate assets/images or edit it for the frontend use the nano-banana-pro skill. Keys in .env file
 

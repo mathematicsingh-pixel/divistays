@@ -130,7 +130,7 @@ function toggleDesktopFilters() {
   >
     <div class="container">
       <div class="section-heading catalog-heading">
-        <span class="eyebrow">Rooms</span>
+        <span class="label-upper label-pill">Rooms</span>
         <h2>{{ siteConfig.uiText.catalog.title }}</h2>
         <p>{{ siteConfig.uiText.catalog.summary }}</p>
       </div>

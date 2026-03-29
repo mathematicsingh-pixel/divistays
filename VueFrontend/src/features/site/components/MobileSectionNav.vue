@@ -14,6 +14,11 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  context: {
+    type: String,
+    default: 'page',
+    validator: (v) => ['page', 'catalog', 'detail'].includes(v),
+  },
 })
 
 const isVisible = ref(false)
@@ -75,7 +80,7 @@ onBeforeUnmount(() => {
   <nav
     class="mobile-section-nav"
     :class="{ 'mobile-section-nav-visible': isVisible && !hidden }"
-    aria-label="Quick section navigation"
+    :aria-label="`${context} navigation`"
   >
     <RouterLink
       v-for="item in props.items"
@@ -102,7 +107,7 @@ onBeforeUnmount(() => {
   border: 1px solid var(--glass-stroke-dark);
   border-radius: 999px;
   background: var(--surface-dark-fill);
-  box-shadow: var(--shadow-dark);
+  box-shadow: var(--shadow-lg);
   -webkit-backdrop-filter: blur(18px) saturate(150%);
   backdrop-filter: blur(18px) saturate(150%);
   opacity: 0;
@@ -133,7 +138,7 @@ onBeforeUnmount(() => {
   border-radius: 999px;
   background: var(--glass-fill-light);
   color: var(--text-inverse);
-  font-size: var(--text-kicker);
+  font-size: var(--text-label);
   font-weight: 800;
   letter-spacing: 0.12em;
   line-height: 1;

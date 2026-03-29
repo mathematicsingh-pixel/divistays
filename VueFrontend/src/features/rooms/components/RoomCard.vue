@@ -24,7 +24,7 @@ const topFacts = (room) => [room.occupancyLabel, room.washroomLabel]
 </script>
 
 <template>
-  <article class="room-card surface-panel surface-soft-panel">
+  <article class="room-card surface-card">
     <div class="room-media">
       <RouterLink :to="room.detailsHref">
         <ResponsiveImage
@@ -53,7 +53,7 @@ const topFacts = (room) => [room.occupancyLabel, room.washroomLabel]
 
     <div class="room-body">
       <div class="room-copy">
-        <p class="room-kicker">{{ room.highlightLabel }}</p>
+        <p class="label-upper room-kicker">{{ room.highlightLabel }}</p>
         <h3>
           <RouterLink :to="room.detailsHref">
             {{ room.title }}
@@ -72,12 +72,8 @@ const topFacts = (room) => [room.occupancyLabel, room.washroomLabel]
         </span>
       </div>
 
-      <p class="room-facts">
-        {{ topFacts(room).join(' · ') }}
-      </p>
-
       <p class="room-summary">
-        {{ room.fitSummary }}
+        {{ topFacts(room).join(' · ') }} · {{ room.fitSummary }}
       </p>
 
       <div class="room-actions">
@@ -97,14 +93,6 @@ const topFacts = (room) => [room.occupancyLabel, room.washroomLabel]
   overflow: hidden;
   display: grid;
   position: relative;
-}
-
-.room-card::before {
-  position: absolute;
-  inset: 0 0 auto;
-  height: 0.35rem;
-  content: '';
-  background: linear-gradient(90deg, var(--accent) 0%, var(--sun) 45%, var(--brand) 100%);
 }
 
 .room-media {
@@ -138,24 +126,22 @@ const topFacts = (room) => [room.occupancyLabel, room.washroomLabel]
 .preview-pill {
   display: none;
   align-items: center;
-  min-height: 2.75rem;
+  min-height: 2.5rem;
   padding: 0.36rem 0.7rem;
-  border-radius: 999px;
+  border-radius: var(--radius-full);
   border: 1px solid var(--glass-stroke-light);
   background: rgba(7, 18, 26, 0.7);
   color: var(--text-inverse);
-  font-size: 0.74rem;
-  font-weight: 800;
-  letter-spacing: 0.08em;
+  font-size: var(--text-label);
+  font-weight: 700;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   transition: transform 0.18s ease, background-color 0.18s ease;
 }
 
-/* ── body ── */
-
 .room-body {
   display: grid;
-  gap: 0.55rem;
+  gap: 0.5rem;
   padding: var(--card-pad);
   border-top: 1px solid var(--paper-border-soft);
 }
@@ -167,17 +153,12 @@ const topFacts = (room) => [room.occupancyLabel, room.washroomLabel]
 
 .room-kicker {
   color: var(--accent-deep);
-  font-size: var(--text-kicker);
-  font-weight: 800;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
 }
 
 .room-copy a {
   color: var(--text-strong);
 }
 
-/* price + availability on one line */
 .room-price-line {
   display: flex;
   align-items: baseline;
@@ -200,18 +181,11 @@ const topFacts = (room) => [room.occupancyLabel, room.washroomLabel]
 .room-status {
   color: var(--brand-strong);
   font-size: 0.82rem;
-  font-weight: 800;
+  font-weight: 700;
 }
 
 .room-status--occupied {
   color: var(--accent-deep);
-}
-
-/* compact fact text line */
-.room-facts {
-  color: var(--text-strong);
-  font-size: 0.84rem;
-  font-weight: 600;
 }
 
 .room-summary {
@@ -227,7 +201,7 @@ const topFacts = (room) => [room.occupancyLabel, room.washroomLabel]
   display: flex;
   flex-wrap: wrap;
   gap: 0.55rem;
-  margin-top: 0.35rem;
+  margin-top: 0.25rem;
 }
 
 .room-actions > * {

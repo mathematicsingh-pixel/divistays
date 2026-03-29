@@ -1,14 +1,29 @@
 :root {
+  /* ── Palette ── */
   --bg: #07121a;
   --bg-soft: #0d1c25;
   --bg-softer: #112735;
-  --paper: rgba(246, 251, 255, 0.95);
-  --paper-strong: #f9fcff;
-  --paper-soft: #edf5f8;
+  --text: #5d7180;
+  --text-strong: #0b1720;
+  --text-inverse: #f7fbff;
+  --muted: #4d6171;
+  --muted-inverse: rgba(236, 246, 252, 0.82);
+  --accent: #ff7a1a;
+  --accent-deep: #db6210;
+  --brand: #79d9ca;
+  --brand-strong: #2ca18e;
+  --sun: #ffd38e;
+  --forest: #07121a;
+  --forest-soft: #122735;
+  --line: rgba(11, 23, 32, 0.12);
+  --line-strong: rgba(11, 23, 32, 0.2);
+
+  /* ── Glass primitives (used by surface classes + component CSS) ── */
   --glass-fill: rgba(245, 250, 253, 0.58);
   --glass-fill-strong: rgba(249, 252, 255, 0.72);
   --glass-fill-dark: rgba(9, 22, 31, 0.48);
   --glass-fill-dark-strong: rgba(10, 24, 34, 0.64);
+  --glass-fill-light: rgba(255, 255, 255, 0.08);
   --glass-fallback: rgba(246, 251, 255, 0.92);
   --glass-fallback-dark: rgba(10, 24, 34, 0.92);
   --glass-tint:
@@ -20,36 +35,22 @@
   --glass-stroke: rgba(255, 255, 255, 0.2);
   --glass-stroke-strong: rgba(255, 255, 255, 0.32);
   --glass-stroke-dark: rgba(162, 225, 216, 0.22);
+  --glass-stroke-light: rgba(255, 255, 255, 0.16);
   --glass-highlight: rgba(255, 255, 255, 0.48);
-  --glass-shadow: 0 26px 70px rgba(0, 0, 0, 0.26);
-  --glass-shadow-soft: 0 18px 44px rgba(0, 0, 0, 0.18);
   --glass-blur: 16px;
   --glass-saturate: 180%;
-  --text: #5d7180;
-  --text-strong: #0b1720;
-  --muted: #4d6171;
-  --line: rgba(11, 23, 32, 0.12);
-  --line-strong: rgba(11, 23, 32, 0.2);
-  --brand: #79d9ca;
-  --brand-strong: #2ca18e;
-  --accent: #ff7a1a;
-  --accent-deep: #db6210;
-  --sun: #ffd38e;
-  --forest: #07121a;
-  --forest-soft: #122735;
-  --surface-deep: rgba(13, 28, 37, 0.84);
-  --surface-deep-2: rgba(17, 39, 53, 0.92);
-  --text-inverse: #f7fbff;
-  --muted-inverse: rgba(236, 246, 252, 0.82);
-  --surface-shadow: 0 18px 52px rgba(0, 0, 0, 0.18);
+
+  /* ── Surface fills ── */
+  --paper: rgba(246, 251, 255, 0.95);
+  --paper-strong: #f9fcff;
+  --paper-soft: #edf5f8;
   --paper-border: rgba(255, 255, 255, 0.24);
   --paper-border-soft: rgba(11, 23, 32, 0.08);
+  --surface-deep: rgba(13, 28, 37, 0.84);
+  --surface-deep-2: rgba(17, 39, 53, 0.92);
   --surface-paper-fill:
     linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(241, 248, 252, 0.76)),
     rgba(248, 252, 255, 0.78);
-  --surface-paper-soft-fill:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.78), rgba(243, 249, 252, 0.56)),
-    rgba(255, 255, 255, 0.46);
   --surface-field-fill:
     linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(244, 249, 252, 0.74)),
     rgba(255, 255, 255, 0.72);
@@ -58,31 +59,33 @@
     radial-gradient(circle at left bottom, rgba(255, 122, 26, 0.12), transparent 26%),
     linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02)),
     rgba(7, 18, 26, 0.76);
-  --shadow-paper: 0 20px 48px rgba(5, 14, 24, 0.16);
-  --shadow-dark: 0 24px 56px rgba(0, 0, 0, 0.28);
-  --shadow-field:
-    inset 0 1px 0 rgba(255, 255, 255, 0.68),
-    0 10px 22px rgba(5, 14, 24, 0.08);
-  --radius-xl: 1.9rem;
-  --radius-lg: 1.45rem;
+
+  /* ── Shadows (3 depths) ── */
+  --shadow-sm: 0 4px 12px rgba(5, 14, 24, 0.08);
+  --shadow-md: 0 14px 36px rgba(5, 14, 24, 0.14);
+  --shadow-lg: 0 20px 48px rgba(0, 0, 0, 0.22);
+
+  /* ── Radius (3 steps) ── */
+  --radius-lg: 1.5rem;
   --radius-md: 1rem;
-  --radius-sheet: var(--radius-lg);
+  --radius-full: 999px;
+
+  /* ── Spacing ── */
   --space-xs: 0.45rem;
   --space-sm: 0.65rem;
   --space-md: 0.9rem;
   --space-lg: 1.15rem;
   --space-xl: 1.5rem;
   --card-pad: 1rem;
-  --text-kicker: 0.74rem;
-  --text-meta: 0.78rem;
-  --shadow-chip:
-    inset 0 1px 0 rgba(255, 255, 255, 0.18),
-    0 12px 24px rgba(0, 0, 0, 0.12);
-  --glass-stroke-light: rgba(255, 255, 255, 0.16);
-  --glass-fill-light: rgba(255, 255, 255, 0.08);
+
+  /* ── Typography ── */
+  --font-display: 'Syne', sans-serif;
+  --font-body: 'Manrope', sans-serif;
+  --text-label: 0.75rem;
+
   color: var(--text);
   background: var(--bg);
-  font: 16px/1.6 'Manrope', sans-serif;
+  font: 16px/1.6 var(--font-body), sans-serif;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -179,53 +182,34 @@ main > * {
   margin: 0 auto;
 }
 
-.surface-panel {
-  border: 1px solid var(--paper-border);
-  border-radius: var(--radius-xl);
-  background: var(--surface-paper-fill);
-  box-shadow: var(--shadow-paper);
-}
+/* ── Surface system: 3 depths ── */
 
-.glass-panel,
-.glass-panel-dark,
-.glass-chip,
-.glass-overlay {
-  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
-  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
-}
-
-.glass-panel,
-.glass-panel-dark {
+.surface-card {
   position: relative;
-  border-radius: var(--radius-xl);
-  box-shadow: var(--glass-shadow);
-  transition:
-    transform 0.18s ease,
-    box-shadow 0.18s ease,
-    border-color 0.18s ease,
-    background-color 0.18s ease;
-}
-
-.glass-panel {
   border: 1px solid var(--paper-border);
-  background: var(--surface-paper-soft-fill);
-  box-shadow: var(--shadow-paper);
+  border-radius: var(--radius-lg);
+  background: var(--surface-paper-fill);
+  box-shadow: var(--shadow-md);
 }
 
-.glass-panel-dark {
-  border: 1px solid var(--glass-stroke-dark);
-  background: var(--surface-dark-fill);
-  box-shadow: var(--shadow-dark);
-}
-
-.glass-chip {
-  border: 1px solid var(--paper-border);
+.surface-input {
+  position: relative;
+  border: 1px solid var(--paper-border-soft);
+  border-radius: var(--radius-md);
   background: var(--surface-field-fill);
-  box-shadow: var(--shadow-field);
+  box-shadow: var(--shadow-sm);
 }
 
-.glass-overlay {
-  background: rgba(7, 18, 26, 0.52);
+.surface-dark {
+  position: relative;
+  border: 1px solid var(--glass-stroke-dark);
+  border-radius: var(--radius-lg);
+  background: var(--surface-dark-fill);
+  box-shadow: var(--shadow-lg);
+}
+
+.overlay-backdrop {
+  background: rgba(7, 18, 26, 0.56);
 }
 
 .glass-divider {
@@ -235,38 +219,6 @@ main > * {
 .section-shell {
   position: relative;
   scroll-margin-top: 5.4rem;
-}
-
-.surface-paper-panel,
-.surface-soft-panel,
-.surface-field-panel,
-.surface-dark-shell {
-  position: relative;
-  border-radius: var(--radius-xl);
-}
-
-.surface-paper-panel {
-  border: 1px solid var(--paper-border);
-  background: var(--surface-paper-fill);
-  box-shadow: var(--shadow-paper);
-}
-
-.surface-soft-panel {
-  border: 1px solid var(--paper-border);
-  background: var(--surface-paper-soft-fill);
-  box-shadow: var(--shadow-paper);
-}
-
-.surface-field-panel {
-  border: 1px solid var(--paper-border-soft);
-  background: var(--surface-field-fill);
-  box-shadow: var(--shadow-field);
-}
-
-.surface-dark-shell {
-  border: 1px solid var(--glass-stroke-dark);
-  background: var(--surface-dark-fill);
-  box-shadow: var(--shadow-dark);
 }
 
 .section-heading {
@@ -285,43 +237,46 @@ main > * {
   color: var(--muted-inverse);
 }
 
-.eyebrow,
-.signal-pill {
+/* ── Typography label (replaces eyebrow / kicker / signal-pill) ── */
+
+.label-upper {
+  font-size: var(--text-label);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* Pill-shaped label (compose with label-upper for uppercase pills) */
+.label-pill {
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
   width: fit-content;
-  min-height: 2.75rem;
-  padding: 0.42rem 0.82rem;
-  border: 1px solid rgba(121, 217, 202, 0.24);
-  border-radius: 999px;
-  background: rgba(121, 217, 202, 0.1);
-  font-size: var(--text-kicker);
-  font-weight: 800;
-  letter-spacing: 0.13em;
-  text-transform: uppercase;
-}
-
-.eyebrow {
+  min-height: 2rem;
+  padding: 0.32rem 0.72rem;
+  border: 1px solid rgba(121, 217, 202, 0.25);
+  border-radius: var(--radius-full);
+  background: rgba(121, 217, 202, 0.08);
   color: var(--brand);
 }
 
-.signal-pill {
-  border-color: rgba(11, 23, 32, 0.12);
-  background: rgba(11, 23, 32, 0.04);
+h1,
+h2 {
+  margin: 0;
   color: var(--text-strong);
-  letter-spacing: 0.08em;
+  font-family: var(--font-display);
+  font-weight: 700;
+  line-height: 0.98;
+  letter-spacing: -0.04em;
 }
 
-h1,
-h2,
 h3 {
   margin: 0;
   color: var(--text-strong);
-  font-family: 'Syne', sans-serif;
+  font-family: var(--font-body);
   font-weight: 700;
-  line-height: 0.98;
-  letter-spacing: -0.055em;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
 }
 
 h1 {
@@ -371,30 +326,38 @@ p {
   border-color: var(--paper-border);
   background: var(--surface-field-fill);
   color: var(--text-strong);
-  box-shadow: var(--shadow-field);
+  box-shadow: var(--shadow-sm);
 }
 
 .button-tertiary {
   color: var(--text-inverse);
 }
 
-.soft-chip {
+/* ── Chip (interactive toggle) ── */
+
+.chip {
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
-  min-height: 2.75rem;
+  min-height: 2.5rem;
   padding: 0.5rem 0.75rem;
   border: 1px solid var(--paper-border-soft);
-  border-radius: 999px;
+  border-radius: var(--radius-md);
   background: var(--surface-field-fill);
   color: var(--text-strong);
   font-size: 0.82rem;
   font-weight: 700;
-  box-shadow: var(--shadow-field);
+  box-shadow: var(--shadow-sm);
   transition:
     transform 0.18s ease,
     border-color 0.18s ease,
     background-color 0.18s ease;
+}
+
+.chip.active {
+  border-color: rgba(44, 161, 142, 0.26);
+  background: rgba(121, 217, 202, 0.12);
+  color: var(--brand-strong);
 }
 
 .page-rise,
@@ -456,36 +419,30 @@ summary:focus-visible {
     box-shadow: 0 14px 28px rgba(255, 122, 26, 0.35);
   }
 
-  .soft-chip:hover {
+  .chip:hover {
     transform: translateY(-2px);
     border-color: var(--line-strong);
   }
 
-  .surface-panel:hover {
-    box-shadow: 0 22px 56px rgba(0, 0, 0, 0.22);
-  }
-
-  .glass-panel:hover,
-  .glass-panel-dark:hover {
-    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.28);
+  .surface-card:hover {
+    box-shadow: 0 18px 44px rgba(0, 0, 0, 0.2);
   }
 }
 
 .button-primary:active,
 .button-secondary:active,
 .button-tertiary:active,
-.soft-chip:active {
+.chip:active {
   transform: scale(0.97);
 }
 
 @supports not ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
-  .glass-panel,
-  .glass-chip {
+  .surface-card {
     background: var(--glass-fallback);
   }
 
-  .glass-panel-dark,
-  .glass-overlay {
+  .surface-dark,
+  .overlay-backdrop {
     background: var(--glass-fallback-dark);
   }
 
@@ -493,7 +450,7 @@ summary:focus-visible {
     background: rgba(247, 251, 255, 0.92);
   }
 
-  .soft-chip {
+  .chip {
     background: rgba(244, 249, 252, 0.9);
   }
 }
@@ -502,15 +459,11 @@ summary:focus-visible {
   :root {
     --glass-blur: 0px;
     --glass-saturate: 100%;
-    --glass-shadow: 0 18px 36px rgba(0, 0, 0, 0.18);
-    --shadow-paper: 0 14px 30px rgba(5, 14, 24, 0.12);
-    --shadow-dark: 0 18px 36px rgba(0, 0, 0, 0.2);
+    --shadow-md: 0 10px 24px rgba(5, 14, 24, 0.1);
+    --shadow-lg: 0 14px 30px rgba(0, 0, 0, 0.18);
   }
 
-  .glass-panel,
-  .glass-panel-dark,
-  .glass-chip,
-  .glass-overlay,
+  .overlay-backdrop,
   .mobile-section-nav,
   .contact-sheet-shell,
   .sheet-shell,
@@ -519,13 +472,13 @@ summary:focus-visible {
     backdrop-filter: none !important;
   }
 
-  .glass-panel,
-  .glass-chip {
+  .surface-card,
+  .surface-input {
     background: var(--glass-fallback);
   }
 
-  .glass-panel-dark,
-  .glass-overlay,
+  .surface-dark,
+  .overlay-backdrop,
   .mobile-section-nav,
   .contact-sheet-shell,
   .sheet-shell,

@@ -14,7 +14,7 @@ defineProps({
   >
     <div class="container faq-grid">
       <div class="section-heading faq-heading">
-        <span class="eyebrow">{{ site.faqEyebrow }}</span>
+        <span class="label-upper label-pill">{{ site.faqEyebrow }}</span>
         <h2>{{ site.faqTitle }}</h2>
         <p>
           {{ site.faqSummary }}
@@ -25,7 +25,7 @@ defineProps({
         <details
           v-for="(item, index) in site.faqs"
           :key="item.question"
-          class="surface-panel surface-soft-panel faq-item"
+          class="surface-card faq-item"
           :open="index === 0"
         >
           <summary>{{ item.question }}</summary>

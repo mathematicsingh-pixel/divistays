@@ -24,7 +24,7 @@ function isActive(list, value) {
     <div
       v-for="group in filterGroups"
       :key="group.key"
-      class="group-card surface-field-panel"
+      class="group-card surface-input"
     >
       <div class="group-copy">
         <span>{{ group.label }}</span>
@@ -93,7 +93,7 @@ function isActive(list, value) {
   background: var(--surface-field-fill);
   color: var(--text-strong);
   font-weight: 700;
-  box-shadow: var(--shadow-field);
+  box-shadow: var(--shadow-sm);
   transition:
     border-color 0.18s ease,
     background-color 0.18s ease,

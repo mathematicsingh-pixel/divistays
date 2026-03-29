@@ -75,11 +75,11 @@ const {
       >
         <span
           v-if="canCycle"
-          class="stage-hint glass-chip"
+          class="stage-hint surface-input"
         >
           Swipe left or right, or tap for next
         </span>
-        <span class="stage-hint glass-chip">
+        <span class="stage-hint surface-input">
           {{ isZoomed ? 'Drag to pan' : 'Pinch to zoom' }}
         </span>
       </div>
@@ -89,7 +89,7 @@ const {
         class="stage-arrows"
       >
         <button
-          class="stage-arrow glass-chip"
+          class="stage-arrow surface-input"
           type="button"
           data-stage-control="true"
           aria-label="Show previous photo"
@@ -100,7 +100,7 @@ const {
           ‹
         </button>
         <button
-          class="stage-arrow glass-chip"
+          class="stage-arrow surface-input"
           type="button"
           data-stage-control="true"
           aria-label="Show next photo"
@@ -131,7 +131,7 @@ const {
       <div class="gallery-status">
         <button
           v-if="isZoomed"
-          class="stage-reset glass-chip"
+          class="stage-reset surface-input"
           type="button"
           @click="resetZoom"
         >
@@ -206,7 +206,7 @@ const {
   border: 1px solid var(--paper-border);
   background: var(--surface-paper-soft-fill);
   aspect-ratio: 16 / 11;
-  box-shadow: var(--shadow-paper);
+  box-shadow: var(--shadow-md);
   cursor: pointer;
   touch-action: manipulation;
   user-select: none;
@@ -245,7 +245,7 @@ const {
   min-height: 2.75rem;
   padding: 0.38rem 0.68rem;
   color: var(--text-strong);
-  font-size: var(--text-kicker);
+  font-size: var(--text-label);
   font-weight: 800;
   letter-spacing: 0.04em;
   background: var(--surface-field-fill);
@@ -328,14 +328,14 @@ const {
   padding: 0.38rem 0.72rem;
   border-radius: 999px;
   color: var(--text-strong);
-  font-size: var(--text-kicker);
+  font-size: var(--text-label);
   font-weight: 800;
   letter-spacing: 0.04em;
 }
 
 .detail-kicker {
   color: var(--brand-strong);
-  font-size: var(--text-kicker);
+  font-size: var(--text-label);
   font-weight: 800;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -348,7 +348,7 @@ const {
   border: 1px solid var(--paper-border-soft);
   border-radius: var(--radius-lg);
   background: var(--surface-field-fill);
-  box-shadow: var(--shadow-field);
+  box-shadow: var(--shadow-sm);
 }
 
 .video-copy {
@@ -362,7 +362,7 @@ const {
   border-radius: var(--radius-md);
   border: 1px solid var(--paper-border-soft);
   background: rgba(7, 18, 26, 0.9);
-  box-shadow: var(--shadow-paper);
+  box-shadow: var(--shadow-md);
 }
 
 .video-poster,

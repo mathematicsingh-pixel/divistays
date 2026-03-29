@@ -11,7 +11,7 @@ defineProps({
   <section class="section-shell process-shell">
     <div class="container">
       <div class="section-heading">
-        <span class="eyebrow">{{ site.processEyebrow }}</span>
+        <span class="label-upper label-pill">{{ site.processEyebrow }}</span>
         <h2>{{ site.processTitle }}</h2>
         <p>{{ site.processSummary }}</p>
       </div>
@@ -20,7 +20,7 @@ defineProps({
         <article
           v-for="(step, index) in site.processSteps"
           :key="step.title"
-          class="surface-panel surface-soft-panel process-card"
+          class="surface-card process-card"
         >
           <span class="process-index">0{{ index + 1 }}</span>
           <h3>{{ step.title }}</h3>
@@ -45,7 +45,7 @@ defineProps({
 
 .process-index {
   color: var(--accent-deep);
-  font-size: var(--text-kicker);
+  font-size: var(--text-label);
   font-weight: 800;
   letter-spacing: 0.14em;
   text-transform: uppercase;

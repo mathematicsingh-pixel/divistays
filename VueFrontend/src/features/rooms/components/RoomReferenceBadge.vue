@@ -40,12 +40,12 @@ defineProps({
   border-radius: 999px;
   background: var(--surface-field-fill);
   color: var(--text-strong);
-  box-shadow: var(--shadow-field);
+  box-shadow: var(--shadow-sm);
 }
 
 .room-reference-label,
 .room-reference strong {
-  font-size: var(--text-kicker);
+  font-size: var(--text-label);
   font-weight: 800;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -62,7 +62,7 @@ defineProps({
 .room-reference-inverse {
   border-color: var(--glass-stroke-light);
   background: rgba(7, 18, 26, 0.72);
-  box-shadow: var(--shadow-chip);
+  box-shadow: var(--shadow-sm);
 }
 
 .room-reference-inverse .room-reference-label {

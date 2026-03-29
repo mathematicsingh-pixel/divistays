@@ -40,12 +40,12 @@ useOverlayDialog({
     <transition name="contact-sheet-fade">
       <div
         v-if="isOpen"
-        class="contact-sheet-shell glass-overlay"
+        class="contact-sheet-shell overlay-backdrop"
         @click.self="closeSheet"
       >
         <section
           ref="panelRef"
-          class="contact-sheet surface-paper-panel"
+          class="contact-sheet surface-card"
           aria-modal="true"
           role="dialog"
           aria-labelledby="mobile-contact-sheet-title"
@@ -111,7 +111,7 @@ useOverlayDialog({
   display: grid;
   gap: 1rem;
   padding: var(--card-pad);
-  border-radius: var(--radius-sheet);
+  border-radius: var(--radius-lg);
 }
 
 .contact-sheet-head {
@@ -128,7 +128,7 @@ useOverlayDialog({
 
 .contact-sheet-kicker {
   color: var(--accent-deep);
-  font-size: var(--text-kicker);
+  font-size: var(--text-label);
   font-weight: 800;
   letter-spacing: 0.13em;
   text-transform: uppercase;
@@ -154,7 +154,7 @@ useOverlayDialog({
   background: var(--surface-field-fill);
   color: var(--text-strong);
   font-size: 1.35rem;
-  box-shadow: var(--shadow-field);
+  box-shadow: var(--shadow-sm);
 }
 
 .contact-sheet-actions {
@@ -176,7 +176,7 @@ useOverlayDialog({
 }
 
 .contact-option-meta {
-  font-size: var(--text-meta);
+  font-size: var(--text-label);
   color: inherit;
   opacity: 0.78;
 }

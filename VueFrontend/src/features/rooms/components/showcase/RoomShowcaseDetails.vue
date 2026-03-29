@@ -41,7 +41,7 @@ const callHref = getCallHref()
     <div class="detail-topline">
       <p class="dialog-price">{{ room.priceLabel }}</p>
       <span
-        class="availability-pill glass-chip"
+        class="availability-pill surface-input"
         :class="{ 'availability-pill--occupied': !room.available }"
       >
         {{ room.availabilityLabel }}
@@ -144,7 +144,7 @@ const callHref = getCallHref()
 
 .detail-kicker {
   color: var(--brand-strong);
-  font-size: var(--text-kicker);
+  font-size: var(--text-label);
   font-weight: 800;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -188,7 +188,7 @@ const callHref = getCallHref()
   border-radius: 999px;
   background: rgba(121, 217, 202, 0.14);
   color: var(--brand-strong);
-  font-size: var(--text-meta);
+  font-size: var(--text-label);
   font-weight: 800;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -221,13 +221,13 @@ const callHref = getCallHref()
   border: 1px solid var(--paper-border-soft);
   border-radius: var(--radius-lg);
   background: var(--surface-field-fill);
-  box-shadow: var(--shadow-field);
+  box-shadow: var(--shadow-sm);
 }
 
 .spec-grid dt {
   margin-bottom: 0.3rem;
   color: var(--muted);
-  font-size: var(--text-meta);
+  font-size: var(--text-label);
   font-weight: 800;
   letter-spacing: 0.12em;
   text-transform: uppercase;

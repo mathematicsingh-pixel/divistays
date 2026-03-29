@@ -31,20 +31,20 @@ useOverlayDialog({
     <transition name="dialog-fade">
       <div
         v-if="roomSlug"
-        class="dialog-shell glass-overlay"
+        class="dialog-shell overlay-backdrop"
         @click.self="emit('close')"
       >
         <section
           :id="`${roomSummary?.slug || roomSlug}-preview`"
           ref="dialogPanel"
-          class="dialog-panel surface-paper-panel"
+          class="dialog-panel surface-card"
           aria-modal="true"
           role="dialog"
           :aria-labelledby="`${roomSummary?.slug || roomSlug}-preview-title`"
         >
           <header class="dialog-head">
             <div class="dialog-head-copy">
-              <p class="dialog-brand">{{ siteConfig.uiText.room.previewLabel }}</p>
+              <p class="label-upper dialog-brand">{{ siteConfig.uiText.room.previewLabel }}</p>
               <h2 :id="`${roomSummary?.slug || roomSlug}-preview-title`">
                 {{ roomSummary?.title || 'Loading room' }}
               </h2>
@@ -118,10 +118,6 @@ useOverlayDialog({
 
 .dialog-brand {
   color: var(--brand-strong);
-  font-size: 0.76rem;
-  font-weight: 800;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
 }
 
 .dialog-content {
@@ -151,7 +147,7 @@ useOverlayDialog({
   background: var(--surface-field-fill);
   color: var(--text-strong);
   font-size: 1.35rem;
-  box-shadow: var(--shadow-field);
+  box-shadow: var(--shadow-sm);
 }
 
 .dialog-fade-enter-active,
