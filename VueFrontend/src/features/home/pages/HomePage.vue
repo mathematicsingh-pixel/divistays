@@ -125,7 +125,7 @@ useHead(() => ({
 
     <MobileEnquiryBar
       :primary-href="'/rooms?availability=available'"
-      :primary-label="siteConfig.uiText.actions.viewOpenRooms"
+      :primary-label="siteConfig.uiText.actions.viewRooms"
       :secondary-label="siteConfig.uiText.actions.talkToUs"
       :secondary-menu-options="stickyContactOptions"
       :secondary-menu-title="siteConfig.uiText.contactSheet.title"

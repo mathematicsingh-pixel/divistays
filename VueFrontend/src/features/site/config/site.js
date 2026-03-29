@@ -146,6 +146,7 @@ export const siteConfig = {
   uiText: {
     actions: {
       viewOpenRooms: 'View open rooms',
+      viewRooms: 'View rooms',
       compareAllRooms: 'Compare all rooms',
       talkToUs: 'Talk to us',
       chooseFilters: 'Choose filters',
