@@ -85,27 +85,26 @@ function runFfmpeg(args) {
   })
 }
 
-function probeVideo(filePath) {
-  return new Promise((resolveProbe) => {
-    const child = spawn('ffprobe', [
-      '-v',
-      'error',
-      '-show_entries',
-      'format=duration',
-      '-of',
-      'default=nokey=1:noprint_wrappers=1',
-      filePath,
-    ])
+function hasCommand(command) {
+  return new Promise((resolveCommand) => {
+    const child = spawn(command, ['-version'], { stdio: 'ignore' })
 
-    let output = ''
-    child.stdout.on('data', (chunk) => {
-      output += chunk.toString()
+    child.on('error', () => {
+      resolveCommand(false)
     })
 
-    child.on('close', (code) => {
-      resolveProbe(code === 0 && Number.parseFloat(output) > 0)
+    child.on('close', () => {
+      resolveCommand(true)
     })
   })
+}
+
+async function ensureCommand(command) {
+  if (await hasCommand(command)) {
+    return
+  }
+
+  throw new Error(`Missing required binary: ${command}`)
 }
 
 async function buildVideoAssets(room, video) {
@@ -116,9 +115,14 @@ async function buildVideoAssets(room, video) {
   await ensureDir(roomDir)
 
   const sourceFile = await resolveSourcePath(video.source)
-  const playableVideo = (await exists(videoTarget)) && (await probeVideo(videoTarget))
+  const videoReady = await exists(videoTarget)
+  const posterReady = await exists(posterTarget)
 
-  if (!playableVideo) {
+  if (!videoReady || !posterReady) {
+    await ensureCommand('ffmpeg')
+  }
+
+  if (!videoReady) {
     await runFfmpeg([
       '-y',
       '-i',
@@ -145,7 +149,7 @@ async function buildVideoAssets(room, video) {
     ])
   }
 
-  if (!(await exists(posterTarget))) {
+  if (!posterReady) {
     await runFfmpeg([
       '-y',
       '-ss',

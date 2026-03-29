@@ -117,3 +117,5 @@ test.ipynb
 output/playwright/
 .playwright-browsers
 public/media/*
+!VueFrontend/scripts/lib/
+!VueFrontend/scripts/lib/load-room-content.mjs
