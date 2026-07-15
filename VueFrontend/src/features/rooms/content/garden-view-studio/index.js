@@ -5,6 +5,8 @@ const included = [
   'High-speed WiFi support',
   'Water purifier',
   '24x7 CCTV support',
+  'Almirah',
+  'Wi-fi',
 ]
 
 const extraNotes = [
@@ -31,11 +33,11 @@ export default defineRoom({
   fitSummary: 'Share-friendly studio with extra floor area and a private kitchen setup.',
   priceMonthly: 7999,
   available: true,
-  featured: true,
-  updatedAt: '2026-03-11',
-  availabilityUpdatedAt: '2026-03-13',
+  featured: false,
+  updatedAt: '2026-07-15',
+  availabilityUpdatedAt: '2026-07-15',
   occupancy: 'flex',
-  occupancyLabel: 'Double / triple occupancy',
+  occupancyLabel: 'Double/Triple occupancy',
   kitchenType: 'private',
   kitchenLabel: 'Private kitchen',
   washroomType: 'attached',

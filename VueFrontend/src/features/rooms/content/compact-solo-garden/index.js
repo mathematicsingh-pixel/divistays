@@ -5,6 +5,10 @@ const included = [
   'Water purifier',
   'Garden-facing ventilation',
   'Common kitchen access',
+  'Almirah',
+  'Wi-fi',
+  'Water Purifier',
+  '24x7 CCTV support',
 ]
 
 const extraNotes = [
@@ -30,11 +34,11 @@ export default defineRoom({
   summary:
     'Small, efficient solo room with garden-facing ventilation, common kitchen access, and common washroom support.',
   fitSummary: 'Lowest-rent solo option with a compact footprint and shared facilities.',
-  priceMonthly: 3499,
-  available: false,
+  priceMonthly: 3799,
+  available: true,
   featured: false,
-  updatedAt: '2026-03-08',
-  availabilityUpdatedAt: '2026-03-08',
+  updatedAt: '2026-07-15',
+  availabilityUpdatedAt: '2026-07-15',
   occupancy: 'single',
   occupancyLabel: 'Single occupancy',
   kitchenType: 'common',

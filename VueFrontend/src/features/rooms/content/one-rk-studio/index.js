@@ -5,6 +5,9 @@ const included = [
   'Water purifier',
   'Garden-facing ventilation',
   'Private kitchen setup',
+  'Wi-fi',
+  '24x7 CCTV support',
+  'Almirah',
 ]
 
 const extraNotes = [
@@ -32,10 +35,10 @@ export default defineRoom({
     'Furnished 1 RK-style stay with a private kitchen, attached washroom, and a room layout that works well for a double setup.',
   fitSummary: '1 RK-style setup for anyone who wants a more self-contained room.',
   priceMonthly: 7999,
-  available: false,
+  available: true,
   featured: false,
-  updatedAt: '2026-03-10',
-  availabilityUpdatedAt: '2026-03-10',
+  updatedAt: '2026-07-15',
+  availabilityUpdatedAt: '2026-07-15',
   occupancy: 'double',
   occupancyLabel: 'Double occupancy',
   kitchenType: 'private',

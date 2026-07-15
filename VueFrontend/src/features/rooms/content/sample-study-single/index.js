@@ -4,7 +4,10 @@ const included = [
   'Single bed, study desk, and chair',
   'Attached washroom',
   'Common kitchen access',
-  'Open shelving',
+  'Water Purifier',
+  'Wi-fi',
+  '24x7 CCTV support',
+  'Almirah',
 ]
 
 const extraNotes = [
@@ -13,30 +16,33 @@ const extraNotes = [
 ]
 
 const gallery = [
-  image('01', 'assets/rooms/sample-study-single/01.png', 'Daylit sample single room with bed, desk, and attached washroom door.', 'Sample single room'),
+  image('1', 'assets/rooms/sample-study-single/1.png', 'Daylit sample single room with bed, desk, and attached washroom door.', 'Sample single room'),
+  image('IMG_2252', 'assets/rooms/sample-study-single/IMG_2252.jpg', 'Alternate view of the daylit study single room.', 'Alternate room view'),
+  image('IMG_2255', 'assets/rooms/sample-study-single/IMG_2255.jpg', 'Interior detail of the daylit study single room.', 'Interior detail'),
+  image('02', 'assets/rooms/sample-study-single/02.png', 'Additional view of the daylit study single room.', 'Room view'),
 ]
 
 export default defineRoom({
   id: 6,
   slug: 'sample-study-single',
-  title: 'Daylit study single room',
+  title: 'Spacious comfy room',
   summary:
     'Example single room entry with an attached washroom, common kitchen access, and a straightforward study-first setup.',
   fitSummary: 'Example single setup with an attached washroom and simple furniture.',
-  priceMonthly: 4299,
+  priceMonthly: 5499,
   available: true,
   featured: false,
-  updatedAt: '2026-03-23',
-  availabilityUpdatedAt: '2026-03-23',
-  occupancy: 'single',
-  occupancyLabel: 'Single occupancy',
+  updatedAt: '2026-07-15',
+  availabilityUpdatedAt: '2026-07-15',
+  occupancy: 'single/double',
+  occupancyLabel: 'Single/Double occupancy',
   kitchenType: 'common',
-  kitchenLabel: 'Common kitchen',
+  kitchenLabel: 'Kitchen setup',
   washroomType: 'attached',
   washroomLabel: 'Attached washroom',
-  highlightLabel: 'Simple single setup',
-  facingLabel: 'Daylit interior',
-  bestFor: 'Anyone who wants a simple single room with an attached washroom at a modest monthly rent.',
+  highlightLabel: 'Simple setup',
+  facingLabel: 'Spacious room',
+  bestFor: 'Anyone who wants a spacious room with an attached washroom and simple kitchen setup at a modest monthly rent.',
   included,
   extraNotes,
   visitNextStep: 'Replace this placeholder visit note with the real contact instruction before publishing.',

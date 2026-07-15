@@ -5,6 +5,10 @@ const included = [
   'Attached washroom',
   'Common kitchen access',
   'Utility aangan access',
+  'Book Rack',
+  'Water Purifier',
+  'Wi-fi',
+  '24x7 CCTV support',
 ]
 
 const extraNotes = [
@@ -28,11 +32,11 @@ export default defineRoom({
   summary:
     'Entry-level single room with an attached washroom, common kitchen access, and a simpler stay format for budget-sensitive enquiries.',
   fitSummary: 'Single room with attached washroom for a tighter monthly budget.',
-  priceMonthly: 3999,
-  available: false,
+  priceMonthly: 4299,
+  available: true,
   featured: false,
-  updatedAt: '2026-03-09',
-  availabilityUpdatedAt: '2026-03-09',
+  updatedAt: '2026-07-15',
+  availabilityUpdatedAt: '2026-07-15',
   occupancy: 'single',
   occupancyLabel: 'Single occupancy',
   kitchenType: 'common',
