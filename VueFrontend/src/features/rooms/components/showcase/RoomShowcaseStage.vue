@@ -94,8 +94,6 @@ const {
           data-stage-control="true"
           aria-label="Show previous photo"
           @click="goPrevious"
-          @touchstart.stop
-          @touchend.stop
         >
           ‹
         </button>
@@ -105,8 +103,6 @@ const {
           data-stage-control="true"
           aria-label="Show next photo"
           @click="goNext"
-          @touchstart.stop
-          @touchend.stop
         >
           ›
         </button>
@@ -273,6 +269,7 @@ const {
   font-weight: 700;
   line-height: 1;
   pointer-events: auto;
+  touch-action: manipulation;
   background: var(--surface-field-fill);
 }
 
