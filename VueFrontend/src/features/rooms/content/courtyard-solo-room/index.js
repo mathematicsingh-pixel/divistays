@@ -1,4 +1,4 @@
-import { defineRoom, image } from '../helpers.js'
+import { defineRoom, image, video } from '../helpers.js'
 
 const included = [
   'Single bed, slim study desk, and chair',
@@ -51,4 +51,5 @@ export default defineRoom({
   extraNotes,
   visitNextStep: 'Use the room name on call or WhatsApp so DiviStays can confirm the closest available match before you visit.',
   gallery,
+  video: video('tour', 'assets/rooms/courtyard-solo-room/tour.mp4', 'Courtyard room walkthrough'),
 })

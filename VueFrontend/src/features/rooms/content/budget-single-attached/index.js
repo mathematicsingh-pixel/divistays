@@ -1,4 +1,4 @@
-import { defineRoom, image } from '../helpers.js'
+import { defineRoom, image, video } from '../helpers.js'
 
 const included = [
   'Compact furnished setup',
@@ -50,4 +50,5 @@ export default defineRoom({
   extraNotes,
   visitNextStep: 'Ask for a similar available budget room before you plan a visit.',
   gallery,
+  video: video('tour', 'assets/rooms/budget-single-attached/tour.mp4', 'Budget single walkthrough'),
 })

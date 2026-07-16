@@ -1,4 +1,4 @@
-import { defineRoom, image } from '../helpers.js'
+import { defineRoom, image, video } from '../helpers.js'
 
 const included = [
   'Two single beds with study surfaces',
@@ -52,4 +52,5 @@ export default defineRoom({
   extraNotes,
   visitNextStep: 'Call or WhatsApp the room name to confirm the exact currently open shared studio before you visit.',
   gallery,
+  video: video('tour', 'assets/rooms/shared-loft-studio/tour.mp4', 'Shared loft walkthrough'),
 })
