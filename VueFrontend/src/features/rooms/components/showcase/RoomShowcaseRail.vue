@@ -66,6 +66,7 @@ defineProps({
     box-shadow 0.18s ease,
     opacity 0.18s ease;
   touch-action: manipulation;
+  pointer-events: auto;
 }
 
 .thumb-button :deep(.responsive-image) {

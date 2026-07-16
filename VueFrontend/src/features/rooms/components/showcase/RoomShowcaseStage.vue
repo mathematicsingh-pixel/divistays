@@ -328,6 +328,7 @@ const {
   font-size: var(--text-label);
   font-weight: 800;
   letter-spacing: 0.04em;
+  touch-action: manipulation;
 }
 
 .detail-kicker {
