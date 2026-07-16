@@ -162,6 +162,7 @@ const {
         v-if="!isVideoReady"
         class="video-trigger"
         type="button"
+        data-stage-control="true"
         @click="enableVideo"
       >
         <img

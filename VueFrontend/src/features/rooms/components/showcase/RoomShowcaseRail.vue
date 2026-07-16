@@ -25,6 +25,7 @@ defineProps({
       class="thumb-button"
       :class="{ active: index === activeIndex }"
       type="button"
+      data-stage-control="true"
       :aria-current="index === activeIndex ? 'true' : 'false'"
       :aria-label="`Show photo ${index + 1} of ${room.gallery.length}`"
       @click="setActiveIndex(index)"
