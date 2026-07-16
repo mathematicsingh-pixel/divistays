@@ -99,22 +99,8 @@ function runFfmpeg(args) {
   })
 }
 
-function hasCommand(command) {
-  return new Promise((resolveCommand) => {
-    const child = spawn(command, ['-version'], { stdio: 'ignore' })
-
-    child.on('error', () => {
-      resolveCommand(false)
-    })
-
-    child.on('close', () => {
-      resolveCommand(true)
-    })
-  })
-}
-
 async function ensureCommand(command) {
-  if (await hasCommand(command)) {
+  if (await exists(command)) {
     return
   }
 

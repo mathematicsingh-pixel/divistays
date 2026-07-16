@@ -1,4 +1,4 @@
-import { defineRoom, image } from '../helpers.js'
+import { defineRoom, image, video } from '../helpers.js'
 
 const included = [
   'Single bed, slim study desk, and chair',
@@ -51,4 +51,5 @@ export default defineRoom({
   extraNotes,
   visitNextStep: 'Send the room ID on WhatsApp or call to confirm availability and arrange a visit.',
   gallery,
+  video: video('tour', 'assets/rooms/courtyard-solo-room/tour.mp4', 'Courtyard room walkthrough'),
 })

@@ -1,4 +1,4 @@
-import { defineRoom, image } from '../helpers.js'
+import { defineRoom, image, video } from '../helpers.js'
 
 const included = [
   'Bed, study table, and chair',
@@ -52,4 +52,5 @@ export default defineRoom({
   extraNotes,
   visitNextStep: 'Send the room ID on WhatsApp or call to confirm availability and arrange a visit.',
   gallery,
+  video: video('tour', 'assets/rooms/vibrant-studio/tour.mp4', 'Vibrant studio walkthrough'),
 })
