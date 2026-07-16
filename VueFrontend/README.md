@@ -56,6 +56,11 @@ That file feeds:
 
 - `npm run validate:rooms`: room content validation
 - `npm run build`: validate, build media, generate static site
+- `npm run build:production`: validate the public HTTPS origin and generate the release build
+
+The canonical production origin is `https://divistays.com`. It is shared by page metadata,
+structured data, `sitemap.xml`, and `robots.txt`. Set `VITE_SITE_URL` only when a staging build
+needs to override that origin.
 
 ## Design system
 

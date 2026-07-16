@@ -4,12 +4,17 @@ defineProps({
     type: Array,
     required: true,
   },
+  inverse: {
+    type: Boolean,
+    default: false,
+  },
 })
 </script>
 
 <template>
   <nav
     class="breadcrumb-nav"
+    :class="{ 'breadcrumb-nav--inverse': inverse }"
     aria-label="Breadcrumb"
   >
     <ol>
@@ -43,17 +48,29 @@ defineProps({
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  color: var(--muted-inverse);
+  color: var(--muted);
   font-size: 0.82rem;
   font-weight: 700;
 }
 
 .breadcrumb-nav li:not(:last-child)::after {
   content: '/';
-  color: rgba(247, 251, 255, 0.38);
+  color: var(--line-strong);
 }
 
 .breadcrumb-nav a {
+  color: var(--text-strong);
+}
+
+.breadcrumb-nav--inverse li {
+  color: var(--muted-inverse);
+}
+
+.breadcrumb-nav--inverse li:not(:last-child)::after {
+  color: var(--line-inverse);
+}
+
+.breadcrumb-nav--inverse a {
   color: var(--text-inverse);
 }
 </style>

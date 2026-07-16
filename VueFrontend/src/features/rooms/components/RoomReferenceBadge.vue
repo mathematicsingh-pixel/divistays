@@ -17,10 +17,10 @@ defineProps({
 
 <template>
   <span
-    class="room-reference"
+    class="room-reference-badge"
     :class="{
-      'room-reference-inverse': inverse,
-      'room-reference-compact': compact,
+      'room-reference-badge--inverse': inverse,
+      'room-reference-badge--compact': compact,
     }"
   >
     <span class="room-reference-label">Room ID</span>
@@ -29,25 +29,27 @@ defineProps({
 </template>
 
 <style scoped>
-.room-reference {
+.room-reference-badge {
   display: inline-flex;
   align-items: center;
+  flex-wrap: nowrap;
   gap: 0.45rem;
   width: fit-content;
+  max-width: 100%;
   min-height: 2.75rem;
-  padding: 0.38rem 0.72rem;
-  border: 1px solid var(--paper-border-soft);
-  border-radius: 999px;
-  background: var(--surface-field-fill);
+  padding: var(--space-xs) var(--space-sm);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-full);
+  background: var(--paper);
   color: var(--text-strong);
-  box-shadow: var(--shadow-sm);
+  white-space: nowrap;
 }
 
 .room-reference-label,
-.room-reference strong {
+.room-reference-badge strong {
   font-size: var(--text-label);
-  font-weight: 800;
-  letter-spacing: 0.12em;
+  font-weight: 700;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
 }
 
@@ -55,31 +57,31 @@ defineProps({
   color: var(--muted);
 }
 
-.room-reference strong {
-  color: var(--accent);
+.room-reference-badge strong {
+  flex: 0 0 auto;
+  color: var(--text-strong);
 }
 
-.room-reference-inverse {
-  border-color: var(--glass-stroke-light);
-  background: rgba(7, 18, 26, 0.72);
-  box-shadow: var(--shadow-sm);
+.room-reference-badge--inverse {
+  border-color: var(--line-inverse);
+  background: var(--bg);
 }
 
-.room-reference-inverse .room-reference-label {
-  color: rgba(247, 251, 255, 0.68);
+.room-reference-badge--inverse .room-reference-label {
+  color: var(--muted-inverse);
 }
 
-.room-reference-inverse strong {
-  color: var(--accent);
+.room-reference-badge--inverse strong {
+  color: var(--text-inverse);
 }
 
-.room-reference-compact {
+.room-reference-badge--compact {
   min-height: 1.8rem;
-  padding: 0.32rem 0.6rem;
+  padding: var(--space-xs) var(--space-sm);
 }
 
-.room-reference-compact .room-reference-label,
-.room-reference-compact strong {
+.room-reference-badge--compact .room-reference-label,
+.room-reference-badge--compact strong {
   font-size: 0.66rem;
 }
 </style>

@@ -2,7 +2,6 @@ import '@fontsource/manrope/latin-400.css'
 import '@fontsource/manrope/latin-500.css'
 import '@fontsource/manrope/latin-600.css'
 import '@fontsource/manrope/latin-700.css'
-import '@fontsource/syne/latin-600.css'
 import '@fontsource/syne/latin-700.css'
 import './style.css'
 import { ViteSSG } from 'vite-ssg'
@@ -18,7 +17,7 @@ const scrollBehavior = (to, from, savedPosition) => {
     return { el: to.hash }
   }
 
-  if (to.fullPath !== from.fullPath) {
+  if (to.path !== from.path) {
     return { left: 0, top: 0 }
   }
 

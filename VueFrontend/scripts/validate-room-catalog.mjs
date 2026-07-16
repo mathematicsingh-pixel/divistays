@@ -1,8 +1,12 @@
 import { constants } from 'node:fs'
-import { access } from 'node:fs/promises'
+import { access, readFile } from 'node:fs/promises'
 import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { toRoomSummaryRecord } from '../src/features/rooms/model/room-record.js'
+import {
+  renderRoomSummaryModule,
+  roomSummaryOutputPath,
+} from './generate-room-summaries.mjs'
 import { loadRoomSourceCatalog } from './lib/load-room-content.mjs'
 
 const requiredRoomFields = [
@@ -41,6 +45,7 @@ const requiredSummaryFields = [
   'fitSummary',
   'priceMonthly',
   'available',
+  'featured',
   'updatedAt',
   'availabilityUpdatedAt',
   'occupancy',
@@ -90,6 +95,23 @@ async function fileExists(path) {
 }
 
 const roomSourceCatalog = await loadRoomSourceCatalog()
+
+try {
+  const generatedSummaryModule = await readFile(roomSummaryOutputPath, 'utf8')
+  const expectedSummaryModule = renderRoomSummaryModule(roomSourceCatalog)
+
+  if (generatedSummaryModule !== expectedSummaryModule) {
+    note('generated room summaries are stale; run `npm run generate:room-summaries`')
+  }
+}
+catch (error) {
+  if (error.code === 'ENOENT') {
+    note('generated room summaries are missing; run `npm run generate:room-summaries`')
+  }
+  else {
+    throw error
+  }
+}
 
 if (!roomSourceCatalog.length) {
   note('room catalog is empty')

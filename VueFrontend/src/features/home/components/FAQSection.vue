@@ -12,24 +12,30 @@ defineProps({
     id="faqs"
     class="section-shell faq-shell"
   >
-    <div class="container faq-grid">
+    <div class="container faq-layout">
       <div class="section-heading faq-heading">
-        <span class="label-upper label-pill">{{ site.faqEyebrow }}</span>
+        <span class="label-upper">{{ site.faqEyebrow }}</span>
         <h2>{{ site.faqTitle }}</h2>
-        <p>
-          {{ site.faqSummary }}
-        </p>
+        <p>{{ site.faqSummary }}</p>
       </div>
 
       <div class="faq-list">
         <details
           v-for="(item, index) in site.faqs"
           :key="item.question"
-          class="surface-card faq-item"
+          class="faq-item"
           :open="index === 0"
         >
-          <summary>{{ item.question }}</summary>
-          <p>{{ item.answer }}</p>
+          <summary>
+            <span>{{ item.question }}</span>
+            <span
+              class="faq-toggle"
+              aria-hidden="true"
+            />
+          </summary>
+          <div class="faq-answer">
+            <p>{{ item.answer }}</p>
+          </div>
         </details>
       </div>
     </div>
@@ -37,33 +43,50 @@ defineProps({
 </template>
 
 <style scoped>
-.faq-heading h2 {
-  color: var(--text-inverse);
+.faq-shell {
+  padding-bottom: var(--section-space);
 }
 
-.faq-grid {
+.faq-layout {
   display: grid;
-  gap: 1rem;
+  gap: var(--space-xl);
+}
+
+.faq-heading {
+  margin: 0;
+}
+
+.faq-heading .label-upper {
+  color: var(--muted);
+}
+
+.faq-heading h2 {
+  color: var(--text-strong);
+}
+
+.faq-heading p {
+  color: var(--muted);
 }
 
 .faq-list {
   display: grid;
-  gap: var(--space-md);
+  border-top: 1px solid var(--line-strong);
 }
 
 .faq-item {
-  padding: var(--card-pad);
+  border-bottom: 1px solid var(--line);
 }
 
 .faq-item summary {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  min-height: 2.75rem;
-  gap: 0.75rem;
+  min-height: 4.5rem;
+  gap: var(--space-lg);
+  padding: var(--space-md) 0;
   cursor: pointer;
   color: var(--text-strong);
-  font-weight: 800;
+  font-weight: 700;
   list-style: none;
 }
 
@@ -71,42 +94,55 @@ defineProps({
   display: none;
 }
 
-.faq-item summary::after {
-  content: '+';
-  font-size: 1.35rem;
-  line-height: 1;
-  color: var(--accent-deep);
+.faq-toggle {
+  position: relative;
+  width: 1rem;
+  height: 1rem;
+  flex: 0 0 auto;
+}
+
+.faq-toggle::before,
+.faq-toggle::after {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 1px;
+  background: currentColor;
+  content: '';
+  transform: translate(-50%, -50%);
   transition: transform 0.18s ease;
 }
 
-.faq-item[open] summary::after {
-  transform: rotate(45deg);
+.faq-toggle::after {
+  transform: translate(-50%, -50%) rotate(90deg);
 }
 
-.faq-item p {
-  margin: 0.8rem 0 0;
-  padding: 0.85rem 0.95rem 0.95rem;
-  border: 1px solid var(--paper-border-soft);
-  border-radius: 1rem;
-  background: var(--surface-field-fill);
+.faq-item[open] .faq-toggle::after {
+  transform: translate(-50%, -50%) rotate(0deg);
+}
+
+.faq-answer {
+  padding: 0 var(--space-xl) var(--space-lg) 0;
+}
+
+.faq-answer p {
+  max-width: 42rem;
   color: var(--muted);
 }
 
 @media (hover: hover) {
   .faq-item summary:hover {
-    color: var(--accent-deep);
+    color: var(--muted);
   }
 }
 
 @media (min-width: 960px) {
-  .faq-grid {
+  .faq-layout {
     grid-template-columns: minmax(0, 0.75fr) minmax(0, 1fr);
     align-items: start;
+    gap: var(--space-xl);
   }
 
-  .faq-heading {
-    position: sticky;
-    top: 1rem;
-  }
 }
 </style>

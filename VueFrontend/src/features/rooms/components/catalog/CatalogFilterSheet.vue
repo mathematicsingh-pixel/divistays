@@ -1,57 +1,73 @@
 <script setup>
 import { computed, ref } from 'vue'
+import { roomMatchesPriceBand } from '@/features/rooms'
 import { siteConfig } from '@/features/site/config/site'
 import { useOverlayDialog } from '@/shared/composables/useOverlayDialog'
 
 const props = defineProps({
-  isOpen: {
-    type: Boolean,
-    required: true,
-  },
-  filters: {
-    type: Object,
-    required: true,
-  },
-  actions: {
-    type: Object,
-    required: true,
-  },
-  availabilityOptions: {
-    type: Array,
-    required: true,
-  },
-  occupancyOptions: {
-    type: Array,
-    required: true,
-  },
-  kitchenOptions: {
-    type: Array,
-    required: true,
-  },
-  washroomOptions: {
-    type: Array,
-    required: true,
-  },
-  priceOptions: {
-    type: Array,
-    required: true,
-  },
-  sortOptions: {
-    type: Array,
-    required: true,
-  },
-  resultCount: {
-    type: Number,
-    required: true,
-  },
+  isOpen: { type: Boolean, required: true },
+  filters: { type: Object, required: true },
+  allRooms: { type: Array, required: true },
+  availabilityOptions: { type: Array, required: true },
+  occupancyOptions: { type: Array, required: true },
+  kitchenOptions: { type: Array, required: true },
+  washroomOptions: { type: Array, required: true },
+  priceOptions: { type: Array, required: true },
+  sortOptions: { type: Array, required: true },
 })
 
-const emit = defineEmits(['close'])
+const emit = defineEmits(['apply', 'close'])
 const panelRef = ref(null)
 const closeButton = ref(null)
 
-function isActive(list, value) {
-  return list.includes(value)
+function createDraft(filters) {
+  return {
+    availability: filters.availability,
+    occupancy: [...filters.occupancy],
+    kitchen: [...filters.kitchen],
+    washroom: [...filters.washroom],
+    price: [...filters.price],
+    sort: filters.sort,
+  }
+}
+
+const draft = ref(createDraft(props.filters))
+
+const groups = computed(() => [
+  { key: 'occupancy', label: 'Occupancy', options: props.occupancyOptions },
+  { key: 'kitchen', label: 'Kitchen', options: props.kitchenOptions },
+  { key: 'washroom', label: 'Washroom', options: props.washroomOptions },
+  { key: 'price', label: 'Budget', options: props.priceOptions },
+])
+
+const draftResultCount = computed(() => props.allRooms.filter((room) => {
+  if (draft.value.availability === 'available' && !room.available) return false
+  if (draft.value.occupancy.length && !draft.value.occupancy.includes(room.occupancy)) return false
+  if (draft.value.kitchen.length && !draft.value.kitchen.includes(room.kitchenType)) return false
+  if (draft.value.washroom.length && !draft.value.washroom.includes(room.washroomType)) return false
+  if (draft.value.price.length && !draft.value.price.some((band) => roomMatchesPriceBand(room, band))) return false
+  return true
+}).length)
+
+function toggle(group, value) {
+  const values = new Set(draft.value[group])
+  values.has(value) ? values.delete(value) : values.add(value)
+  draft.value[group] = [...values]
+}
+
+function resetDraft() {
+  draft.value = {
+    availability: 'available',
+    occupancy: [],
+    kitchen: [],
+    washroom: [],
+    price: [],
+    sort: 'available-first',
+  }
+}
+
+function applyDraft() {
+  emit('apply', createDraft(draft.value))
 }
 
 useOverlayDialog({
@@ -64,7 +80,7 @@ useOverlayDialog({
 
 <template>
   <Teleport to="body">
-    <transition name="sheet-fade">
+    <Transition name="sheet-fade">
       <div
         v-if="isOpen"
         class="sheet-shell overlay-backdrop"
@@ -78,115 +94,65 @@ useOverlayDialog({
           aria-modal="true"
           aria-labelledby="catalog-filters-title"
         >
-          <div class="sheet-head">
+          <header class="sheet-head">
             <div>
-              <p class="label-upper sheet-kicker">Filters</p>
-              <h3 id="catalog-filters-title">{{ siteConfig.uiText.actions.chooseFilters }}</h3>
+              <p class="label-upper">Rooms</p>
+              <h2 id="catalog-filters-title">Filter by price and facilities</h2>
             </div>
 
             <button
               ref="closeButton"
               class="sheet-close"
               type="button"
-              aria-label="Close filters"
+              aria-label="Close filters without applying changes"
               @click="emit('close')"
             >
-              ×
+              <span aria-hidden="true">×</span>
             </button>
-          </div>
+          </header>
 
           <div class="sheet-body">
-            <div class="sheet-group surface-input">
-              <span class="label-upper">Availability</span>
+            <fieldset class="sheet-group">
+              <legend>Availability</legend>
               <div class="chip-row">
                 <button
                   v-for="item in availabilityOptions"
                   :key="item.value"
                   type="button"
-                  class="chip-button"
-                  :class="{ active: filters.availability === item.value }"
-                  :aria-pressed="filters.availability === item.value"
-                  @click="actions.setAvailability(item.value)"
+                  class="chip"
+                  :class="{ active: draft.availability === item.value }"
+                  :aria-pressed="draft.availability === item.value"
+                  @click="draft.availability = item.value"
                 >
                   {{ item.label }}
                 </button>
               </div>
-            </div>
+            </fieldset>
 
-            <div class="sheet-group surface-input">
-              <span class="label-upper">Occupancy</span>
+            <fieldset
+              v-for="group in groups"
+              :key="group.key"
+              class="sheet-group"
+            >
+              <legend>{{ group.label }}</legend>
               <div class="chip-row">
                 <button
-                  v-for="item in occupancyOptions"
+                  v-for="item in group.options"
                   :key="item.value"
                   type="button"
-                  class="chip-button"
-                  :class="{ active: isActive(filters.occupancy, item.value) }"
-                  :aria-pressed="isActive(filters.occupancy, item.value)"
-                  @click="actions.toggleOccupancy(item.value)"
+                  class="chip"
+                  :class="{ active: draft[group.key].includes(item.value) }"
+                  :aria-pressed="draft[group.key].includes(item.value)"
+                  @click="toggle(group.key, item.value)"
                 >
                   {{ item.label }}
                 </button>
               </div>
-            </div>
+            </fieldset>
 
-            <div class="sheet-group surface-input">
-              <span class="label-upper">Kitchen</span>
-              <div class="chip-row">
-                <button
-                  v-for="item in kitchenOptions"
-                  :key="item.value"
-                  type="button"
-                  class="chip-button"
-                  :class="{ active: isActive(filters.kitchen, item.value) }"
-                  :aria-pressed="isActive(filters.kitchen, item.value)"
-                  @click="actions.toggleKitchen(item.value)"
-                >
-                  {{ item.label }}
-                </button>
-              </div>
-            </div>
-
-            <div class="sheet-group surface-input">
-              <span class="label-upper">Washroom</span>
-              <div class="chip-row">
-                <button
-                  v-for="item in washroomOptions"
-                  :key="item.value"
-                  type="button"
-                  class="chip-button"
-                  :class="{ active: isActive(filters.washroom, item.value) }"
-                  :aria-pressed="isActive(filters.washroom, item.value)"
-                  @click="actions.toggleWashroom(item.value)"
-                >
-                  {{ item.label }}
-                </button>
-              </div>
-            </div>
-
-            <div class="sheet-group surface-input">
-              <span class="label-upper">Budget</span>
-              <div class="chip-row">
-                <button
-                  v-for="item in priceOptions"
-                  :key="item.value"
-                  type="button"
-                  class="chip-button"
-                  :class="{ active: isActive(filters.price, item.value) }"
-                  :aria-pressed="isActive(filters.price, item.value)"
-                  @click="actions.togglePrice(item.value)"
-                >
-                  {{ item.label }}
-                </button>
-              </div>
-            </div>
-
-            <label class="sort-field surface-input">
-              <span class="label-upper">Sort by</span>
-              <select
-                :value="filters.sort"
-                @change="actions.setSort($event.target.value)"
-              >
+            <label class="sort-field">
+              <span>Sort rooms</span>
+              <select v-model="draft.sort">
                 <option
                   v-for="item in sortOptions"
                   :key="item.value"
@@ -198,25 +164,25 @@ useOverlayDialog({
             </label>
           </div>
 
-          <div class="sheet-actions">
+          <footer class="sheet-actions">
             <button
               class="button-secondary"
               type="button"
-              @click="actions.resetFilters()"
+              @click="resetDraft"
             >
               {{ siteConfig.uiText.actions.clearFilters }}
             </button>
             <button
               class="button-primary"
               type="button"
-              @click="emit('close')"
+              @click="applyDraft"
             >
-              Show {{ resultCount }} {{ resultCount === 1 ? 'room' : 'rooms' }}
+              Show {{ draftResultCount }} {{ draftResultCount === 1 ? 'room' : 'rooms' }}
             </button>
-          </div>
+          </footer>
         </section>
       </div>
-    </transition>
+    </Transition>
   </Teleport>
 </template>
 
@@ -224,111 +190,118 @@ useOverlayDialog({
 .sheet-shell {
   position: fixed;
   inset: 0;
-  z-index: 45;
+  z-index: 70;
   display: grid;
   align-items: end;
-  background: rgba(7, 18, 26, 0.52);
-  -webkit-backdrop-filter: blur(18px) saturate(160%);
-  backdrop-filter: blur(18px) saturate(160%);
 }
 
 .sheet-panel {
   display: grid;
   grid-template-rows: auto minmax(0, 1fr) auto;
-  gap: 0.9rem;
+  gap: var(--space-md);
   width: 100%;
-  max-height: min(44rem, 92svh);
-  padding: 1rem 1rem calc(1rem + env(safe-area-inset-bottom));
+  max-height: 92svh;
+  padding: var(--space-md) var(--space-md) calc(var(--space-md) + env(safe-area-inset-bottom));
+  border-right: 0;
+  border-bottom: 0;
+  border-left: 0;
   border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  box-shadow: var(--shadow-lg);
 }
 
 .sheet-head {
   display: flex;
-  align-items: start;
+  align-items: flex-start;
   justify-content: space-between;
-  gap: 1rem;
+  gap: var(--space-md);
+  padding-bottom: var(--space-md);
+  border-bottom: 1px solid var(--line);
 }
 
-.sheet-kicker {
-  color: var(--brand-strong);
+.sheet-head > div {
+  display: grid;
+  gap: var(--space-xs);
+}
+
+.sheet-head h2 {
+  font-size: clamp(1.75rem, 8vw, 2.5rem);
 }
 
 .sheet-close {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 2.6rem;
-  height: 2.6rem;
-  border: 1px solid var(--paper-border-soft);
-  border-radius: 999px;
-  background: var(--surface-field-fill);
+  display: inline-grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  flex: 0 0 auto;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-full);
   color: var(--text-strong);
-  font-size: 1.45rem;
-  box-shadow: var(--shadow-sm);
+  font-size: 1.5rem;
 }
 
 .sheet-body {
   display: grid;
-  gap: 1rem;
+  gap: var(--space-lg);
+  padding-right: var(--space-xs);
   overflow-y: auto;
 }
 
-.sheet-group,
-.sort-field {
+.sheet-group {
   display: grid;
-  gap: 0.65rem;
-  padding: 0.9rem;
-  border-radius: 1.1rem;
+  gap: var(--space-sm);
+  min-width: 0;
+  margin: 0;
+  padding: 0 0 var(--space-lg);
+  border: 0;
+  border-bottom: 1px solid var(--line);
 }
 
-.sheet-group span,
-.sort-field span {
+.sheet-group legend,
+.sort-field > span {
+  margin-bottom: var(--space-sm);
   color: var(--muted);
+  font-size: var(--text-label);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
 }
 
 .chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+}
+
+.sort-field {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0.6rem;
-}
-
-.chip-button {
-  min-height: 2.85rem;
-  padding: 0.55rem 0.8rem;
-  border: 1px solid var(--paper-border-soft);
-  border-radius: 0.95rem;
-  background: var(--surface-field-fill);
-  color: var(--text-strong);
-  font-weight: 700;
-  box-shadow: var(--shadow-sm);
-  transition: border-color 0.18s ease, background-color 0.18s ease, color 0.18s ease;
-}
-
-.chip-button.active {
-  border-color: rgba(44, 161, 142, 0.26);
-  background: rgba(121, 217, 202, 0.12);
-  color: var(--brand-strong);
+  gap: var(--space-sm);
 }
 
 .sort-field select {
-  min-height: 3rem;
-  padding: 0 0.9rem;
-  border: 1px solid var(--paper-border-soft);
-  border-radius: 0.95rem;
-  background: var(--surface-field-fill);
+  min-height: 3.25rem;
+  padding: 0 var(--space-md);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--paper-soft);
   color: var(--text-strong);
-  box-shadow: var(--shadow-sm);
 }
 
 .sheet-actions {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0.7rem;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+  gap: var(--space-sm);
+  padding-top: var(--space-md);
+  border-top: 1px solid var(--line);
 }
 
 .sheet-fade-enter-active,
 .sheet-fade-leave-active {
-  transition: opacity 0.18s ease;
+  transition: opacity 160ms ease;
+}
+
+.sheet-fade-enter-active .sheet-panel,
+.sheet-fade-leave-active .sheet-panel {
+  transition: transform 180ms ease;
 }
 
 .sheet-fade-enter-from,
@@ -336,16 +309,20 @@ useOverlayDialog({
   opacity: 0;
 }
 
-@media (min-width: 960px) {
+.sheet-fade-enter-from .sheet-panel,
+.sheet-fade-leave-to .sheet-panel {
+  transform: translateY(1rem);
+}
+
+@media (min-width: 760px) {
   .sheet-shell {
-    padding: 1.5rem;
-    align-items: center;
-    justify-items: center;
+    place-items: center;
+    padding: var(--space-lg);
   }
 
   .sheet-panel {
-    width: min(40rem, 100%);
-    max-height: 90svh;
+    width: min(42rem, 100%);
+    border: 1px solid var(--line);
     border-radius: var(--radius-lg);
   }
 }

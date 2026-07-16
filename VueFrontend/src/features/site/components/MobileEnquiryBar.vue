@@ -1,8 +1,8 @@
 <script setup>
-import { computed, defineAsyncComponent, ref, watch } from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { siteConfig } from '@/features/site/config/site'
+import MobileContactSheet from './MobileContactSheet.vue'
 
-const AsyncMobileContactSheet = defineAsyncComponent(() => import('./MobileContactSheet.vue'))
 
 const props = defineProps({
   primaryHref: {
@@ -49,25 +49,60 @@ const props = defineProps({
     type: String,
     default: siteConfig.uiText.contactSheet.summary,
   },
+  revealAfter: {
+    type: Number,
+    default: 0,
+  },
 })
 
 defineEmits(['primary-click'])
 
 const isSecondaryMenuOpen = ref(false)
+const isKeyboardOpen = ref(false)
+const isPastReveal = ref(props.revealAfter === 0)
 const hasSecondaryMenu = computed(() => props.secondaryMenuOptions.length > 0)
 const activeSecondaryMenuOptions = computed(() => isSecondaryMenuOpen.value ? props.secondaryMenuOptions : [])
 
-function openSecondaryMenu() {
-  if (!hasSecondaryMenu.value) {
-    return
-  }
+let focusFrame = 0
 
-  isSecondaryMenuOpen.value = true
+function openSecondaryMenu() {
+  if (hasSecondaryMenu.value) {
+    isSecondaryMenuOpen.value = true
+  }
 }
 
 function closeSecondaryMenu() {
   isSecondaryMenuOpen.value = false
 }
+
+function updateKeyboardState() {
+  const activeElement = document.activeElement
+  isKeyboardOpen.value = activeElement instanceof HTMLElement
+    && activeElement.matches('input, textarea, select, [contenteditable="true"]')
+}
+
+function handleFocusChange() {
+  window.cancelAnimationFrame(focusFrame)
+  focusFrame = window.requestAnimationFrame(updateKeyboardState)
+}
+
+function updateRevealState() {
+  isPastReveal.value = window.scrollY >= props.revealAfter
+}
+
+onMounted(() => {
+  document.addEventListener('focusin', handleFocusChange)
+  document.addEventListener('focusout', handleFocusChange)
+  window.addEventListener('scroll', updateRevealState, { passive: true })
+  updateRevealState()
+})
+
+onBeforeUnmount(() => {
+  window.cancelAnimationFrame(focusFrame)
+  document.removeEventListener('focusin', handleFocusChange)
+  document.removeEventListener('focusout', handleFocusChange)
+  window.removeEventListener('scroll', updateRevealState)
+})
 
 watch(
   () => props.hidden,
@@ -80,7 +115,7 @@ watch(
 </script>
 
 <template>
-  <AsyncMobileContactSheet
+  <MobileContactSheet
     v-if="hasSecondaryMenu && isSecondaryMenuOpen"
     :options="activeSecondaryMenuOptions"
     :title="secondaryMenuTitle"
@@ -88,13 +123,14 @@ watch(
     @close="closeSecondaryMenu"
   />
 
-  <div
+  <nav
+    v-show="!hidden && isPastReveal && !isSecondaryMenuOpen && !isKeyboardOpen"
     class="mobile-bar surface-dark"
-    :class="{ 'mobile-bar-hidden': hidden }"
+    aria-label="Page actions"
   >
     <button
       v-if="primaryButton"
-      class="button-secondary"
+      class="button-primary"
       type="button"
       @click="$emit('primary-click')"
     >
@@ -102,7 +138,7 @@ watch(
     </button>
     <a
       v-else
-      class="button-secondary"
+      class="button-primary"
       :href="primaryHref"
       :target="primaryBlank ? '_blank' : undefined"
       :rel="primaryBlank ? 'noreferrer' : undefined"
@@ -112,71 +148,51 @@ watch(
 
     <button
       v-if="hasSecondaryMenu"
-      class="button-primary mobile-contact-trigger"
+      class="button-secondary"
       type="button"
-      :aria-expanded="isSecondaryMenuOpen ? 'true' : 'false'"
-      :aria-haspopup="'dialog'"
+      :aria-expanded="isSecondaryMenuOpen"
+      aria-haspopup="dialog"
       @click="openSecondaryMenu"
     >
-      <span>{{ secondaryLabel }}</span>
-      <span class="mobile-contact-caret">+</span>
+      {{ secondaryLabel }}
     </button>
 
     <a
       v-else
-      class="button-primary"
+      class="button-secondary"
       :href="secondaryHref"
       :target="secondaryBlank ? '_blank' : undefined"
       :rel="secondaryBlank ? 'noreferrer' : undefined"
     >
       {{ secondaryLabel }}
     </a>
-  </div>
+  </nav>
 </template>
 
 <style scoped>
 .mobile-bar {
   position: fixed;
-  right: 0.8rem;
+  right: 0;
   bottom: 0;
-  left: 0.8rem;
+  left: 0;
   z-index: 35;
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0.7rem;
-  padding: 0.7rem;
-  margin-bottom: calc(0.8rem + env(safe-area-inset-bottom));
-  border-radius: 1.4rem;
-  transition:
-    transform 0.18s ease,
-    opacity 0.18s ease;
+  gap: var(--space-sm);
+  padding: var(--space-sm) var(--space-md) calc(var(--space-sm) + env(safe-area-inset-bottom));
+  border-right: 0;
+  border-bottom: 0;
+  border-left: 0;
+  border-radius: 0;
 }
 
-.mobile-contact-trigger {
-  justify-content: space-between;
-}
-
-.mobile-contact-caret {
-  font-size: 1.15rem;
-  line-height: 1;
-}
-
+.mobile-bar .button-primary,
 .mobile-bar .button-secondary {
-  min-height: 3.2rem;
-  background: var(--glass-fill-light);
-  color: var(--text-inverse);
-  border-color: var(--glass-stroke-light);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.12);
-}
-
-.mobile-bar .button-primary {
-  min-height: 3.2rem;
-}
-
-.mobile-bar-hidden {
-  opacity: 0;
-  transform: translateY(100%);
-  pointer-events: none;
+  min-width: 0;
+  min-height: 3rem;
+  padding-inline: var(--space-sm);
+  font-size: 0.875rem;
+  text-align: center;
 }
 
 @media (min-width: 960px) {

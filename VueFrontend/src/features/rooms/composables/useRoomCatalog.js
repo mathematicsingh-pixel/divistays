@@ -116,7 +116,7 @@ export function useRoomCatalog() {
     { immediate: true },
   )
 
-  function commit(patch, mode = 'push') {
+  function commit(patch, mode = 'replace') {
     const next = { ...route.query }
 
     Object.entries(patch).forEach(([key, value]) => {
@@ -150,6 +150,18 @@ export function useRoomCatalog() {
     commit({ [group]: [...next] })
   }
 
+  function applyFilters(nextFilters) {
+    commit({
+      availability: nextFilters.availability,
+      occupancy: nextFilters.occupancy,
+      kitchen: nextFilters.kitchen,
+      washroom: nextFilters.washroom,
+      price: nextFilters.price,
+      sort: nextFilters.sort,
+      preview: null,
+    })
+  }
+
   return {
     filters,
     visibleRooms,
@@ -157,6 +169,7 @@ export function useRoomCatalog() {
     selectedRoomSlug,
     activeFilterCount,
     hasActiveFilters,
+    applyFilters,
     setAvailability: (value) => commit({ availability: value }),
     setSort: (value) => commit({ sort: value }),
     toggleOccupancy: (value) => toggleValue('occupancy', value),
@@ -173,7 +186,7 @@ export function useRoomCatalog() {
         price: [],
         preview: null,
       }),
-    openPreview: (slug) => commit({ preview: slug }),
+    openPreview: (slug) => commit({ preview: slug }, 'push'),
     closePreview: () => commit({ preview: null }),
   }
 }

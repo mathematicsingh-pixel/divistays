@@ -7,9 +7,7 @@ import { availableRooms, roomCatalog } from '@/features/rooms'
 import { buildRoomsStructuredData } from '@/features/rooms/seo'
 import BreadcrumbNav from '@/features/site/components/BreadcrumbNav.vue'
 import MobileEnquiryBar from '@/features/site/components/MobileEnquiryBar.vue'
-import MobileSectionNav from '@/features/site/components/MobileSectionNav.vue'
 import SiteFooter from '@/features/site/components/SiteFooter.vue'
-import { mobileSectionNavItems } from '@/features/site/config/navigation'
 import {
   buildStickyContactOptions,
   getCallHref,
@@ -52,6 +50,7 @@ function setSheetOpen(value) {
 }
 
 const actions = {
+  applyFilters: catalog.applyFilters,
   setAvailability: catalog.setAvailability,
   setSort: catalog.setSort,
   toggleOccupancy: catalog.toggleOccupancy,
@@ -70,8 +69,12 @@ useSeoMeta({
   ogTitle: siteConfig.roomsTitle,
   ogDescription: siteConfig.roomsDescription,
   ogImage,
+  ogImageWidth: 1440,
+  ogImageHeight: 1080,
   ogType: 'website',
   ogLocale: 'en_IN',
+  ogUrl: `${siteUrl}/rooms`,
+  ogSiteName: siteConfig.name,
   twitterCard: 'summary_large_image',
   twitterTitle: siteConfig.roomsTitle,
   twitterDescription: siteConfig.roomsDescription,
@@ -101,13 +104,8 @@ useHead(() => ({
 </script>
 
 <template>
-  <main>
-    <MobileSectionNav
-      :items="mobileSectionNavItems"
-      :hidden="isOverlayOpen"
-    />
-
-    <section class="section-shell">
+  <main id="main-content" class="rooms-page" tabindex="-1">
+    <section class="rooms-path section-shell">
       <div class="container page-top page-rise">
         <BreadcrumbNav
           :items="[
@@ -157,8 +155,23 @@ useHead(() => ({
 </template>
 
 <style scoped>
+.rooms-page {
+  background: var(--canvas);
+}
+
+.rooms-path {
+  display: none;
+}
+
 .page-top {
   display: grid;
   gap: 0.85rem;
+  padding-top: var(--space-lg);
+}
+
+@media (min-width: 960px) {
+  .rooms-path {
+    display: block;
+  }
 }
 </style>

@@ -1,8 +1,7 @@
 <script setup>
-import { ref, toRef, watch } from 'vue'
-import { buildVideoPath, buildVideoPosterPath } from '@/features/rooms'
-import { useRoomShowcaseStage } from '@/features/rooms/composables/useRoomShowcaseStage'
+import { computed, ref, watch } from 'vue'
 import ResponsiveImage from '@/shared/ui/ResponsiveImage.vue'
+import RoomGalleryDialog from './RoomGalleryDialog.vue'
 import RoomShowcaseRail from './RoomShowcaseRail.vue'
 
 const props = defineProps({
@@ -12,134 +11,161 @@ const props = defineProps({
   },
 })
 
-const isVideoReady = ref(false)
+const activeIndex = ref(0)
+const isGalleryOpen = ref(false)
+const activeMedia = computed(() => props.room.gallery[activeIndex.value])
+const canCycle = computed(() => props.room.gallery.length > 1)
+
+let touchStart = null
+
+function select(index) {
+  const total = props.room.gallery.length
+
+  if (!total) {
+    return
+  }
+
+  activeIndex.value = (index + total) % total
+}
+
+function goPrevious() {
+  select(activeIndex.value - 1)
+}
+
+function goNext() {
+  select(activeIndex.value + 1)
+}
+
+function handleTouchStart(event) {
+  if (event.touches.length !== 1) {
+    touchStart = null
+    return
+  }
+
+  touchStart = {
+    x: event.touches[0].clientX,
+    y: event.touches[0].clientY,
+  }
+}
+
+function handleTouchEnd(event) {
+  if (!touchStart || !canCycle.value) {
+    touchStart = null
+    return
+  }
+
+  const touch = event.changedTouches[0]
+  const deltaX = touch.clientX - touchStart.x
+  const deltaY = touch.clientY - touchStart.y
+
+  touchStart = null
+
+  if (Math.abs(deltaX) < 48 || Math.abs(deltaX) <= Math.abs(deltaY) * 1.2) {
+    return
+  }
+
+  if (deltaX > 0) {
+    goPrevious()
+    return
+  }
+
+  goNext()
+}
+
+function handleTouchCancel() {
+  touchStart = null
+}
 
 watch(
   () => props.room.slug,
   () => {
-    isVideoReady.value = false
+    activeIndex.value = 0
+    isGalleryOpen.value = false
   },
   { immediate: true },
 )
-
-function enableVideo() {
-  isVideoReady.value = true
-}
-
-const {
-  activeIndex,
-  activeMedia,
-  canCycle,
-  isDragging,
-  isZoomed,
-  showStageControls,
-  showStageHints,
-  stageLabel,
-  stageTransformStyle,
-  setStageMedia,
-  resetZoom,
-  setActiveIndex,
-  goPrevious,
-  goNext,
-  handleStageClick,
-  handleStageKeydown,
-  handleTouchStart,
-  handleTouchMove,
-  handleTouchEnd,
-  handleTouchCancel,
-} = useRoomShowcaseStage(toRef(props, 'room'))
 </script>
 
 <template>
-  <div class="gallery-stage">
-    <div
-      :ref="setStageMedia"
-      class="stage-media"
-      :class="{ 'is-zoomed': isZoomed, 'is-dragging': isDragging }"
-      tabindex="0"
-      role="button"
-      :aria-label="stageLabel"
-      @click="handleStageClick"
-      @keydown="handleStageKeydown"
-      @touchstart="handleTouchStart"
-      @touchmove="handleTouchMove"
-      @touchend="handleTouchEnd"
-      @touchcancel="handleTouchCancel"
-      @gesturestart.prevent
-      @gesturechange.prevent
-      @gestureend.prevent
-    >
-      <div
-        v-if="showStageHints"
-        class="stage-hud"
-      >
-        <span
-          v-if="canCycle"
-          class="stage-hint surface-input"
+  <section
+    class="gallery-stage"
+    :aria-labelledby="`${room.slug}-gallery-heading`"
+  >
+    <div class="gallery-heading">
+      <div>
+        <p
+          :id="`${room.slug}-gallery-heading`"
+          class="label-upper"
         >
-          Swipe left or right, or tap for next
-        </span>
-        <span class="stage-hint surface-input">
-          {{ isZoomed ? 'Drag to pan' : 'Pinch to zoom' }}
-        </span>
+          Photo gallery
+        </p>
+        <p>{{ room.gallery.length }} {{ room.gallery.length === 1 ? 'photo' : 'photos' }} of this room</p>
       </div>
+    </div>
 
+    <figure>
       <div
-        v-if="showStageControls"
-        class="stage-arrows"
-      >
-        <button
-          class="stage-arrow surface-input"
-          type="button"
-          data-stage-control="true"
-          aria-label="Show previous photo"
-          @click="goPrevious"
-          @touchstart.stop
-          @touchend.stop
-        >
-          ‹
-        </button>
-        <button
-          class="stage-arrow surface-input"
-          type="button"
-          data-stage-control="true"
-          aria-label="Show next photo"
-          @click="goNext"
-          @touchstart.stop
-          @touchend.stop
-        >
-          ›
-        </button>
-      </div>
-
-      <div
-        class="stage-zoom-surface"
-        :style="stageTransformStyle"
+        class="stage-media"
+        @touchstart.passive="handleTouchStart"
+        @touchend.passive="handleTouchEnd"
+        @touchcancel="handleTouchCancel"
       >
         <ResponsiveImage
           :room-slug="room.slug"
           :media="activeMedia"
           eager
-          sizes="(min-width: 1024px) 54vw, 100vw"
+          sizes="(min-width: 1024px) 58vw, 100vw"
         />
-      </div>
-    </div>
 
-    <div class="gallery-actions">
-      <p>{{ activeMedia.caption }}</p>
-
-      <div class="gallery-status">
         <button
-          v-if="isZoomed"
-          class="stage-reset surface-input"
+          class="viewer-trigger button-secondary"
           type="button"
-          @click="resetZoom"
+          aria-label="Open current room photo full screen"
+          @click="isGalleryOpen = true"
         >
-          Reset zoom
+          <svg
+            viewBox="0 0 20 20"
+            aria-hidden="true"
+          >
+            <path d="M7 3H3v4M13 3h4v4M17 13v4h-4M7 17H3v-4" />
+          </svg>
+          <span>View full screen</span>
         </button>
-        <span>{{ activeIndex + 1 }} / {{ room.gallery.length }}</span>
+
+        <div
+          v-if="canCycle"
+          class="stage-arrows"
+        >
+          <button
+            class="stage-arrow"
+            type="button"
+            aria-label="Show previous photo"
+            @click="goPrevious"
+          >
+            <span aria-hidden="true">‹</span>
+          </button>
+          <button
+            class="stage-arrow"
+            type="button"
+            aria-label="Show next photo"
+            @click="goNext"
+          >
+            <span aria-hidden="true">›</span>
+          </button>
+        </div>
       </div>
-    </div>
+
+      <figcaption>
+        <span>{{ activeMedia.caption }}</span>
+        <strong>{{ activeIndex + 1 }} / {{ room.gallery.length }}</strong>
+      </figcaption>
+    </figure>
+
+    <RoomShowcaseRail
+      :room="room"
+      :active-index="activeIndex"
+      @select="select"
+    />
 
     <p
       class="sr-only"
@@ -148,261 +174,142 @@ const {
       Showing photo {{ activeIndex + 1 }} of {{ room.gallery.length }}. {{ activeMedia.caption }}
     </p>
 
-    <RoomShowcaseRail
+    <RoomGalleryDialog
+      :open="isGalleryOpen"
       :room="room"
-      :active-index="activeIndex"
-      :set-active-index="setActiveIndex"
+      :initial-index="activeIndex"
+      @close="isGalleryOpen = false"
+      @select="select"
     />
-
-    <div
-      v-if="room.video"
-      class="video-card"
-    >
-      <div class="video-copy">
-        <p class="detail-kicker">Walkthrough</p>
-        <h3>{{ room.video.label }}</h3>
-      </div>
-      <button
-        v-if="!isVideoReady"
-        class="video-trigger"
-        type="button"
-        @click="enableVideo"
-      >
-        <img
-          class="video-poster"
-          :src="buildVideoPosterPath(room.slug, room.video.key)"
-          :alt="`${room.video.label} poster`"
-          loading="lazy"
-          decoding="async"
-        >
-        <span class="video-play-pill">Play walkthrough</span>
-      </button>
-      <video
-        v-else
-        controls
-        playsinline
-        preload="metadata"
-        :poster="buildVideoPosterPath(room.slug, room.video.key)"
-      >
-        <source
-          :src="buildVideoPath(room.slug, room.video.key)"
-          type="video/mp4"
-        >
-      </video>
-    </div>
-  </div>
+  </section>
 </template>
 
 <style scoped>
 .gallery-stage {
   display: grid;
-  gap: 1rem;
+  gap: var(--space-md);
+  min-width: 0;
+}
+
+.gallery-heading {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-md);
+  padding-inline: var(--space-md);
+}
+
+.gallery-heading > div {
+  display: grid;
+  gap: var(--space-xs);
+}
+
+.gallery-heading > div > p:last-child {
+  color: var(--muted);
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.gallery-stage figure {
+  display: grid;
+  gap: var(--space-sm);
+  margin: 0;
 }
 
 .stage-media {
   position: relative;
+  width: 100%;
   overflow: hidden;
-  border-radius: var(--radius-lg);
-  border: 1px solid var(--paper-border);
-  background: var(--surface-paper-soft-fill);
-  aspect-ratio: 16 / 11;
-  box-shadow: var(--shadow-md);
-  cursor: pointer;
-  touch-action: manipulation;
+  aspect-ratio: 4 / 3;
+  background: var(--paper-soft);
+  touch-action: pan-y;
   user-select: none;
   -webkit-user-select: none;
-  -webkit-touch-callout: none;
 }
 
-.stage-media:focus-visible {
-  outline: 2px solid var(--sun);
-  outline-offset: 3px;
+.stage-media :deep(picture),
+.stage-media :deep(img) {
+  width: 100%;
+  height: 100%;
 }
 
-.stage-media.is-zoomed {
-  cursor: grab;
-}
-
-.stage-media.is-dragging {
-  cursor: grabbing;
-}
-
-.stage-hud {
+.viewer-trigger {
   position: absolute;
-  top: 0.8rem;
-  left: 0.8rem;
-  z-index: 2;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.45rem;
-  pointer-events: none;
-  transition:
-    opacity 0.18s ease,
-    transform 0.18s ease;
+  top: var(--space-sm);
+  right: var(--space-sm);
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  min-height: 2.75rem;
+  padding: var(--space-sm) var(--space-md);
+  font-size: 0.8125rem;
+  box-shadow: var(--shadow-sm);
 }
 
-.stage-hint {
-  min-height: 2.75rem;
-  padding: 0.38rem 0.68rem;
-  color: var(--text-strong);
-  font-size: var(--text-label);
-  font-weight: 800;
-  letter-spacing: 0.04em;
-  background: var(--surface-field-fill);
+.viewer-trigger svg {
+  width: 1rem;
+  height: 1rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
 .stage-arrows {
   position: absolute;
-  inset: auto 0 0 0;
-  z-index: 2;
+  inset: 50% var(--space-sm) auto;
   display: flex;
   justify-content: space-between;
-  padding: 0.8rem;
   pointer-events: none;
+  transform: translateY(-50%);
 }
 
 .stage-arrow {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 2.7rem;
-  height: 2.7rem;
-  border-radius: 999px;
+  width: 2.75rem;
+  height: 2.75rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-full);
+  background: var(--paper);
   color: var(--text-strong);
   font-size: 1.75rem;
-  font-weight: 700;
   line-height: 1;
   pointer-events: auto;
-  background: var(--surface-field-fill);
-}
-
-.stage-zoom-surface {
-  width: 100%;
-  height: 100%;
-  transform-origin: 50% 50%;
-  transition: transform 0.2s ease;
-  will-change: transform;
-}
-
-.stage-media.is-dragging .stage-zoom-surface {
-  transition: none;
-}
-
-.stage-zoom-surface :deep(picture) {
-  display: block;
-  width: 100%;
-  height: 100%;
-}
-
-.gallery-actions {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: start;
-  justify-content: space-between;
-  gap: 0.8rem;
-}
-
-.gallery-actions p {
-  flex: 1 1 14rem;
-  color: var(--muted);
-  font-weight: 700;
-  font-size: 0.94rem;
-}
-
-.gallery-status {
-  display: inline-flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: end;
-  gap: 0.55rem;
-  margin-left: auto;
-}
-
-.gallery-status span {
-  color: var(--muted);
-  font-weight: 700;
-}
-
-.stage-reset {
-  min-height: 2.75rem;
-  padding: 0.38rem 0.72rem;
-  border-radius: 999px;
-  color: var(--text-strong);
-  font-size: var(--text-label);
-  font-weight: 800;
-  letter-spacing: 0.04em;
-}
-
-.detail-kicker {
-  color: var(--brand-strong);
-  font-size: var(--text-label);
-  font-weight: 800;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-}
-
-.video-card {
-  display: grid;
-  gap: 0.7rem;
-  padding: 0.9rem;
-  border: 1px solid var(--paper-border-soft);
-  border-radius: var(--radius-lg);
-  background: var(--surface-field-fill);
   box-shadow: var(--shadow-sm);
 }
 
-.video-copy {
-  display: grid;
-  gap: 0.2rem;
+.gallery-stage figcaption {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-md);
+  padding-inline: var(--space-md);
+  color: var(--muted);
+  font-size: 0.875rem;
 }
 
-.video-trigger {
-  position: relative;
-  overflow: hidden;
-  border-radius: var(--radius-md);
-  border: 1px solid var(--paper-border-soft);
-  background: rgba(7, 18, 26, 0.9);
-  box-shadow: var(--shadow-md);
+.gallery-stage figcaption strong {
+  flex: 0 0 auto;
+  color: var(--text-strong);
 }
 
-.video-poster,
-.video-card video {
-  width: 100%;
-  border-radius: var(--radius-md);
-}
-
-.video-play-pill {
-  position: absolute;
-  left: 50%;
-  bottom: 1rem;
-  transform: translateX(-50%);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 2.4rem;
-  padding: 0.5rem 0.95rem;
-  border-radius: 999px;
-  background: rgba(7, 18, 26, 0.78);
-  color: var(--text-inverse);
-  font-size: 0.76rem;
-  font-weight: 800;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-@media (hover: hover) {
-  .stage-reset:hover {
-    border-color: var(--line-strong);
+@media (min-width: 760px) {
+  .gallery-heading,
+  .gallery-stage figcaption {
+    padding-inline: 0;
   }
-}
 
-.stage-reset:active {
-  transform: scale(0.97);
-}
-
-@media (min-width: 960px) {
   .stage-media {
-    aspect-ratio: 4 / 3;
+    border-radius: var(--radius-lg);
+  }
+
+  .viewer-trigger {
+    top: var(--space-md);
+    right: var(--space-md);
   }
 }
 </style>

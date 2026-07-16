@@ -1,6 +1,5 @@
 <script setup>
 import RoomReferenceBadge from '@/features/rooms/components/RoomReferenceBadge.vue'
-import { siteConfig } from '@/features/site/config/site'
 import ResponsiveImage from '@/shared/ui/ResponsiveImage.vue'
 
 defineProps({
@@ -12,215 +11,232 @@ defineProps({
     type: Boolean,
     default: false,
   },
-  showQuickPreview: {
-    type: Boolean,
-    default: false,
-  },
 })
-
-defineEmits(['preview'])
-
-const topFacts = (room) => [room.occupancyLabel, room.washroomLabel]
 </script>
 
 <template>
   <article class="room-card surface-card">
-    <div class="room-media">
-      <RouterLink :to="room.detailsHref">
+    <RouterLink
+      class="room-card-link"
+      :to="room.detailsHref"
+      :aria-label="`View ${room.title}, ${room.priceLabel}, ${room.availabilityShortLabel}`"
+    >
+      <div class="room-media">
         <ResponsiveImage
           :room-slug="room.slug"
           :media="room.gallery[0]"
           :eager="eager"
-          sizes="(min-width: 1200px) 29vw, (min-width: 760px) 44vw, 92vw"
+          sizes="(min-width: 1180px) 31vw, (min-width: 700px) 47vw, 94vw"
         />
-      </RouterLink>
 
-      <div class="room-badges">
-        <RoomReferenceBadge
-          :room="room"
-          inverse
-        />
-        <button
-          v-if="showQuickPreview"
-          class="preview-pill"
-          type="button"
-          @click="$emit('preview')"
-        >
-          Quick preview
-        </button>
-      </div>
-    </div>
-
-    <div class="room-body">
-      <div class="room-copy">
-        <p class="label-upper room-kicker">{{ room.highlightLabel }}</p>
-        <h3>
-          <RouterLink :to="room.detailsHref">
-            {{ room.title }}
-          </RouterLink>
-        </h3>
+        <div class="room-reference-anchor">
+          <RoomReferenceBadge
+            :room="room"
+            inverse
+            compact
+          />
+        </div>
       </div>
 
-      <div class="room-price-line">
-        <span class="room-price">{{ room.priceLabel }}</span>
-        <span class="room-price-sep" aria-hidden="true">·</span>
-        <span
-          class="room-status"
-          :class="{ 'room-status--occupied': !room.available }"
-        >
-          {{ room.availabilityShortLabel }}
+      <div class="room-body">
+        <div class="room-heading">
+          <h3>{{ room.title }}</h3>
+          <span
+            class="room-status"
+            :class="{ 'room-status--occupied': !room.available }"
+          >
+            <span aria-hidden="true" />
+            {{ room.availabilityShortLabel }}
+          </span>
+        </div>
+
+        <p class="room-price">{{ room.priceLabel }}</p>
+
+        <ul class="room-facts" aria-label="Room setup">
+          <li>{{ room.occupancyLabel }}</li>
+          <li>{{ room.kitchenLabel }}</li>
+          <li>{{ room.washroomLabel }}</li>
+        </ul>
+
+        <p class="room-summary">{{ room.fitSummary }}</p>
+
+        <span class="room-link-label">
+          Open listing
+          <span aria-hidden="true">→</span>
         </span>
       </div>
-
-      <p class="room-summary">
-        {{ topFacts(room).join(' · ') }} · {{ room.fitSummary }}
-      </p>
-
-      <div class="room-actions">
-        <RouterLink
-          class="button-primary"
-          :to="room.detailsHref"
-        >
-          {{ room.available ? siteConfig.uiText.actions.viewRoom : siteConfig.uiText.actions.viewSimilarRooms }}
-        </RouterLink>
-      </div>
-    </div>
+    </RouterLink>
   </article>
 </template>
 
 <style scoped>
 .room-card {
+  min-width: 0;
   overflow: hidden;
+  transition: transform 180ms ease, box-shadow 180ms ease;
+}
+
+.room-card::after {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1;
+  height: 2px;
+  background: var(--accent);
+  content: '';
+  pointer-events: none;
+  transform: scaleX(0.18);
+  transform-origin: left;
+  transition: transform 220ms cubic-bezier(0.2, 0.75, 0.24, 1);
+}
+
+.room-card-link {
   display: grid;
-  position: relative;
+  height: 100%;
 }
 
 .room-media {
   position: relative;
   overflow: hidden;
-  aspect-ratio: 5 / 4;
+  aspect-ratio: 4 / 3;
+  background: var(--paper-soft);
 }
 
-.room-media a,
 .room-media :deep(picture),
 .room-media :deep(img) {
-  display: block;
   width: 100%;
   height: 100%;
 }
 
 .room-media :deep(img) {
   object-fit: cover;
+  transition: transform 360ms cubic-bezier(0.2, 0.75, 0.24, 1);
 }
 
-.room-badges {
+.room-reference-anchor {
   position: absolute;
-  top: 1rem;
-  left: 1rem;
-  z-index: 1;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.45rem;
-}
-
-.preview-pill {
-  display: none;
-  align-items: center;
-  min-height: 2.5rem;
-  padding: 0.36rem 0.7rem;
-  border-radius: var(--radius-full);
-  border: 1px solid var(--glass-stroke-light);
-  background: rgba(7, 18, 26, 0.7);
-  color: var(--text-inverse);
-  font-size: var(--text-label);
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  transition: transform 0.18s ease, background-color 0.18s ease;
+  top: var(--space-md);
+  left: var(--space-md);
 }
 
 .room-body {
   display: grid;
-  gap: 0.5rem;
-  padding: var(--card-pad);
-  border-top: 1px solid var(--paper-border-soft);
+  align-content: start;
+  gap: var(--space-sm);
+  padding: var(--space-md);
 }
 
-.room-copy {
-  display: grid;
-  gap: 0.18rem;
-}
-
-.room-kicker {
-  color: var(--accent-deep);
-}
-
-.room-copy a {
-  color: var(--text-strong);
-}
-
-.room-price-line {
+.room-heading {
   display: flex;
-  align-items: baseline;
-  gap: 0.45rem;
-  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-sm);
+}
+
+.room-heading h3 {
+  font-size: 1.25rem;
+}
+
+.room-status {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  flex: 0 0 auto;
+  color: var(--brand-strong);
+  font-size: 0.75rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.room-status > span {
+  width: 0.45rem;
+  height: 0.45rem;
+  border-radius: var(--radius-full);
+  background: var(--brand-strong);
+}
+
+.room-status--occupied {
+  color: var(--muted);
+}
+
+.room-status--occupied > span {
+  background: var(--muted);
 }
 
 .room-price {
   color: var(--text-strong);
-  font-size: 1.18rem;
-  font-weight: 800;
-  white-space: nowrap;
+  font-size: 1.05rem;
+  font-weight: 700;
 }
 
-.room-price-sep {
+.room-facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xs) var(--space-sm);
+  margin: var(--space-xs) 0 0;
+  padding: var(--space-sm) 0;
+  border-block: 1px solid var(--line);
+  color: var(--text);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  list-style: none;
+}
+
+.room-facts li + li::before {
+  margin-right: var(--space-sm);
   color: var(--muted);
-  font-weight: 700;
-}
-
-.room-status {
-  color: var(--brand-strong);
-  font-size: 0.82rem;
-  font-weight: 700;
-}
-
-.room-status--occupied {
-  color: var(--accent-deep);
+  content: '·';
 }
 
 .room-summary {
-  color: var(--muted);
-  font-size: 0.88rem;
   display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
   overflow: hidden;
+  color: var(--text);
+  font-size: 0.875rem;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
 }
 
-.room-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.55rem;
-  margin-top: 0.25rem;
+.room-link-label {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
+  width: fit-content;
+  margin-top: var(--space-sm);
+  color: var(--text-strong);
+  font-size: 0.875rem;
+  font-weight: 700;
 }
 
-.room-actions > * {
-  flex: 1 1 11rem;
+.room-link-label > span {
+  transition: transform 180ms ease;
+}
+
+.room-card:focus-within::after {
+  transform: scaleX(1);
+}
+
+.room-card:focus-within .room-link-label > span {
+  transform: translateX(var(--space-xs));
 }
 
 @media (hover: hover) {
-  .preview-pill:hover {
-    background: rgba(7, 18, 26, 0.82);
+  .room-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
   }
-}
 
-.preview-pill:active {
-  transform: scale(0.97);
-}
+  .room-card:hover::after {
+    transform: scaleX(1);
+  }
 
-@media (min-width: 960px) {
-  .preview-pill {
-    display: inline-flex;
+  .room-card:hover .room-media :deep(img) {
+    transform: scale(1.025);
+  }
+
+  .room-card:hover .room-link-label > span {
+    transform: translateX(var(--space-xs));
   }
 }
 </style>

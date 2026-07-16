@@ -10,16 +10,10 @@ import ProcessSection from '@/features/home/components/ProcessSection.vue'
 import TrustSection from '@/features/home/components/TrustSection.vue'
 import { buildHomeStructuredData } from '@/features/home/seo'
 import {
-  availableRoomCount,
   availableRooms,
-  featuredRoom,
-  roomCount,
-  startingPriceLabel,
 } from '@/features/rooms'
 import MobileEnquiryBar from '@/features/site/components/MobileEnquiryBar.vue'
-import MobileSectionNav from '@/features/site/components/MobileSectionNav.vue'
 import SiteFooter from '@/features/site/components/SiteFooter.vue'
-import { mobileSectionNavItems } from '@/features/site/config/navigation'
 import {
   buildStickyContactOptions,
   getCallHref,
@@ -50,8 +44,12 @@ useSeoMeta({
   ogTitle: siteConfig.defaultTitle,
   ogDescription: siteConfig.description,
   ogImage,
+  ogImageWidth: 1440,
+  ogImageHeight: 1080,
   ogType: 'website',
   ogLocale: 'en_IN',
+  ogUrl: `${siteUrl}/`,
+  ogSiteName: siteConfig.name,
   twitterCard: 'summary_large_image',
   twitterTitle: siteConfig.defaultTitle,
   twitterDescription: siteConfig.description,
@@ -81,20 +79,14 @@ useHead(() => ({
 </script>
 
 <template>
-  <main class="home-page-main">
-    <MobileSectionNav
-      :items="mobileSectionNavItems"
-      show-from-top
-    />
-
+  <main
+    id="main-content"
+    class="home-page-main"
+    tabindex="-1"
+  >
     <HeroSection
       :site="siteConfig"
-      :available-room-count="availableRoomCount"
-      :room-count="roomCount"
-      :starting-price-label="startingPriceLabel"
-      :call-href="callHref"
-      :whatsapp-href="defaultWhatsAppHref"
-      :featured-room="featuredRoom"
+      :rooms="availableRooms"
     />
 
     <AvailableRoomsSection
@@ -130,18 +122,13 @@ useHead(() => ({
       :secondary-menu-options="stickyContactOptions"
       :secondary-menu-title="siteConfig.uiText.contactSheet.title"
       :secondary-menu-summary="siteConfig.uiText.contactSheet.summary"
+      :reveal-after="440"
     />
   </main>
 </template>
 
 <style scoped>
 .home-page-main {
-  padding-top: calc(4.9rem + env(safe-area-inset-top));
-}
-
-@media (min-width: 960px) {
-  .home-page-main {
-    padding-top: 0.9rem;
-  }
+  background: var(--canvas);
 }
 </style>

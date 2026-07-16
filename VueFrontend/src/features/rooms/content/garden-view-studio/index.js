@@ -1,27 +1,28 @@
 import { defineRoom, image } from '../helpers.js'
 
 const included = [
-  'Furnished sleeping and study basics',
-  'High-speed WiFi support',
+  'Bed, study table, and storage',
+  'Private kitchen',
+  'Attached washroom',
+  'Wi-Fi access',
   'Water purifier',
-  '24x7 CCTV support',
-  'Almirah',
-  'Wi-fi',
+  '24/7 CCTV monitoring',
+  'Shared utility courtyard (aangan)',
 ]
 
 const extraNotes = [
-  'Private kitchen setup inside the room',
-  'Utility aangan access',
+  'Confirm how the room will be arranged for two or three occupants',
+  'Confirm exactly what the monthly rent covers before booking',
 ]
 
 const gallery = [
-  image('01', 'assets/rooms/garden-view-studio/01.jpg', 'Garden-view studio room with bed, desk, and open floor area.', 'Spacious share setup'),
-  image('02', 'assets/rooms/garden-view-studio/02.jpg', 'Desk and bed arrangement inside the garden-view studio.', 'Study desk angle'),
-  image('03', 'assets/rooms/garden-view-studio/03.jpg', 'Wide interior view of the garden-view studio apartment.', 'Wide interior'),
-  image('04', 'assets/rooms/garden-view-studio/04.jpg', 'Another angle showing floor area inside the garden-view studio.', 'Room depth'),
-  image('05', 'assets/rooms/garden-view-studio/05.jpg', 'Bed-side perspective inside the garden-view studio.', 'Bed-side view'),
-  image('06', 'assets/rooms/garden-view-studio/06.jpg', 'Furniture and circulation area inside the garden-view studio.', 'Circulation space'),
-  image('07', 'assets/rooms/garden-view-studio/07.jpg', 'Studio entry-side angle showing the practical furnished setup.', 'Entry-side view'),
+  image('01', 'assets/rooms/garden-view-studio/01.jpg', 'Garden-view studio with a bed, study table, and open floor area.', 'Main studio layout'),
+  image('02', 'assets/rooms/garden-view-studio/02.jpg', 'Furnished room seen through the garden-side glass doors.', 'Garden-side entrance'),
+  image('03', 'assets/rooms/garden-view-studio/03.jpg', 'Study table and chair beside the room door.', 'Study table and door'),
+  image('04', 'assets/rooms/garden-view-studio/04.jpg', 'Bed and study area facing the garden-side window.', 'Room and garden-side window'),
+  image('05', 'assets/rooms/garden-view-studio/05.jpg', 'Toilet and water heater inside the attached washroom.', 'Attached washroom'),
+  image('06', 'assets/rooms/garden-view-studio/06.jpg', 'Basin and toilet inside the attached washroom.', 'Washroom basin'),
+  image('07', 'assets/rooms/garden-view-studio/07.jpg', 'Open display shelves against the room wall.', 'Display shelves'),
 ]
 
 export default defineRoom({
@@ -29,24 +30,24 @@ export default defineRoom({
   slug: 'garden-view-studio',
   title: 'Garden-view studio apartment',
   summary:
-    'A larger studio option with a private kitchen, attached washroom, and enough space for double or triple sharing.',
-  fitSummary: 'Share-friendly studio with extra floor area and a private kitchen setup.',
+    'Larger furnished studio with a private kitchen, attached washroom, and space for two or three occupants.',
+  fitSummary: 'Private kitchen and attached washroom, with room for sharing.',
   priceMonthly: 7999,
   available: true,
   featured: false,
   updatedAt: '2026-07-15',
   availabilityUpdatedAt: '2026-07-15',
   occupancy: 'flex',
-  occupancyLabel: 'Double/Triple occupancy',
+  occupancyLabel: 'Double or triple occupancy',
   kitchenType: 'private',
   kitchenLabel: 'Private kitchen',
   washroomType: 'attached',
   washroomLabel: 'Attached washroom',
-  highlightLabel: 'Best for sharing',
-  facingLabel: 'Garden-side feel',
-  bestFor: 'Anyone who wants more floor area for sharing without losing a private kitchen.',
+  highlightLabel: 'Room for two or three',
+  facingLabel: 'Garden side',
+  bestFor: 'Two or three occupants who want more floor space and private kitchen and washroom facilities.',
   included,
   extraNotes,
-  visitNextStep: 'Call or WhatsApp before visiting so DiviStays can confirm the current sharing setup.',
+  visitNextStep: 'Send the room ID on WhatsApp or call to confirm availability and the current occupancy arrangement.',
   gallery,
 })

@@ -49,22 +49,23 @@ useOverlayDialog({
           aria-modal="true"
           role="dialog"
           aria-labelledby="mobile-contact-sheet-title"
+          aria-describedby="mobile-contact-sheet-summary"
         >
           <div class="contact-sheet-head">
             <div class="contact-sheet-copy">
-              <p class="contact-sheet-kicker">{{ siteConfig.uiText.contactSheet.eyebrow }}</p>
+              <p class="label-upper">{{ siteConfig.uiText.contactSheet.eyebrow }}</p>
               <h2 id="mobile-contact-sheet-title">{{ title }}</h2>
-              <p>{{ summary }}</p>
+              <p id="mobile-contact-sheet-summary">{{ summary }}</p>
             </div>
 
             <button
               ref="closeButton"
-              class="contact-close"
+              class="contact-close button-secondary"
               type="button"
               aria-label="Close contact options"
               @click="closeSheet"
             >
-              ×
+              <span aria-hidden="true">×</span>
             </button>
           </div>
 
@@ -101,93 +102,82 @@ useOverlayDialog({
   z-index: 69;
   display: grid;
   align-items: end;
-  padding: 0.8rem;
-  background: rgba(7, 18, 26, 0.4);
-  -webkit-backdrop-filter: blur(12px) saturate(150%);
-  backdrop-filter: blur(12px) saturate(150%);
+  padding: var(--space-md);
 }
 
 .contact-sheet {
   display: grid;
-  gap: 1rem;
-  padding: var(--card-pad);
-  border-radius: var(--radius-lg);
+  gap: var(--space-lg);
+  width: min(100%, 32rem);
+  max-height: 92svh;
+  padding: var(--space-lg);
+  padding-bottom: calc(var(--space-lg) + env(safe-area-inset-bottom));
+  margin-inline: auto;
+  overflow-y: auto;
 }
 
 .contact-sheet-head {
   display: flex;
-  align-items: start;
+  align-items: flex-start;
   justify-content: space-between;
-  gap: 0.75rem;
+  gap: var(--space-md);
 }
 
 .contact-sheet-copy {
   display: grid;
-  gap: 0.22rem;
+  gap: var(--space-sm);
 }
 
-.contact-sheet-kicker {
-  color: var(--accent-deep);
-  font-size: var(--text-label);
-  font-weight: 800;
-  letter-spacing: 0.13em;
-  text-transform: uppercase;
-}
-
-.contact-sheet-copy h2 {
-  font-size: 1.45rem;
-  line-height: 1;
-}
-
+.contact-sheet-copy .label-upper,
 .contact-sheet-copy p:last-child {
   color: var(--muted);
 }
 
 .contact-close {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 2.55rem;
-  height: 2.55rem;
-  border: 1px solid var(--paper-border-soft);
-  border-radius: 999px;
-  background: var(--surface-field-fill);
-  color: var(--text-strong);
-  font-size: 1.35rem;
-  box-shadow: var(--shadow-sm);
+  flex: 0 0 auto;
+  min-width: 3rem;
+  min-height: 3rem;
+  padding: 0;
+  font-size: 1.25rem;
 }
 
 .contact-sheet-actions {
   display: grid;
-  gap: 0.7rem;
+  gap: var(--space-sm);
 }
 
 .contact-option {
   display: grid;
   justify-items: start;
-  gap: 0.05rem;
-  min-height: 3.6rem;
-  padding-inline: 1rem;
+  gap: var(--space-xs);
+  min-height: 3.25rem;
+  padding-inline: var(--space-md);
 }
 
 .contact-option-label {
   font-size: 1rem;
-  font-weight: 800;
+  font-weight: 700;
 }
 
 .contact-option-meta {
-  font-size: var(--text-label);
   color: inherit;
-  opacity: 0.78;
+  font-size: 0.875rem;
+  opacity: 0.8;
 }
 
 .contact-sheet-fade-enter-active,
 .contact-sheet-fade-leave-active {
-  transition: opacity 0.18s ease;
+  transition: opacity 0.15s ease;
 }
 
 .contact-sheet-fade-enter-from,
 .contact-sheet-fade-leave-to {
   opacity: 0;
+}
+
+@media (min-width: 640px) {
+  .contact-sheet-shell {
+    align-items: center;
+  }
 }
 </style>

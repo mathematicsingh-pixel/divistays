@@ -14,7 +14,7 @@ function cloneGallery(value) {
 }
 
 export function formatPriceLabel(priceMonthly) {
-  return `₹${money.format(priceMonthly)} / month`
+  return `₹${money.format(priceMonthly)}/month`
 }
 
 export function formatDateLabel(value) {

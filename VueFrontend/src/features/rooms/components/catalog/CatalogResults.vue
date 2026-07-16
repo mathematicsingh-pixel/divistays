@@ -36,8 +36,6 @@ defineProps({
         :key="room.slug"
         :room="room"
         :eager="index < 2"
-        show-quick-preview
-        @preview="actions.openPreview(room.slug)"
       />
     </div>
 
@@ -61,8 +59,8 @@ defineProps({
 <style scoped>
 .room-grid {
   display: grid;
-  gap: 0.9rem;
-  margin-top: 1rem;
+  gap: var(--space-md);
+  margin-top: var(--space-xl);
 }
 
 .empty-state {
@@ -79,6 +77,13 @@ defineProps({
 @media (min-width: 760px) {
   .room-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1080px) {
+  .room-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-lg);
   }
 }
 </style>

@@ -1,8 +1,8 @@
 <script setup>
-import { ref } from 'vue'
+import { computed } from 'vue'
 import RoomCard from '@/features/rooms/components/RoomCard.vue'
 
-defineProps({
+const props = defineProps({
   rooms: {
     type: Array,
     required: true,
@@ -13,114 +13,84 @@ defineProps({
   },
 })
 
-const scrollEl = ref(null)
-
-function scrollTrack(dir) {
-  if (!scrollEl.value) return
-  const amount = scrollEl.value.offsetWidth * 0.75
-  scrollEl.value.scrollBy({ left: dir * amount, behavior: 'smooth' })
-}
+const featuredRooms = computed(() => props.rooms.slice(0, 3))
 </script>
 
 <template>
-  <section class="section-shell">
+  <section class="section-shell available-shell" aria-labelledby="available-rooms-title">
     <div class="container">
-      <div class="section-heading-row">
+      <div class="rooms-heading">
         <div class="section-heading">
-          <span class="label-upper label-pill">{{ site.homeRoomsEyebrow }}</span>
-          <h2>{{ site.homeRoomsTitle }}</h2>
+          <span class="label-upper">{{ site.homeRoomsEyebrow }}</span>
+          <h2 id="available-rooms-title">{{ site.homeRoomsTitle }}</h2>
           <p>{{ site.homeRoomsSummary }}</p>
         </div>
 
-        <div class="scroll-arrows">
-          <button
-            class="scroll-arrow"
-            type="button"
-            aria-label="Scroll left"
-            @click="scrollTrack(-1)"
-          >
-            &#8592;
-          </button>
-          <button
-            class="scroll-arrow"
-            type="button"
-            aria-label="Scroll right"
-            @click="scrollTrack(1)"
-          >
-            &#8594;
-          </button>
-        </div>
+        <RouterLink
+          class="rooms-all-link"
+          to="/rooms?availability=available"
+        >
+          See all {{ rooms.length }} available {{ rooms.length === 1 ? 'room' : 'rooms' }}
+          <span aria-hidden="true">→</span>
+        </RouterLink>
       </div>
 
-      <div
-        ref="scrollEl"
-        class="room-track"
-      >
+      <div class="room-track">
         <RoomCard
-          v-for="(room, index) in rooms"
+          v-for="room in featuredRooms"
           :key="room.slug"
           class="room-track-item"
           :room="room"
-          :eager="index === 0"
         />
       </div>
 
-      <div class="section-actions">
-        <RouterLink
-          class="button-secondary"
-          to="/rooms?availability=available"
-        >
-          {{ site.uiText.actions.compareAllRooms }}
-        </RouterLink>
-      </div>
+      <RouterLink
+        class="button-secondary rooms-mobile-action"
+        to="/rooms?availability=available"
+      >
+        See all available rooms
+      </RouterLink>
     </div>
   </section>
 </template>
 
 <style scoped>
-.section-heading-row {
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 1rem;
-  margin-bottom: 1.25rem;
+.available-shell {
+  padding: var(--section-space) 0;
+  background: var(--canvas);
 }
 
-.scroll-arrows {
+.rooms-heading {
+  display: grid;
+  gap: var(--space-md);
+}
+
+.section-heading {
+  margin-bottom: 0;
+}
+
+.section-heading h2 {
+  max-width: 12ch;
+}
+
+.rooms-all-link {
   display: none;
-  gap: 0.5rem;
-  flex-shrink: 0;
-}
-
-.scroll-arrow {
-  display: inline-flex;
   align-items: center;
-  justify-content: center;
-  width: 2.5rem;
-  height: 2.5rem;
-  border-radius: 999px;
-  border: 1px solid var(--paper-border-soft);
-  background: var(--surface-field-fill);
+  gap: var(--space-sm);
+  min-height: 2.75rem;
   color: var(--text-strong);
-  font-size: 1.1rem;
-  cursor: pointer;
-  transition: background 0.18s ease, border-color 0.18s ease;
+  font-weight: 700;
 }
 
-.scroll-arrow:hover {
-  background: var(--surface-paper-fill);
-  border-color: var(--line-strong);
-}
-
-/* ── Track ───────────────────────────────────── */
 .room-track {
   display: flex;
-  gap: 0.9rem;
+  gap: var(--space-md);
+  margin: var(--space-xl) -1rem 0;
+  padding: 0 1rem var(--space-md);
   overflow-x: auto;
+  scroll-padding-inline: 1rem;
   scroll-snap-type: x mandatory;
-  -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
-  padding-bottom: 0.5rem;
 }
 
 .room-track::-webkit-scrollbar {
@@ -128,32 +98,46 @@ function scrollTrack(dir) {
 }
 
 .room-track-item {
-  flex: 0 0 85%;
-  min-width: 0;
+  flex: 0 0 min(86vw, 21rem);
   scroll-snap-align: start;
 }
 
-.section-actions {
-  display: flex;
-  justify-content: flex-start;
-  margin-top: 1rem;
+.rooms-mobile-action {
+  width: 100%;
+  margin-top: var(--space-md);
 }
 
-/* ── Tablet ──────────────────────────────────── */
-@media (min-width: 640px) {
+@media (min-width: 700px) {
+  .rooms-heading {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: end;
+  }
+
+  .rooms-all-link {
+    display: inline-flex;
+  }
+
+  .room-track {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin-inline: 0;
+    padding-inline: 0;
+    overflow: visible;
+  }
+
   .room-track-item {
-    flex: 0 0 46%;
+    min-width: 0;
+  }
+
+  .rooms-mobile-action {
+    display: none;
   }
 }
 
-/* ── Desktop ─────────────────────────────────── */
-@media (min-width: 960px) {
-  .room-track-item {
-    flex: 0 0 30%;
-  }
-
-  .scroll-arrows {
-    display: flex;
+@media (min-width: 1080px) {
+  .room-track {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-lg);
   }
 }
 </style>

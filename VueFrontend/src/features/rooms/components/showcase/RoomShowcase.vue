@@ -17,10 +17,8 @@ const props = defineProps({
 
 const messageHref = computed(() => getWhatsAppHref(buildRoomEnquiry(props.room)))
 const headingTag = computed(() => props.preview ? 'h2' : 'h1')
-const nextQuestions = computed(() => [
-  `Mention ${props.room.referenceLabel} when you call or WhatsApp`,
-  `Current status updated ${props.room.availabilityUpdatedLabel}`,
-  'Confirm what is included in the monthly rent',
+const visitNotes = computed(() => [
+  ...props.room.extraNotes,
   props.room.visitNextStep,
 ])
 </script>
@@ -33,7 +31,7 @@ const nextQuestions = computed(() => [
       :room="room"
       :preview="preview"
       :heading-tag="headingTag"
-      :next-questions="nextQuestions"
+      :visit-notes="visitNotes"
       :message-href="messageHref"
     />
   </div>
@@ -42,7 +40,7 @@ const nextQuestions = computed(() => [
 <style scoped>
 .showcase-grid {
   display: grid;
-  gap: 1rem;
+  gap: var(--space-xl);
   align-items: start;
 }
 
@@ -52,8 +50,13 @@ const nextQuestions = computed(() => [
 
 @media (min-width: 960px) {
   .showcase-grid {
-    grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr);
-    gap: 1.3rem;
+    grid-template-columns: minmax(0, 1.12fr) minmax(22rem, 0.88fr);
+    gap: var(--space-2xl);
+  }
+
+  .showcase-grid > :first-child {
+    position: sticky;
+    top: 5.5rem;
   }
 }
 </style>

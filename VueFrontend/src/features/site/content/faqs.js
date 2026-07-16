@@ -1,26 +1,26 @@
 export const siteFaqs = [
   {
-    question: 'Can I see only rooms that are available now?',
-    answer: 'Yes. The rooms page opens with available rooms first, and you can switch to all rooms any time.',
+    question: 'Are the rooms furnished?',
+    answer: 'Yes. Furnishings vary by room, so each listing names the furniture and facilities included in that specific room.',
   },
   {
-    question: 'What details can I compare before I call?',
-    answer: 'You can compare rent, occupancy, kitchen, washroom, photos, and availability before you contact DiviStays.',
+    question: 'Are the kitchen and washroom private?',
+    answer: 'It depends on the room. Some rooms have a private kitchen and attached washroom; lower-rent options may use shared facilities. The arrangement is stated on every listing.',
   },
   {
     question: 'What is included in the monthly rent?',
-    answer: 'Each room page shows what is included in that setup. If you need charge-by-charge confirmation, use the room-specific WhatsApp action before you visit.',
+    answer: 'Each room page lists its included furniture and facilities. Confirm exactly what the monthly rent covers, along with any separate charges, before you book.',
   },
   {
-    question: 'Can I visit before I decide?',
-    answer: 'Yes. Open the room you want, then call or WhatsApp DiviStays to confirm current availability and visit timing.',
+    question: 'Where are the rooms located?',
+    answer: 'The rooms are in Kakadeo, Kanpur. The site shows an approximate Google Maps area pin; the exact building location is shared after you enquire about a room.',
   },
   {
-    question: 'What should I do if the room I want is occupied?',
-    answer: 'Occupied room pages stay live and point you to similar rooms so you can keep comparing instead of starting over.',
+    question: 'How do I know whether a room is still available?',
+    answer: 'Availability and its last update date appear on each room page. Call or send the room ID on WhatsApp for confirmation before travelling to visit.',
   },
   {
-    question: 'How should I ask about a room quickly?',
-    answer: 'Open the room you like and send the room ID on WhatsApp or call directly so DiviStays can confirm the current status faster.',
+    question: 'Can I visit a room before deciding?',
+    answer: 'Yes. Open the room listing, note its room ID, then call or WhatsApp DiviStays to confirm availability and arrange a visit time.',
   },
 ]

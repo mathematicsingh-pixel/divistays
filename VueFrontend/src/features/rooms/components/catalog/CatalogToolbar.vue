@@ -1,201 +1,132 @@
 <script setup>
-import { defineAsyncComponent } from 'vue'
+import CatalogFilterSheet from '@/features/rooms/components/catalog/CatalogFilterSheet.vue'
+import CatalogFiltersDesktop from '@/features/rooms/components/catalog/CatalogFiltersDesktop.vue'
 import { siteConfig } from '@/features/site/config/site'
 
-const AsyncCatalogFilterSheet = defineAsyncComponent(() => import('@/features/rooms/components/catalog/CatalogFilterSheet.vue'))
-const AsyncCatalogFiltersDesktop = defineAsyncComponent(() => import('@/features/rooms/components/catalog/CatalogFiltersDesktop.vue'))
-
 const props = defineProps({
-  filters: {
-    type: Object,
-    required: true,
-  },
-  actions: {
-    type: Object,
-    required: true,
-  },
-  availabilityOptions: {
-    type: Array,
-    required: true,
-  },
-  occupancyOptions: {
-    type: Array,
-    required: true,
-  },
-  kitchenOptions: {
-    type: Array,
-    required: true,
-  },
-  washroomOptions: {
-    type: Array,
-    required: true,
-  },
-  priceOptions: {
-    type: Array,
-    required: true,
-  },
-  sortOptions: {
-    type: Array,
-    required: true,
-  },
-  filterGroups: {
-    type: Array,
-    required: true,
-  },
-  activeLabels: {
-    type: Array,
-    required: true,
-  },
-  activeFilterCount: {
-    type: Number,
-    required: true,
-  },
-  advancedFilterCount: {
-    type: Number,
-    required: true,
-  },
-  hasActiveFilters: {
-    type: Boolean,
-    required: true,
-  },
-  isSheetOpen: {
-    type: Boolean,
-    required: true,
-  },
-  isDesktopFiltersOpen: {
-    type: Boolean,
-    required: true,
-  },
-  resultLabel: {
-    type: String,
-    required: true,
-  },
-  toolbarNote: {
-    type: String,
-    required: true,
-  },
-  resultCount: {
-    type: Number,
-    required: true,
-  },
+  filters: { type: Object, required: true },
+  actions: { type: Object, required: true },
+  allRooms: { type: Array, required: true },
+  availabilityOptions: { type: Array, required: true },
+  occupancyOptions: { type: Array, required: true },
+  kitchenOptions: { type: Array, required: true },
+  washroomOptions: { type: Array, required: true },
+  priceOptions: { type: Array, required: true },
+  sortOptions: { type: Array, required: true },
+  filterGroups: { type: Array, required: true },
+  activeLabels: { type: Array, required: true },
+  activeFilterCount: { type: Number, required: true },
+  advancedFilterCount: { type: Number, required: true },
+  hasActiveFilters: { type: Boolean, required: true },
+  isSheetOpen: { type: Boolean, required: true },
+  isDesktopFiltersOpen: { type: Boolean, required: true },
+  resultLabel: { type: String, required: true },
+  toolbarNote: { type: String, required: true },
+  resultCount: { type: Number, required: true },
 })
 
 const emit = defineEmits(['update:sheet-open', 'toggle-desktop-filters'])
+
+function applyDraft(draft) {
+  props.actions.applyFilters(draft)
+  emit('update:sheet-open', false)
+}
 </script>
 
 <template>
   <div class="catalog-toolbar surface-card">
-    <div class="toolbar-top">
+    <div class="toolbar-main">
       <div class="toolbar-copy">
-        <p class="label-upper toolbar-label">Showing</p>
         <strong>{{ resultLabel }}</strong>
-        <p class="toolbar-note">
-          {{ toolbarNote }}
-        </p>
+        <span>{{ toolbarNote }}</span>
       </div>
-    </div>
 
-    <div class="control-rail">
-      <div class="control-card surface-input availability-card">
-        <span class="label-upper toolbar-label">Availability</span>
-        <div class="availability-row">
-          <button
-            v-for="item in availabilityOptions"
-            :key="item.value"
-            type="button"
-            class="chip-button"
-            :class="{ active: filters.availability === item.value }"
-            :aria-pressed="filters.availability === item.value"
-            @click="actions.setAvailability(item.value)"
+      <div class="toolbar-actions">
+        <label class="sort-control">
+          <span class="sr-only">Sort rooms</span>
+          <select
+            :value="filters.sort"
+            aria-label="Sort rooms"
+            @change="actions.setSort($event.target.value)"
           >
-            {{ item.label }}
-          </button>
-        </div>
-      </div>
+            <option
+              v-for="item in sortOptions"
+              :key="item.value"
+              :value="item.value"
+            >
+              {{ item.label }}
+            </option>
+          </select>
+        </label>
 
-      <label class="control-card surface-input sort-card">
-        <span class="label-upper toolbar-label">Sort by</span>
-        <select
-          :value="filters.sort"
-          @change="actions.setSort($event.target.value)"
+        <button
+          type="button"
+          class="filter-button"
+          :aria-expanded="isDesktopFiltersOpen"
+          aria-controls="catalog-filter-panel"
+          @click="emit('toggle-desktop-filters')"
         >
-          <option
-            v-for="item in sortOptions"
-            :key="item.value"
-            :value="item.value"
-          >
-            {{ item.label }}
-          </option>
-        </select>
-      </label>
+          Filters
+          <span v-if="advancedFilterCount">{{ advancedFilterCount }}</span>
+        </button>
 
-      <button
-        type="button"
-        class="control-card surface-input filter-trigger"
-        aria-controls="catalog-filters"
-        :aria-expanded="isSheetOpen ? 'true' : 'false'"
-        @click="emit('update:sheet-open', true)"
-      >
-        <span class="label-upper toolbar-label">Filters</span>
-        <strong>
-          {{
-            advancedFilterCount
-              ? `${advancedFilterCount} ${advancedFilterCount === 1 ? 'filter selected' : 'filters selected'}`
-              : siteConfig.uiText.actions.chooseFilters
-          }}
-        </strong>
-        <span class="control-note">{{ siteConfig.uiText.catalog.mobileFiltersSummary }}</span>
-      </button>
+        <button
+          type="button"
+          class="filter-button mobile-filter-button"
+          aria-controls="catalog-filters"
+          :aria-expanded="isSheetOpen"
+          @click="emit('update:sheet-open', true)"
+        >
+          Filters
+          <span v-if="advancedFilterCount">{{ advancedFilterCount }}</span>
+        </button>
+      </div>
+    </div>
 
+    <div
+      class="availability-row"
+      role="group"
+      aria-label="Availability"
+    >
       <button
+        v-for="item in availabilityOptions"
+        :key="item.value"
         type="button"
-        class="control-card surface-input desktop-filter-toggle"
-        :class="{ active: isDesktopFiltersOpen || advancedFilterCount }"
-        :aria-expanded="isDesktopFiltersOpen ? 'true' : 'false'"
-        aria-controls="catalog-filter-panel"
-        @click="emit('toggle-desktop-filters')"
+        class="chip"
+        :class="{ active: filters.availability === item.value }"
+        :aria-pressed="filters.availability === item.value"
+        @click="actions.setAvailability(item.value)"
       >
-        <span class="label-upper toolbar-label">Filters</span>
-        <strong>
-          {{
-            advancedFilterCount
-              ? `${advancedFilterCount} ${advancedFilterCount === 1 ? 'filter selected' : 'filters selected'}`
-              : siteConfig.uiText.actions.chooseFilters
-          }}
-        </strong>
-        <span class="control-note">{{ siteConfig.uiText.catalog.mobileFiltersSummary }}</span>
+        {{ item.label }}
       </button>
     </div>
 
-    <transition name="desktop-panel">
-      <AsyncCatalogFiltersDesktop
+    <Transition name="filter-panel">
+      <CatalogFiltersDesktop
         v-if="isDesktopFiltersOpen"
         id="catalog-filter-panel"
         :filter-groups="filterGroups"
         :filters="filters"
         :actions="actions"
       />
-    </transition>
+    </Transition>
 
     <div
       v-if="hasActiveFilters"
       class="active-row"
     >
-      <div class="active-copy">
-        <span class="label-upper toolbar-label">Selected</span>
-        <div class="chip-row active-chip-row">
-          <span
-            v-for="label in activeLabels"
-            :key="label"
-            class="chip"
-          >
-            {{ label }}
-          </span>
-        </div>
+      <div class="active-labels" aria-label="Selected filters">
+        <span
+          v-for="label in activeLabels"
+          :key="label"
+          class="active-label"
+        >
+          {{ label }}
+        </span>
       </div>
 
       <button
-        class="reset-link"
+        class="clear-button"
         type="button"
         @click="actions.resetFilters()"
       >
@@ -204,18 +135,18 @@ const emit = defineEmits(['update:sheet-open', 'toggle-desktop-filters'])
     </div>
   </div>
 
-  <AsyncCatalogFilterSheet
+  <CatalogFilterSheet
     v-if="isSheetOpen"
     :is-open="isSheetOpen"
     :filters="filters"
-    :actions="actions"
+    :all-rooms="allRooms"
     :availability-options="availabilityOptions"
     :occupancy-options="occupancyOptions"
     :kitchen-options="kitchenOptions"
     :washroom-options="washroomOptions"
     :price-options="priceOptions"
     :sort-options="sortOptions"
-    :result-count="resultCount"
+    @apply="applyDraft"
     @close="emit('update:sheet-open', false)"
   />
 </template>
@@ -223,163 +154,167 @@ const emit = defineEmits(['update:sheet-open', 'toggle-desktop-filters'])
 <style scoped>
 .catalog-toolbar {
   display: grid;
-  gap: 0.85rem;
-  padding: 1rem;
-  overflow: hidden;
+  gap: var(--space-md);
+  padding: var(--space-md);
+  box-shadow: var(--shadow-sm);
 }
 
-.toolbar-top,
+.toolbar-main {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm);
+}
+
 .toolbar-copy {
   display: grid;
-  gap: 0.2rem;
-}
-
-.toolbar-label {
-  color: var(--text);
+  min-width: 0;
 }
 
 .toolbar-copy strong {
   color: var(--text-strong);
-  font-size: 1.25rem;
+  font-size: 1.0625rem;
 }
 
-.toolbar-note {
-  color: var(--text);
+.toolbar-copy span {
+  display: none;
+  color: var(--muted);
+  font-size: 0.8125rem;
 }
 
-.control-rail {
-  display: grid;
-  gap: 0.75rem;
-}
-
-.control-card {
-  display: grid;
-  gap: 0.48rem;
-  min-height: 100%;
-  padding: var(--card-pad);
-  border-radius: 1.15rem;
-}
-
-.availability-row,
-.chip-row {
+.toolbar-actions {
   display: flex;
-  flex-wrap: wrap;
-  gap: 0.55rem;
+  align-items: center;
+  gap: var(--space-sm);
+  flex: 0 0 auto;
 }
 
-.chip-button {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.45rem;
-  min-height: 2.7rem;
-  padding: 0.55rem 0.9rem;
-  border: 1px solid var(--paper-border-soft);
-  border-radius: 0.95rem;
-  background: var(--surface-field-fill);
+.sort-control,
+.filter-button {
+  min-height: 2.75rem;
+}
+
+.sort-control {
+  display: none;
+}
+
+.sort-control select,
+.filter-button {
+  height: 2.75rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--paper);
   color: var(--text-strong);
   font-weight: 700;
-  box-shadow: var(--shadow-sm);
-  transition:
-    border-color 0.18s ease,
-    background-color 0.18s ease,
-    color 0.18s ease,
-    transform 0.18s ease;
 }
 
-.chip-button.active,
-.desktop-filter-toggle.active {
-  border-color: rgba(44, 161, 142, 0.3);
-  background: rgba(121, 217, 202, 0.12);
-  color: var(--brand-strong);
+.sort-control select {
+  padding: 0 var(--space-md);
 }
 
-.sort-card select {
-  min-height: 2.9rem;
-  padding: 0 0.9rem;
-  border: 1px solid var(--paper-border-soft);
-  border-radius: 0.95rem;
-  background: var(--surface-field-fill);
-  color: var(--text-strong);
-}
-
-.filter-trigger {
-  align-items: start;
-  text-align: left;
-}
-
-.desktop-filter-toggle {
+.filter-button {
   display: none;
-  align-items: start;
-  text-align: left;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: 0 var(--space-md);
 }
 
-.control-note {
-  color: var(--text);
-  font-size: 0.9rem;
+.filter-button span {
+  display: inline-grid;
+  place-items: center;
+  min-width: 1.35rem;
+  height: 1.35rem;
+  border-radius: var(--radius-full);
+  background: var(--bg);
+  color: var(--text-inverse);
+  font-size: 0.7rem;
+}
+
+.mobile-filter-button {
+  display: inline-flex;
+}
+
+.availability-row {
+  display: flex;
+  gap: var(--space-sm);
+  padding-bottom: var(--space-xs);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.availability-row::-webkit-scrollbar {
+  display: none;
+}
+
+.availability-row .chip {
+  flex: 0 0 auto;
 }
 
 .active-row {
-  display: grid;
-  gap: 0.8rem;
-  padding-top: 0.8rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-md);
+  padding-top: var(--space-md);
+  border-top: 1px solid var(--line);
 }
 
-.active-copy {
-  display: grid;
-  gap: 0.55rem;
+.active-labels {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
 }
 
-.active-chip-row {
-  gap: 0.5rem;
+.active-label {
+  color: var(--brand-strong);
+  font-size: 0.8125rem;
+  font-weight: 700;
 }
 
-.reset-link {
-  width: fit-content;
+.clear-button {
+  min-width: max-content;
+  min-height: 2.75rem;
   color: var(--text-strong);
-  font-weight: 800;
+  font-size: 0.875rem;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: var(--space-xs);
 }
 
-.desktop-panel-enter-active,
-.desktop-panel-leave-active {
-  transition:
-    opacity 0.18s ease,
-    transform 0.18s ease;
+.filter-panel-enter-active,
+.filter-panel-leave-active {
+  transition: opacity 160ms ease, transform 160ms ease;
 }
 
-.desktop-panel-enter-from,
-.desktop-panel-leave-to {
+.filter-panel-enter-from,
+.filter-panel-leave-to {
   opacity: 0;
-  transform: translateY(-8px);
+  transform: translateY(-0.5rem);
 }
 
-@media (hover: hover) {
-  .control-card:hover,
-  .chip-button:hover {
-    transform: translateY(-2px);
+@media (min-width: 760px) {
+  .toolbar-copy span {
+    display: block;
   }
-}
 
-.chip-button:active {
-  transform: scale(0.97);
+  .sort-control {
+    display: block;
+  }
 }
 
 @media (min-width: 960px) {
-  .control-rail {
-    grid-template-columns: minmax(0, 1.45fr) minmax(12rem, 0.7fr) minmax(12rem, 0.7fr);
+  .catalog-toolbar {
+    position: sticky;
+    top: 4.5rem;
+    z-index: 15;
   }
 
-  .filter-trigger {
+  .filter-button {
+    display: inline-flex;
+  }
+
+  .mobile-filter-button {
     display: none;
-  }
-
-  .desktop-filter-toggle {
-    display: grid;
-  }
-
-  .active-row {
-    grid-template-columns: minmax(0, 1fr) auto;
-    align-items: center;
   }
 }
 </style>

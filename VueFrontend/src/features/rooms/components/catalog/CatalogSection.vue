@@ -100,7 +100,13 @@ const activeLabels = computed(() => {
   return labels
 })
 
-const resultLabel = computed(() => `${props.rooms.length} room${props.rooms.length === 1 ? '' : 's'} matched`)
+const resultLabel = computed(() => {
+  const roomLabel = `${props.rooms.length} room${props.rooms.length === 1 ? '' : 's'}`
+
+  return props.filters.availability === 'available'
+    ? `${props.rooms.length} available room${props.rooms.length === 1 ? '' : 's'}`
+    : `${roomLabel} shown`
+})
 const toolbarNote = computed(() =>
   props.hasActiveFilters
     ? `${props.activeFilterCount} active filter${props.activeFilterCount === 1 ? '' : 's'}`
@@ -127,17 +133,19 @@ function toggleDesktopFilters() {
   <section
     id="rooms"
     class="section-shell catalog-shell"
+    aria-labelledby="catalog-title"
   >
     <div class="container">
       <div class="section-heading catalog-heading">
-        <span class="label-upper label-pill">Rooms</span>
-        <h2>{{ siteConfig.uiText.catalog.title }}</h2>
+        <span class="label-upper">Rooms for rent</span>
+        <h1 id="catalog-title">{{ siteConfig.uiText.catalog.title }}</h1>
         <p>{{ siteConfig.uiText.catalog.summary }}</p>
       </div>
 
       <CatalogToolbar
         :filters="filters"
         :actions="actions"
+        :all-rooms="allRooms"
         :availability-options="availabilityOptions"
         :occupancy-options="occupancyOptions"
         :kitchen-options="kitchenOptions"
@@ -166,3 +174,17 @@ function toggleDesktopFilters() {
     </div>
   </section>
 </template>
+
+<style scoped>
+.catalog-shell {
+  padding: var(--space-xl) 0 var(--section-space);
+}
+
+.catalog-heading {
+  max-width: 48rem;
+}
+
+.catalog-heading h1 {
+  max-width: 12ch;
+}
+</style>

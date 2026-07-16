@@ -17,5 +17,5 @@ const sortedRoomEntries = Object.entries(eagerRoomModules)
 export const roomSourceCatalog = sortedRoomEntries.map((entry) => entry.room)
 
 export const roomSourceLoaders = Object.fromEntries(
-  Object.entries(lazyRoomModules).map(([path, load]) => [extractRoomSlug(path), load]),
+  sortedRoomEntries.map(({ path, room }) => [room.slug, lazyRoomModules[path]]),
 )

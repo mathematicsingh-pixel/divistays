@@ -1,28 +1,28 @@
 import { defineRoom, image } from '../helpers.js'
 
 const included = [
-  'Compact furnished setup',
+  'Single bed, study table, and chair',
   'Attached washroom',
-  'Common kitchen access',
-  'Utility aangan access',
-  'Book Rack',
-  'Water Purifier',
-  'Wi-fi',
-  '24x7 CCTV support',
+  'Shared kitchen access',
+  'Shared utility courtyard (aangan)',
+  'Book rack',
+  'Water purifier',
+  'Wi-Fi access',
+  '24/7 CCTV monitoring',
 ]
 
 const extraNotes = [
-  'Nearby tiffin options',
-  'Ask for the nearest currently available budget room',
+  'Tiffin services are available nearby',
+  'Confirm exactly what the monthly rent covers before booking',
 ]
 
 const gallery = [
-  image('01', 'assets/rooms/budget-single-attached/01.jpg', 'Budget single room with narrow bed and compact desk zone.', 'Budget single setup'),
-  image('02', 'assets/rooms/budget-single-attached/02.jpg', 'Single room angle showing the sleeping area and study table.', 'Sleeping area'),
-  image('03', 'assets/rooms/budget-single-attached/03.jpg', 'Compact single-room layout with study desk and clean walls.', 'Desk and wall view'),
-  image('04', 'assets/rooms/budget-single-attached/04.jpg', 'Another angle of the budget single room with attached washroom access nearby.', 'Alternate angle'),
-  image('05', 'assets/rooms/budget-single-attached/05.jpg', 'Room entry view inside the budget single setup.', 'Entry view'),
-  image('06', 'assets/rooms/budget-single-attached/06.jpg', 'Tighter view of the single room furniture arrangement.', 'Furniture layout'),
+  image('01', 'assets/rooms/budget-single-attached/01.jpg', 'Single bed and study table inside the budget room.', 'Bed and study table'),
+  image('02', 'assets/rooms/budget-single-attached/02.jpg', 'Wall-mounted basin inside the attached washroom.', 'Washroom basin'),
+  image('03', 'assets/rooms/budget-single-attached/03.jpg', 'Single bed beside the study table and chair.', 'Sleeping and study area'),
+  image('04', 'assets/rooms/budget-single-attached/04.jpg', 'Toilet and tiled walls inside the attached washroom.', 'Attached washroom'),
+  image('05', 'assets/rooms/budget-single-attached/05.jpg', 'Window, storage table, and room doors along the passage.', 'Window and room doors'),
+  image('06', 'assets/rooms/budget-single-attached/06.jpg', 'Window and room door beside the foot of the single bed.', 'Bed, window, and door'),
 ]
 
 export default defineRoom({
@@ -30,8 +30,8 @@ export default defineRoom({
   slug: 'budget-single-attached',
   title: 'Budget single room',
   summary:
-    'Entry-level single room with an attached washroom, common kitchen access, and a simpler stay format for budget-sensitive enquiries.',
-  fitSummary: 'Single room with attached washroom for a tighter monthly budget.',
+    'Furnished single room with an attached washroom, shared kitchen access, and a lower monthly rent.',
+  fitSummary: 'Single occupancy with an attached washroom and shared kitchen.',
   priceMonthly: 4299,
   available: true,
   featured: false,
@@ -40,14 +40,14 @@ export default defineRoom({
   occupancy: 'single',
   occupancyLabel: 'Single occupancy',
   kitchenType: 'common',
-  kitchenLabel: 'Common kitchen',
+  kitchenLabel: 'Shared kitchen',
   washroomType: 'attached',
   washroomLabel: 'Attached washroom',
   highlightLabel: 'Attached washroom',
-  facingLabel: 'Budget-focused',
-  bestFor: 'Anyone who wants an attached washroom without moving into a higher rent band.',
+  facingLabel: 'Lower-rent option',
+  bestFor: 'Single occupancy with an attached washroom at a lower monthly rent.',
   included,
   extraNotes,
-  visitNextStep: 'Ask for a similar available budget room before you plan a visit.',
+  visitNextStep: 'Send the room ID on WhatsApp or call to confirm availability and arrange a visit.',
   gallery,
 })

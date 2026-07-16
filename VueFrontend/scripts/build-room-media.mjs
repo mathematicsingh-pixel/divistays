@@ -1,6 +1,6 @@
 import { spawn } from 'node:child_process'
 import { constants } from 'node:fs'
-import { access, mkdir } from 'node:fs/promises'
+import { access, mkdir, stat } from 'node:fs/promises'
 import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import sharp from 'sharp'
@@ -26,6 +26,16 @@ async function ensureDir(filePath) {
   await mkdir(filePath, { recursive: true })
 }
 
+async function isFresh(filePath, sourceModifiedAt) {
+  try {
+    const outputStats = await stat(filePath)
+    return outputStats.mtimeMs >= sourceModifiedAt
+  }
+  catch {
+    return false
+  }
+}
+
 async function resolveSourcePath(sourcePath) {
   const targetPath = resolve(rootDir, sourcePath)
 
@@ -46,13 +56,14 @@ async function buildImageVariants(room, media) {
     resolve(roomDir, `${media.key}-${width}.jpg`),
   ])
 
-  const ready = (await Promise.all(outputFiles.map(exists))).every(Boolean)
+  const sourceFile = await resolveSourcePath(media.source)
+  const sourceStats = await stat(sourceFile)
+  const ready = (await Promise.all(outputFiles.map((filePath) => isFresh(filePath, sourceStats.mtimeMs)))).every(Boolean)
 
   if (ready) {
     return
   }
 
-  const sourceFile = await resolveSourcePath(media.source)
   const baseImage = sharp(sourceFile).rotate()
 
   for (const width of imageWidths) {
@@ -116,8 +127,10 @@ async function buildVideoAssets(room, video) {
   await ensureDir(roomDir)
 
   const sourceFile = await resolveSourcePath(video.source)
-  const videoReady = await exists(videoTarget)
-  const posterReady = await exists(posterTarget)
+  const sourceStats = await stat(sourceFile)
+  const videoReady = await isFresh(videoTarget, sourceStats.mtimeMs)
+  const videoStats = videoReady ? await stat(videoTarget) : null
+  const posterReady = videoReady && await isFresh(posterTarget, videoStats.mtimeMs)
 
   if (!videoReady || !posterReady) {
     await ensureCommand('ffmpeg')

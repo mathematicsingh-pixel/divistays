@@ -1,38 +1,22 @@
-import { mkdir, writeFile } from 'node:fs/promises'
+import { access, mkdir, writeFile } from 'node:fs/promises'
 import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { loadRoomSummaryCatalog } from './lib/load-room-content.mjs'
+import { buildSeoPages, toPageUrl, validateSeoPages } from './lib/seo-pages.mjs'
+import { resolveBuildSiteUrl } from './lib/site-url.mjs'
 
 const scriptDir = dirname(fileURLToPath(import.meta.url))
 const rootDir = resolve(scriptDir, '..')
 const distDir = resolve(rootDir, 'dist')
-const defaultSiteUrl = 'https://www.divistays.example'
 const roomCatalog = await loadRoomSummaryCatalog()
-
-function resolveSiteUrl(candidate) {
-  try {
-    return new URL(candidate || defaultSiteUrl).toString().replace(/\/$/, '')
-  }
-  catch {
-    return defaultSiteUrl
-  }
-}
-
-const siteUrl = resolveSiteUrl(process.env.VITE_SITE_URL)
-const pages = [
-  { path: '/', changefreq: 'weekly', priority: '1.0' },
-  { path: '/rooms', changefreq: 'weekly', priority: '0.9' },
-  ...roomCatalog.map((room) => ({
-    path: room.detailsHref,
-    changefreq: 'weekly',
-    priority: room.available ? '0.85' : '0.7',
-  })),
-]
+const production = process.argv.includes('--production')
+const siteUrl = resolveBuildSiteUrl(process.env.VITE_SITE_URL, { production })
+const pages = validateSeoPages(buildSeoPages(roomCatalog))
 
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${pages.map((page) => `  <url>
-    <loc>${siteUrl}${page.path === '/' ? '/' : page.path}</loc>
+    <loc>${toPageUrl(siteUrl, page.path)}</loc>
     <changefreq>${page.changefreq}</changefreq>
     <priority>${page.priority}</priority>
   </url>`).join('\n')}
@@ -47,6 +31,7 @@ Sitemap: ${siteUrl}/sitemap.xml
 
 await mkdir(distDir, { recursive: true })
 await Promise.all([
+  access(resolve(distDir, '404.html')),
   writeFile(resolve(distDir, 'sitemap.xml'), sitemap),
   writeFile(resolve(distDir, 'robots.txt'), robots),
 ])

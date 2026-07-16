@@ -5,189 +5,159 @@ import {
   roomCount,
 } from '../../rooms/model/catalog.js'
 import { siteFaqs } from '../content/faqs.js'
+import { productionSiteUrl } from './origin.js'
 
 function formatCountLabel(count, singular, plural = `${singular}s`) {
   return `${count} ${count === 1 ? singular : plural}`
 }
 
-function lowercaseLeading(value) {
-  if (!value) {
-    return value
-  }
-
-  return `${value.charAt(0).toLowerCase()}${value.slice(1)}`
-}
-
-function formatList(values) {
-  if (!values.length) {
-    return ''
-  }
-
-  if (values.length === 1) {
-    return values[0]
-  }
-
-  if (values.length === 2) {
-    return `${values[0]} and ${values[1]}`
-  }
-
-  return `${values.slice(0, -1).join(', ')}, and ${values.at(-1)}`
-}
-
 function buildAvailableRoomsSummary() {
   if (!roomCount) {
-    return 'Room listings will appear here once the catalog is ready.'
+    return 'No rooms are listed online at the moment. Call or WhatsApp DiviStays to ask what is opening next.'
   }
 
   if (!availableRoomCount) {
-    return `No rooms are currently marked available. You can still browse all ${roomCount} listed rooms and ask for the next opening.`
+    return `No rooms are marked available today. You can still compare all ${roomCount} rooms and ask about the next opening.`
   }
 
-  return `Right now ${availableRoomCount} of ${roomCount} listed rooms are available${availableStartingPriceLabel ? `, starting from ${availableStartingPriceLabel}` : ''}.`
+  return `${formatCountLabel(availableRoomCount, 'room')} available to visit now${availableStartingPriceLabel ? `, with rent from ${availableStartingPriceLabel}` : ''}.`
 }
 
-const occupancySummary = occupancyOptions.length
-  ? formatList(occupancyOptions.map((item) => lowercaseLeading(item.label)))
-  : 'different occupancy setups'
 const availabilitySummary = buildAvailableRoomsSummary()
-const siteAvailabilityLine = availableRoomCount
-  ? `${formatCountLabel(availableRoomCount, 'room')} available now${availableStartingPriceLabel ? ` from ${availableStartingPriceLabel}` : ''}.`
-  : 'Call or WhatsApp for the next opening.'
 const catalogDefaultNote = availableRoomCount
-  ? `Available rooms show first (${availableRoomCount} live now). Use filters only if you need them.`
-  : 'Open all rooms and use filters only if you need to narrow the list.'
+  ? `Showing the ${formatCountLabel(availableRoomCount, 'room')} available now. Filter by budget or facilities to narrow the list.`
+  : 'Browse every room or call to ask which one is opening next.'
 const mobileFiltersSummary = occupancyOptions.length
-  ? `Budget, setup, and ${formatCountLabel(occupancyOptions.length, 'occupancy type')}`
-  : 'Budget and room setup'
+  ? `Budget, kitchen, washroom, and ${formatCountLabel(occupancyOptions.length, 'occupancy type')}`
+  : 'Budget, kitchen, and washroom'
 
 export const siteConfig = {
   name: 'DiviStays',
   shortName: 'DiviStays',
-  defaultTitle: 'Rooms and Studio Apartments in Kakadeo, Kanpur | DiviStays',
-  roomsTitle: 'Compare Rooms and Studio Apartments in Kakadeo, Kanpur | DiviStays',
+  defaultTitle: 'Furnished Rooms in Kakadeo, Kanpur | DiviStays',
+  roomsTitle: 'Rooms for Rent in Kakadeo, Kanpur | DiviStays',
   description:
-    `Browse furnished rooms and studio apartments in Kakadeo, Kanpur with photos, monthly rent, occupancy, kitchen, washroom, and live availability. ${siteAvailabilityLine}`,
+    'Browse furnished rooms and studio apartments for rent in Kakadeo, Kanpur. Compare photos, monthly rent, facilities, and availability.',
   roomsDescription:
-    `Compare furnished rooms and studio apartments in Kakadeo, Kanpur by rent, occupancy, kitchen, washroom, and current availability. ${siteAvailabilityLine}`,
-  defaultSiteUrl: 'https://www.divistays.example',
-  themeColor: '#07121a',
-  ogImagePath: '/og-default.svg',
+    'Find furnished rooms and studio apartments for rent in Kakadeo, Kanpur. Compare photos, monthly rent, occupancy, kitchen, washroom, and availability.',
+  defaultSiteUrl: productionSiteUrl,
+  themeColor: '#08161e',
+  ogImagePath: '/media/rooms/garden-view-studio/01-1440.jpg',
   phoneDisplay: '8306709248',
   phoneE164: '+918306709248',
   whatsappNumber: '918306709248',
   locationLabel: 'Kakadeo, Kanpur, Uttar Pradesh',
   locationShort: 'Kakadeo, Kanpur',
-  audienceLabel: 'Room and studio seekers in Kakadeo',
-  brandLine: 'Comfortable stays. Clear pricing.',
-  supportLine: 'Furnished rooms and studio apartments in Kakadeo, Kanpur.',
-  heroEyebrow: 'Available now',
-  heroTitle: 'Rooms & studios in Kakadeo',
+  audienceLabel: 'People looking for furnished rooms in Kakadeo, Kanpur',
+  brandLine: 'See photos and rent before you call.',
+  supportLine: 'Furnished rooms and studio apartments for rent in Kakadeo, Kanpur.',
+  heroEyebrow: 'Rooms for rent in Kakadeo',
+  heroTitle: 'Rooms and studio apartments in Kakadeo.',
   heroSummary:
-    'See photos, rent, and setup up front. If a place feels right, message or call us directly.',
-  heroPrimaryLabel: 'View open rooms',
-  heroSecondaryLabel: 'Ask on WhatsApp',
-  heroCallLabel: 'Call us',
-  homeRoomsEyebrow: 'Available rooms',
-  homeRoomsTitle: 'Rooms open right now',
-  homeRoomsSummary: `${availabilitySummary} Need more options? Open the full list and filter by budget, occupancy, kitchen, and washroom.`,
-  proofEyebrow: 'Why it helps',
-  proofTitle: 'Everything important is visible up front',
+    'See photos, monthly rent, and facilities before you call. If you like a room, send us the room ID to arrange a visit.',
+  heroPrimaryLabel: 'See room details',
+  heroCallLabel: 'Call DiviStays',
+  homeRoomsEyebrow: 'Available now',
+  homeRoomsTitle: 'Available rooms',
+  homeRoomsSummary: `${availabilitySummary} Open any listing for more photos and full room details.`,
+  proofEyebrow: 'Room listings',
+  proofTitle: 'Photos, rent and facilities',
   proofSummary:
-    'No vague listing copy. Just the setup, the rent, and a direct way to reach us.',
+    'See the monthly rent, occupancy, kitchen, and washroom for each room.',
   proofCards: [
     {
-      title: 'Setup is obvious',
-      body: `You can compare ${formatCountLabel(roomCount, 'room listing')} across ${occupancySummary}. Kitchen and washroom details stay visible on every room.`,
+      title: 'Room photos',
+      body: 'See the bed, furniture, floor space, and facilities from multiple angles.',
     },
     {
-      title: 'Rent stays visible',
-      body: 'Monthly price is on the card and room page, not hidden until the call.',
+      title: 'Monthly rent',
+      body: 'The monthly price is shown on the room card and full listing.',
     },
     {
-      title: 'Available rooms first',
-      body: 'The list starts with rooms that are free now, then you can open the full catalog if you want more options.',
+      title: 'Private or shared facilities',
+      body: 'Each listing states the occupancy and whether the kitchen and washroom are private or shared.',
     },
     {
-      title: 'Direct line',
-      body: 'Call or WhatsApp DiviStays without a form, lead wall, or callback loop.',
+      title: 'Room ID',
+      body: 'Use the two-digit room ID when you call or send a WhatsApp message.',
     },
   ],
-  processEyebrow: 'How it works',
-  processTitle: 'How to pick a room here',
+  processEyebrow: 'Room visits',
+  processTitle: 'Arrange a visit',
   processSummary:
-    'Start with the rooms that are open. Open the one that fits. Then call or message for a visit.',
+    'Send the room ID on WhatsApp or call us to choose a time.',
   processSteps: [
     {
-      title: 'Start with open rooms',
-      body: 'Check rent, occupancy, kitchen, and washroom before you talk to anyone.',
+      title: 'Pick a room',
+      body: 'Compare the photos, rent, occupancy, kitchen, and washroom.',
     },
     {
-      title: 'Open the room you like',
-      body: 'See photos, included items, and the basics you care about before planning a visit.',
+      title: 'Contact us',
+      body: 'Call or message us with the two-digit ID shown on the listing.',
     },
     {
-      title: 'Call or WhatsApp',
-      body: 'Use the room ID, confirm availability, and lock in a visit time.',
+      title: 'Visit the room',
+      body: 'We will confirm availability and agree on a time for you to see it.',
     },
   ],
   faqEyebrow: 'FAQs',
-  faqTitle: 'Common questions',
-  faqSummary: 'Quick answers first. Then call or message if you want details.',
+  faqTitle: 'Questions about the rooms',
+  faqSummary: 'Furnishing, facilities, location, monthly rent, and room visits.',
   faqs: siteFaqs,
   ctaEyebrow: 'Direct contact',
-  ctaTitle: 'Ask what is open today',
+  ctaTitle: 'Want to see a room?',
   ctaSummary:
-    'Send the room ID you like. If that one is taken, we will point you to the closest open option.',
-  ctaPrimaryLabel: 'Ask on WhatsApp',
-  ctaSecondaryLabel: 'Call us',
-  footerDescriptor: 'Furnished rooms and studio apartments in Kakadeo, Kanpur.',
+    'Send the room ID on WhatsApp or call us. We will confirm whether it is still available and arrange a time.',
+  ctaPrimaryLabel: 'WhatsApp the room ID',
+  ctaSecondaryLabel: 'Call DiviStays',
+  footerDescriptor: 'Furnished rooms and studio apartments for rent in Kakadeo, Kanpur.',
   footerSummary:
-    'DiviStays keeps it simple: photos, rent, room setup, and a direct phone or WhatsApp line.',
+    'Photos, monthly rent, facilities, and availability are listed for each room.',
   uiText: {
     actions: {
-      viewOpenRooms: 'View open rooms',
-      viewRooms: 'View rooms',
+      viewOpenRooms: 'See available rooms',
+      viewRooms: 'See available rooms',
       compareAllRooms: 'Compare all rooms',
-      talkToUs: 'Talk to us',
-      chooseFilters: 'Choose filters',
+      talkToUs: 'Call or WhatsApp',
+      chooseFilters: 'Filter rooms',
       clearFilters: 'Clear filters',
-      viewRoom: 'View room',
-      viewSimilarRooms: 'View similar rooms',
-      askOnWhatsApp: 'Ask on WhatsApp',
-      callDirect: 'Call us',
+      viewRoom: 'Open full listing',
+      viewSimilarRooms: 'See similar rooms',
+      askOnWhatsApp: 'WhatsApp DiviStays',
+      callDirect: 'Call DiviStays',
     },
     contactSheet: {
-      eyebrow: 'Talk to us',
-      title: 'Talk to DiviStays',
-      summary: 'Call us directly or send a quick WhatsApp message.',
-      whatsappMeta: 'Quick reply on WhatsApp',
+      eyebrow: 'Direct enquiry',
+      title: 'Call or WhatsApp DiviStays',
+      summary: 'Call about availability or send us the room ID on WhatsApp.',
+      whatsappMeta: 'Send a message on WhatsApp',
     },
     heroPanel: {
       badge: 'Featured',
     },
     catalog: {
-      title: 'Find your room',
+      title: 'Furnished rooms in Kakadeo, Kanpur',
       summary: availableRoomCount
-        ? `Start with ${formatCountLabel(availableRoomCount, 'room')} that ${availableRoomCount === 1 ? 'is' : 'are'} free now. Narrow the list only if you need to.`
-        : 'No rooms are currently marked available. Open the full list and call for the next opening.',
+        ? `${formatCountLabel(availableRoomCount, 'furnished room')} available to visit. Filter by monthly budget, occupancy, kitchen, or washroom.`
+        : 'No rooms are marked available today. Browse the full list or call to ask what is opening next.',
       defaultNote: catalogDefaultNote,
       mobileFiltersLabel: 'Filters',
       mobileFiltersSummary,
     },
     room: {
-      similarTitle: 'You may like these too',
-      similarSummary: 'Similar setups first, with open rooms shown first.',
-      previewLabel: 'Quick look',
+      similarTitle: 'Similar rooms',
+      similarSummary: 'Other available rooms with a similar price or facilities.',
+      previewLabel: 'Room preview',
     },
     footer: {
-      headline: 'See rooms. Pick one. Talk to us.',
+      headline: 'See the details, then book a visit.',
     },
   },
   localityPage: {
     mapUrl: 'https://maps.google.com/?q=Kakadeo+Kanpur',
     placeholderImagePath: '/location-placeholder-map.webp',
     placeholderImageAlt:
-      'Stylized approximate neighborhood map for Kakadeo, Kanpur with a highlighted area pin.',
+      'Illustrated map showing the approximate DiviStays area in Kakadeo, Kanpur.',
   },
 }
 
@@ -246,9 +216,9 @@ export function getPageOgImage(siteUrl, path = siteConfig.ogImagePath) {
 }
 
 export function getRoomPageTitle(room) {
-  return `${room.title} in Kakadeo, Kanpur | ${room.priceLabel} | DiviStays`
+  return `${room.title} in Kakadeo | DiviStays`
 }
 
 export function getRoomPageDescription(room) {
-  return `See photos, monthly rent, availability, occupancy, kitchen, and washroom details for ${room.title} in Kakadeo, Kanpur. Call or WhatsApp DiviStays directly.`
+  return `See ${room.galleryCount} photos of ${room.title} for rent at ${room.priceLabel} in Kakadeo, Kanpur. Check occupancy, kitchen, washroom, and current availability.`
 }

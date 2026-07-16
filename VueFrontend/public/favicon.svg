@@ -1,12 +1,17 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title desc">
   <title id="title">DiviStays</title>
-  <desc id="desc">Warm arched room icon with hanging lamp for DiviStays.</desc>
-  <path d="M14.5 53V30c0-10.7 8.8-19.5 19.5-19.5S53.5 19.3 53.5 30v23H14.5Z" fill="#d66c30" />
-  <path d="M16.5 51V39.2L34 26l17.5 13.2V51H16.5Z" fill="#f4ae45" />
-  <path d="M14.5 36.2V30c0-10.7 8.8-19.5 19.5-19.5S53.5 19.3 53.5 30v6.2c-5.5-4.8-12.1-7.2-19.5-7.2s-14 2.4-19.5 7.2Z" fill="rgba(105, 39, 24, 0.28)" />
-  <path d="M14.5 53V30c0-10.7 8.8-19.5 19.5-19.5S53.5 19.3 53.5 30v23H14.5Z" fill="none" stroke="#5f2b1f" stroke-linecap="round" stroke-linejoin="round" stroke-width="4.8" />
-  <path d="M34 12.4v9.3" fill="none" stroke="#5f2b1f" stroke-linecap="round" stroke-width="3.7" />
-  <path d="M24.3 30.6h19.4a9.7 9.7 0 0 0-9.7-8.5 9.7 9.7 0 0 0-9.7 8.5Z" fill="#5f2b1f" />
-  <circle cx="34" cy="35.9" r="5.2" fill="#ffe6a0" />
-  <path d="M34 42.7v6.1M26.3 40.7l-3.9 4.4M41.7 40.7l3.9 4.4M23.1 35.9h-5.5M50.4 35.9h-5.5" fill="none" stroke="#f7e1a2" stroke-linecap="round" stroke-width="3.1" />
+  <desc id="desc">Four-part architectural mark with a D-shaped opening for DiviStays.</desc>
+  <style>
+    .glyph { fill: #08161e; }
+
+    @media (prefers-color-scheme: dark) {
+      .glyph { fill: #fffaf2; }
+    }
+  </style>
+  <g class="glyph">
+    <path d="M4 4h27v13H18v14H4Z" />
+    <path d="M34 4h26v27H48.5C47.6 23.1 41.4 17 34 17Z" />
+    <path d="M4 34h14v15h13v11H4Z" />
+    <path d="M48.5 34H60v26H34V49c7.4 0 13.6-6.1 14.5-15Z" />
+  </g>
 </svg>

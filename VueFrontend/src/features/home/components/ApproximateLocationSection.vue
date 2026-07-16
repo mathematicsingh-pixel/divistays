@@ -19,61 +19,59 @@ const mapPreviewAlt = computed(() =>
   || 'Stylized approximate neighborhood map with a highlighted area pin.',
 )
 
-const mapHighlights = computed(() => [
-  props.site.locationShort,
-  'Google Maps area pin',
-  'Exact building shared on enquiry',
-])
+const kakadeoReasons = [
+  {
+    title: 'Coaching is local',
+    body: 'Kakadeo draws thousands of students to its entrance-exam institutes, so living here can cut the cross-city trip to class.',
+  },
+  {
+    title: 'The Metro is useful',
+    body: 'Nearby Rawatpur connects directly toward IIT Kanpur, Motijheel, the city centre and Kanpur Central.',
+  },
+  {
+    title: 'Check your actual route',
+    body: 'Use the area map to compare the room with your coaching centre, college or workplace before you arrange a visit.',
+  },
+]
 </script>
 
 <template>
   <section
     id="location"
-    class="section-shell"
+    class="section-shell location-section"
   >
     <div class="container location-shell">
-      <article class="location-stage surface-dark page-rise">
+      <article class="location-stage surface-dark">
         <div class="location-grid">
           <div class="location-copy">
-            <span class="label-upper label-pill location-eyebrow">Approximate location</span>
-            <h2>Check the area before you visit.</h2>
-            <p>
-              The map shows the wider Kakadeo area, not the exact building. We share the precise
-              pin once you shortlist a room or studio to discuss.
+            <span class="label-upper location-eyebrow">Rooms for rent in Kakadeo</span>
+            <h2>Why Kakadeo?</h2>
+            <p class="location-intro">
+              If your day revolves around classes and study, Kakadeo makes sense. It is one of
+              Kanpur's major coaching districts, with Rawatpur Metro nearby for longer journeys.
             </p>
 
-            <div class="location-highlights">
-              <span
-                v-for="item in mapHighlights"
-                :key="item"
-                class="chip location-chip"
+            <ol class="location-reasons">
+              <li
+                v-for="(reason, index) in kakadeoReasons"
+                :key="reason.title"
               >
-                {{ item }}
-              </span>
-            </div>
-
-            <div class="location-note">
-              <span class="label-upper label-pill">Area pin only</span>
-              <p>Useful for commute checks, nearby landmarks, and a quick feel for the area.</p>
-            </div>
+                <span class="location-reason-index">{{ String(index + 1).padStart(2, '0') }}</span>
+                <div>
+                  <h3>{{ reason.title }}</h3>
+                  <p>{{ reason.body }}</p>
+                </div>
+              </li>
+            </ol>
           </div>
 
           <a
-            class="surface-card location-map location-map-link page-rise-delay-1"
+            class="location-map-link"
             :href="mapOpenUrl"
             target="_blank"
             rel="noreferrer"
             :aria-label="`Open approximate ${site.name} location in Google Maps for ${site.locationLabel}`"
           >
-            <div class="location-map-head">
-              <div class="location-map-copy">
-                <span class="label-upper label-pill map-panel-eyebrow">Google Maps</span>
-                <p>{{ site.locationLabel }}</p>
-              </div>
-
-              <span class="location-map-badge">Approximate</span>
-            </div>
-
             <div class="location-frame">
               <img
                 class="location-map-image"
@@ -84,16 +82,16 @@ const mapHighlights = computed(() => [
                 loading="lazy"
                 decoding="async"
               >
-              <div class="location-map-overlay">
-                <span class="map-placeholder-kicker">Approximate area only</span>
-                <strong>Open in Google Maps</strong>
-                <small>Tap the card to check commute, coaching belt, and nearby landmarks.</small>
-              </div>
             </div>
 
-            <p class="location-map-note">
-              Area only. Exact pin shared once you shortlist a place.
-            </p>
+            <div class="location-map-caption">
+              <div>
+                <span class="label-upper">Plan from Kakadeo</span>
+                <p>See your route before you visit</p>
+                <small>Public map shows the neighbourhood. Exact pin shared after enquiry.</small>
+              </div>
+              <span class="location-map-action">Open Google Maps ↗</span>
+            </div>
           </a>
         </div>
       </article>
@@ -102,273 +100,185 @@ const mapHighlights = computed(() => [
 </template>
 
 <style scoped>
+.location-section {
+  padding-bottom: var(--section-space);
+}
+
 .location-shell {
   position: relative;
 }
 
 .location-stage {
-  position: relative;
   overflow: hidden;
-  padding: 1.15rem;
-}
-
-.location-stage::before {
-  position: absolute;
-  inset: auto auto -2.6rem -2rem;
-  width: 10rem;
-  height: 10rem;
-  border-radius: 999px;
-  background: radial-gradient(circle, rgba(255, 122, 26, 0.22), transparent 68%);
-  content: '';
-  pointer-events: none;
-}
-
-.location-stage::after {
-  position: absolute;
-  inset: 0;
-  background:
-    radial-gradient(circle at 100% 0%, rgba(121, 217, 202, 0.1), transparent 26%),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.04), transparent 34%);
-  content: '';
-  pointer-events: none;
+  padding: var(--space-lg);
 }
 
 .location-grid {
   display: grid;
-  gap: 1rem;
+  gap: var(--space-xl);
 }
 
 .location-copy {
-  position: relative;
   display: grid;
-  gap: 0.95rem;
+  align-content: start;
+  gap: var(--space-md);
 }
 
 .location-eyebrow {
-  border-color: rgba(255, 211, 142, 0.28);
-  background:
-    linear-gradient(180deg, rgba(255, 211, 142, 0.18), rgba(255, 211, 142, 0.06)),
-    rgba(255, 122, 26, 0.08);
-  color: #ffe0bc;
+  color: var(--muted-inverse);
 }
 
 .location-copy h2,
+.location-copy h3,
 .location-copy p {
-  position: relative;
   color: var(--text-inverse);
 }
 
-.location-copy p {
+.location-copy h2 {
+  max-width: 12ch;
+}
+
+.location-copy .location-intro {
   max-width: 32rem;
   color: var(--muted-inverse);
 }
 
-.location-highlights {
-  position: relative;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.55rem;
-}
-
-.location-chip {
-  border-color: var(--glass-stroke-light);
-  background: var(--glass-fill-light);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.1),
-    0 8px 18px rgba(0, 0, 0, 0.14);
-  color: var(--text-inverse);
-}
-
-.location-note {
-  position: relative;
+.location-reasons {
   display: grid;
-  gap: 0.55rem;
-  padding: 0.95rem;
-  border: 1px solid var(--glass-stroke-light);
-  border-radius: var(--radius-lg);
-  background: var(--glass-fill-light);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--line-inverse);
+  list-style: none;
 }
 
-.location-note .label-upper {
-  border-color: rgba(255, 211, 142, 0.2);
-  background: rgba(255, 211, 142, 0.12);
-  color: #fff0d4;
-}
-
-.location-map {
-  position: relative;
+.location-reasons li {
   display: grid;
-  align-content: start;
-  gap: 0.85rem;
-  padding: 0.95rem;
-  border: 1px solid rgba(121, 217, 202, 0.16);
-  background:
-    linear-gradient(180deg, rgba(249, 252, 255, 0.98), rgba(238, 246, 250, 0.96));
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.68),
-    0 24px 44px rgba(5, 14, 24, 0.22);
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: var(--space-md);
+  padding: var(--space-md) 0;
+  border-bottom: 1px solid var(--line-inverse);
+}
+
+.location-reason-index {
+  min-width: 1.75rem;
+  color: var(--accent);
+  font-size: var(--text-label);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  line-height: 1.5;
+}
+
+.location-reasons div {
+  display: grid;
+  gap: var(--space-xs);
+}
+
+.location-reasons h3 {
+  font-size: 1rem;
+}
+
+.location-reasons p {
+  color: var(--muted-inverse);
+  font-size: 0.875rem;
 }
 
 .location-map-link {
+  display: grid;
+  align-content: start;
+  gap: var(--space-md);
+  min-width: 0;
   text-decoration: none;
-  transition:
-    transform 0.18s ease,
-    box-shadow 0.18s ease,
-    border-color 0.18s ease;
-}
-
-.location-map-link:hover {
-  transform: translateY(-2px);
-  border-color: rgba(121, 217, 202, 0.24);
-  box-shadow:
-    inset 0 1px 0 rgba(255, 255, 255, 0.68),
-    0 30px 54px rgba(5, 14, 24, 0.26);
 }
 
 .location-map-link:focus-visible {
-  outline: 3px solid rgba(255, 122, 26, 0.28);
-  outline-offset: 4px;
-}
-
-.location-map-head {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 0.8rem;
-}
-
-.location-map-copy {
-  display: grid;
-  gap: 0.45rem;
-}
-
-.location-map-copy p {
-  color: var(--text-strong);
-  font-weight: 800;
-}
-
-.map-panel-eyebrow {
-  border-color: rgba(255, 122, 26, 0.18);
-  background: rgba(255, 122, 26, 0.08);
-  color: var(--accent-deep);
-}
-
-.location-map-badge {
-  display: inline-flex;
-  align-items: center;
-  min-height: 2.75rem;
-  padding: 0.42rem 0.78rem;
-  border: 1px solid rgba(11, 23, 32, 0.1);
-  border-radius: 999px;
-  background: rgba(11, 23, 32, 0.04);
-  color: var(--muted);
-  font-size: var(--text-label);
-  font-weight: 800;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  outline-color: var(--sun);
+  outline-offset: var(--space-sm);
 }
 
 .location-frame {
-  position: relative;
   overflow: hidden;
-  min-height: 17rem;
-  border: 1px solid rgba(11, 23, 32, 0.08);
-  border-radius: var(--radius-lg) var(--radius-lg) var(--radius-md) var(--radius-md);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
-}
-
-.location-map-image,
-.location-map-overlay {
-  width: 100%;
-  min-height: 17rem;
+  aspect-ratio: 4 / 3;
+  border: 1px solid var(--line-inverse);
+  border-radius: var(--radius-md);
 }
 
 .location-map-image {
   display: block;
   width: 100%;
   height: 100%;
-  min-height: 17rem;
   object-fit: cover;
-  transform: scale(1.01);
-  transition:
-    transform 0.22s ease,
-    filter 0.22s ease;
+  transition: transform 0.22s ease;
 }
 
-.location-map-link:hover .location-map-image,
-.location-map-link:focus-visible .location-map-image {
-  transform: scale(1.04);
-  filter: saturate(1.04) contrast(1.02);
-}
-
-.location-map-overlay {
-  position: absolute;
-  inset: 0;
+.location-map-caption {
   display: grid;
-  align-content: end;
-  gap: 0.45rem;
-  padding: 1.15rem;
-  background:
-    linear-gradient(180deg, rgba(7, 18, 26, 0.06), rgba(7, 18, 26, 0.16) 45%, rgba(7, 18, 26, 0.78)),
-    radial-gradient(circle at top right, rgba(121, 217, 202, 0.16), transparent 24%);
+  gap: var(--space-md);
   color: var(--text-inverse);
-  text-align: left;
 }
 
-.map-placeholder-kicker {
-  color: #fff0d4;
-  font-size: var(--text-label);
-  font-weight: 800;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
+.location-map-caption > div {
+  display: grid;
+  gap: var(--space-xs);
+  min-width: 0;
 }
 
-.location-map-overlay strong {
-  font-family: 'Syne', sans-serif;
-  font-size: clamp(1.55rem, 6vw, 2.35rem);
-  line-height: 0.98;
-  letter-spacing: -0.05em;
+.location-map-caption .label-upper {
+  color: var(--muted-inverse);
 }
 
-.location-map-overlay small {
-  max-width: 24rem;
-  color: rgba(236, 246, 252, 0.86);
-  font-size: var(--text-label);
+.location-map-caption p {
   font-weight: 700;
 }
 
-.location-map-note {
-  margin: 0;
-  color: var(--muted);
-  font-size: 0.92rem;
+.location-map-caption small {
+  max-width: 30rem;
+  color: var(--muted-inverse);
+  font-size: 0.75rem;
+  line-height: 1.5;
+}
+
+.location-map-action {
+  flex: 0 0 auto;
+  color: var(--accent);
+  font-size: 0.875rem;
+  font-weight: 700;
+}
+
+@media (hover: hover) {
+  .location-map-link:hover .location-map-image {
+    transform: scale(1.015);
+  }
+
+  .location-map-link:hover .location-map-action {
+    color: var(--text-inverse);
+  }
+}
+
+@media (min-width: 640px) {
+  .location-stage {
+    padding: var(--space-xl);
+  }
+
+  .location-frame {
+    aspect-ratio: 16 / 10;
+  }
+
+  .location-map-caption {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+  }
 }
 
 @media (min-width: 960px) {
   .location-grid {
-    grid-template-columns: minmax(0, 0.92fr) minmax(22rem, 0.88fr);
-    grid-template-areas: 'copy map';
-    align-items: stretch;
+    grid-template-columns: minmax(20rem, 0.9fr) minmax(24rem, 1.1fr);
+    align-items: center;
+    gap: var(--space-2xl);
   }
 
   .location-stage {
-    padding: 1.25rem;
-  }
-
-  .location-copy {
-    grid-area: copy;
-    padding: 0.2rem 0;
-  }
-
-  .location-map {
-    grid-area: map;
-    padding: 1rem;
-  }
-
-  .location-frame,
-  .location-map-image,
-  .location-map-overlay {
-    min-height: 21rem;
+    padding: var(--space-2xl);
   }
 }
 </style>

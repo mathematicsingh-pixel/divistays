@@ -1,420 +1,358 @@
 # UI Style Guide — DiviStays
 
-Source of truth for all visual decisions. Every agent and contributor must read this before making UI changes.
+Source of truth for visual and interaction decisions in `VueFrontend`.
 
 ---
 
-## 1. Brand & Design Intent
+## 1. Product direction
 
-DiviStays is a room and studio apartment rental site for Kakadeo, Kanpur. The interface must feel:
+DiviStays is a small, direct rental catalogue for Kakadeo, Kanpur. It should feel like a calm urban residence journal: considered, honest, and easy to act on.
 
-- **Premium but restrained** — quality through hierarchy and space, not decoration
-- **Room-first** — real imagery leads; copy supports
-- **Editorially clean** — clear typography, quiet surfaces, strong rhythm
-- **Trustworthy** — honest information density; no visual noise to distract from room details
+### Visual thesis
 
-The product is the rooms. The UI gets out of the way.
+**Urban garden rooms with night-time confidence.** Deep ink architecture, warm light content planes, solid orange actions, mint availability, and large real room photography. Quality comes from proportion, type, and restraint, with tightly bounded light around real actions.
+
+### Brand mark
+
+The DiviStays mark is a four-part architectural frame with a `D`-shaped opening cut through its centre. Use it in one colour only: deep ink on light surfaces and warm white on dark surfaces. Pair it with the Manrope wordmark; do not redraw it as a house, arch, lamp, key, or illustrated room.
+
+### Content thesis
+
+1. Show a real room and the essential proposition immediately.
+2. Put title, monthly rent, availability, occupancy, kitchen, and washroom before persuasion.
+3. Use concise, verifiable proof and location context.
+4. End with the visit process, FAQs, and one direct contact path.
+
+### Interaction thesis
+
+Use a stable responsive header, whole-card room navigation, staged mobile filters, explicit gallery controls, and one contextual mobile action tray. Motion explains entry or continuity only.
 
 ---
 
-## 2. Design Principles
+## 2. Principles
 
-1. **Show the room, not the UI.** Every layout choice should make room imagery and key facts more prominent, not the interface chrome.
-2. **One pattern, not many.** If two components look 80% the same, collapse them into one. Resist creating "just slightly different" variants.
-3. **Hierarchy before decoration.** Use size, weight, and spacing to create visual order. Avoid gradients, glows, and motion as hierarchy tools.
-4. **Mobile is the primary experience.** Design for a 375px viewport first. Desktop is the progressive enhancement.
-5. **Fewer tokens, enforced.** A small token set used everywhere beats a large token set used loosely.
+1. **The room is the interface.** Photography and decision facts outrank chrome.
+2. **Mobile is the primary product.** Start at 320–390px; enhance at larger widths.
+3. **One clear action.** Orange identifies the primary next step, not decoration.
+4. **Fewer containers.** A room card, toolbar, or overlay may need containment. General copy usually does not.
+5. **Information before aspiration.** No fake urgency, invented reviews, or vague luxury claims.
+6. **Stable beats clever.** Navigation, help, and contact stay predictable.
+7. **The system is finite.** Reuse the documented tokens and primitives; update this guide before adding one.
 
 ---
 
-## 3. Typography System
+## 3. Typography
 
-### Font families
-- **Display**: `'Syne', sans-serif` — only for h1 and h2 (page/section titles)
-- **Body**: `'Manrope', sans-serif` — everything else: h3, body text, labels, buttons, metadata
+### Families
+
+- **Display:** `'Syne', sans-serif` — `h1` and `h2` only.
+- **Body:** `'Manrope', sans-serif` — everything else.
 
 ### Scale
-| Role | Size | Weight | Font | Letter-spacing | Usage |
-|---|---|---|---|---|---|
-| Display XL | `clamp(2.5rem, 9vw, 5rem)` | 700 | Syne | -0.04em | h1: hero title |
-| Display | `clamp(1.8rem, 5vw, 3rem)` | 700 | Syne | -0.04em | h2: section titles |
-| Title | `1.125rem` | 700 | Manrope | -0.02em | h3: card titles, dialog titles |
-| Body | `1rem` | 400 | Manrope | normal | Paragraphs, descriptions |
-| Body small | `0.875rem` | 400–600 | Manrope | normal | Secondary text, summaries |
-| Label | `0.75rem` | 700 | Manrope | 0.06em, uppercase | Kickers, toolbar labels, group headings |
-| Meta | `0.8125rem` | 600 | Manrope | normal | Prices, facts, status text |
+
+| Role | Size | Weight | Notes |
+|---|---|---|---|
+| Display XL | `clamp(2.65rem, 11vw, 5.5rem)` | 700 | Page/hero `h1`; short lines |
+| Display | `clamp(2rem, 7vw, 3.75rem)` | 700 | Section `h2` |
+| Title | `1.125rem`–`1.35rem` | 700 | Manrope `h3` |
+| Lead | `clamp(1.05rem, 2vw, 1.25rem)` | 400–500 | Introductory copy |
+| Body | `1rem` | 400–500 | Default copy; never smaller on mobile |
+| Small | `0.875rem` | 500–700 | Secondary facts |
+| Label | `0.75rem` | 700 | Uppercase metadata only |
 
 ### Rules
-- **Syne is only for display.** Never use Syne below 1.8rem or for interactive elements.
-- **One heading weight.** All headings use 700. No 800 on headings.
-- **Labels are always uppercase.** If text is uppercase, use the label role. If it's not a label, don't uppercase it.
-- **No custom letter-spacing** outside the scale above.
+
+- Syne never appears on controls, metadata, prices, body text, or headings below `h2`.
+- Display line-height is `0.95–1.02`; body line-height is `1.55–1.7`.
+- Labels use `0.06em` letter spacing. Do not add other custom tracking.
+- The logo wordmark is the only exception: it uses a restrained `-0.04em` optical adjustment.
+- Keep paragraphs near `65ch` and allow layouts to reflow at 200% zoom.
 
 ---
 
-## 4. Color Roles & Tokens
-
-### Palette
+## 4. Color roles
 
 | Token | Value | Role |
 |---|---|---|
-| `--bg` | `#07121a` | Page background base |
-| `--bg-soft` | `#0d1c25` | Raised dark background |
-| `--text` | `#5d7180` | Default body text |
-| `--text-strong` | `#0b1720` | Headings, important text (light surfaces) |
-| `--text-inverse` | `#f7fbff` | Text on dark surfaces |
-| `--muted` | `#4d6171` | De-emphasized text (light surfaces) |
-| `--muted-inverse` | `rgba(236,246,252,0.82)` | De-emphasized text (dark surfaces) |
-| `--accent` | `#ff7a1a` | Action: buttons, CTAs |
-| `--accent-deep` | `#db6210` | Action hover/pressed state |
-| `--brand` | `#79d9ca` | Status: availability, success indicators |
-| `--brand-strong` | `#2ca18e` | Status text on light surfaces |
-| `--sun` | `#ffd38e` | Rare highlight: focus rings, special callouts |
-| `--line` | `rgba(11,23,32,0.12)` | Borders on light surfaces |
-| `--line-strong` | `rgba(11,23,32,0.2)` | Emphasized borders on light surfaces |
-
-### Color usage rules
-- **Orange (`--accent`)**: only for primary actions (buttons, links that are CTAs). Never for decoration or status.
-- **Mint (`--brand`)**: only for availability status, success states, the live-dot indicator. Never for buttons.
-- **Sun (`--sun`)**: only for focus-visible rings and very rare highlights (1–2 per page max). Never for text or backgrounds.
-- **No new accent colors.** If you need a new semantic color, update this guide first.
-
----
-
-## 5. Spacing Scale
-
-| Token | Value | Usage |
-|---|---|---|
-| `--space-xs` | `0.25rem` (4px) | Tight gaps inside chips/badges |
-| `--space-sm` | `0.5rem` (8px) | Small gaps, inline spacing |
-| `--space-md` | `1rem` (16px) | Standard gap, card padding |
-| `--space-lg` | `1.5rem` (24px) | Section gaps, generous padding |
-| `--space-xl` | `2rem` (32px) | Major section breaks |
+| `--bg` | `#08161e` | Ink header, hero, footer, overlays |
+| `--bg-soft` | `#102630` | Secondary dark plane |
+| `--canvas` | `#f2efe7` | Warm page background |
+| `--paper` | `#fffdf8` | Primary light surface |
+| `--paper-soft` | `#e8e5dd` | Recessed input/background |
+| `--text-strong` | `#101d24` | Primary text on light |
+| `--text` | `#40525b` | Body text on light |
+| `--muted` | `#68777e` | Secondary text on light |
+| `--text-inverse` | `#fffaf2` | Primary text on ink |
+| `--muted-inverse` | `#c8d2d2` | Secondary text on ink |
+| `--accent` | `#f47a2a` | Primary action only |
+| `--accent-deep` | `#c85416` | Action hover/text treatment |
+| `--brand` | `#7ed7c4` | Availability/success only |
+| `--brand-strong` | `#167d6d` | Availability text on light |
+| `--sun` | `#ffd38e` | Focus ring; rare highlight |
+| `--line` | `rgba(16,29,36,.14)` | Light-plane rules |
+| `--line-strong` | `rgba(16,29,36,.28)` | Emphasized rules |
+| `--line-inverse` | `rgba(255,250,242,.18)` | Ink-plane rules |
 
 ### Rules
-- Use only these tokens for gaps and padding. No magic numbers.
-- `--card-pad: var(--space-md)` is the standard card content padding.
-- Section-level vertical gaps use `--space-xl` or larger.
+
+- Orange is action. A primary button may cast a tight, static halo, and a whole-card link may reveal a thin orange edge. Do not use orange for badges, status, gradients, or ambient decoration.
+- Mint is availability/status. It is never a primary button color.
+- Sun is a focus color and appears rarely elsewhere.
+- Dark content planes are solid. No ambient glow fields, glass tints, or blur-heavy translucency.
 
 ---
 
-## 6. Radius & Shadow Scale
+## 5. Spacing and layout
 
-### Radius
+| Token | Value |
+|---|---|
+| `--space-xs` | `0.25rem` |
+| `--space-sm` | `0.5rem` |
+| `--space-md` | `1rem` |
+| `--space-lg` | `1.5rem` |
+| `--space-xl` | `2rem` |
+| `--space-2xl` | `3rem` |
+| `--section-space` | `clamp(4rem, 9vw, 7rem)` |
 
-| Token | Value | Usage |
-|---|---|---|
-| `--radius-lg` | `1.25rem` | Cards, panels, dialogs, sheets |
-| `--radius-md` | `0.75rem` | Chips, inputs, smaller cards |
-| `--radius-full` | `999px` | Badges, pills, circular buttons |
-
-### Shadows
-
-| Token | Value | Usage |
-|---|---|---|
-| `--shadow-sm` | `0 4px 12px rgba(0,0,0,0.08)` | Inputs, chips, subtle elevation |
-| `--shadow-md` | `0 12px 32px rgba(0,0,0,0.14)` | Cards, panels |
-| `--shadow-lg` | `0 20px 48px rgba(0,0,0,0.22)` | Overlays, modals, dark panels |
-
-### Rules
-- No inline shadow definitions in components. Use tokens only.
-- No inset shadows except in input focus states.
-- Shadows are reduced on mobile (`<960px`) via media query.
+- Mobile container: `calc(100% - 2rem)` with a 320px minimum viewport.
+- Desktop content maximum: `76rem`.
+- Use spacing tokens for padding and gaps. Section spacing uses `--section-space`.
+- Let compositions breathe; do not fill whitespace with badges or microcopy.
 
 ---
 
-## 7. Surface System
+## 6. Geometry and elevation
 
-Three depths only. Every visible panel maps to one of these.
+| Token | Value | Use |
+|---|---|---|
+| `--radius-lg` | `1rem` | Room cards, panels, sheets |
+| `--radius-md` | `0.625rem` | Inputs, buttons, small media |
+| `--radius-full` | `999px` | Status dots/badges and circular icon buttons only |
+| `--shadow-sm` | `0 1px 2px rgba(8,22,30,.08)` | Subtle control separation |
+| `--shadow-md` | `0 18px 48px rgba(8,22,30,.12)` | Elevated cards only |
+| `--shadow-lg` | `0 28px 80px rgba(0,0,0,.28)` | Overlays only |
+| `--shadow-action` | `0 8px 22px rgba(244,122,42,.18), 0 0 20px rgba(244,122,42,.14)` | Contextual `.action-glow` only |
+| `--shadow-action-hover` | `0 12px 28px rgba(244,122,42,.24), 0 0 26px rgba(244,122,42,.2)` | Pointer hover on `.action-glow` only |
+
+- Most sections use rules and spacing, not shadows.
+- No locally invented radii or shadows.
+- A rounded rectangle is not automatically a pill. Controls use `--radius-md`.
+
+### Architectural brand glyph
+
+`.brand-glyph-motif` repeats the four-part DiviStays symbol as a low-contrast silhouette. It may appear once in the dark hero and once in the final dark enquiry panel. Keep it behind content, never put copy inside it, and use only `--line-inverse`. It is not a surface and never receives orange, glow, or additional detail.
+
+---
+
+## 7. Surface primitives
+
+Only these surface classes are allowed.
 
 ### `.surface-card`
-Light elevated surface for content cards, toolbars, dialog panels.
-```css
-border: 1px solid var(--line);
-border-radius: var(--radius-lg);
-background: rgba(248, 252, 255, 0.92);
-box-shadow: var(--shadow-md);
-```
+
+Warm, elevated surface for a selectable room card, toolbar, dialog, or contact panel. Solid `--paper`, one `--line` border, optional `--shadow-md`.
 
 ### `.surface-input`
-Recessed surface for inputs, filter groups, and interactive chip areas.
-```css
-border: 1px solid var(--line);
-border-radius: var(--radius-md);
-background: rgba(248, 252, 255, 0.85);
-box-shadow: var(--shadow-sm);
-```
+
+Recessed solid plane for form controls and filter groups. `--paper-soft`, one `--line` border, `--radius-md`, and no decorative shadow.
 
 ### `.surface-dark`
-Dark elevated surface for dark-on-dark panels (footer cards, nav bar).
-```css
-border: 1px solid rgba(255, 255, 255, 0.1);
-border-radius: var(--radius-lg);
-background: rgba(10, 24, 34, 0.92);
-box-shadow: var(--shadow-lg);
-```
+
+Solid `--bg-soft` panel on ink. One `--line-inverse` border. No gradient, glow, or backdrop blur.
 
 ### `.overlay-backdrop`
-Full-screen overlay behind modals and sheets.
-```css
-background: rgba(7, 18, 26, 0.6);
-```
+
+`rgba(8,22,30,.72)` behind sheets and dialogs. A small desktop blur is optional; mobile stays solid.
 
 ### Rules
-- No backdrop-filter on mobile (`<960px`). Use solid fallbacks.
-- No stacking surfaces (`surface-card` inside `surface-card`). Use `surface-input` for inner recessed areas.
-- Dark surfaces use `--text-inverse` and `--muted-inverse` text colors.
+
+- Never stack `surface-card` inside `surface-card`.
+- Trust, process, FAQ, and generic copy sections remain open layouts.
+- No new surface classes.
 
 ---
 
-## 8. Button Variants
+## 8. Buttons, links, chips, and labels
 
-Three only.
+### Buttons
 
-| Class | Background | Text | Border | Usage |
-|---|---|---|---|---|
-| `.button-primary` | `--accent` gradient | `--bg` (dark) | none | Primary CTA per section |
-| `.button-secondary` | `surface-input` fill | `--text-strong` | `--line` | Secondary action |
-| `.button-tertiary` | transparent | `--text-inverse` | transparent | Tertiary action on dark surfaces |
+- `.button-primary`: solid `--accent`, ink text, and `--radius-md`.
+- `.button-primary.action-glow`: uses `--shadow-action` for the single contextual conversion action. Do not apply it to the header, filters, empty states, or other utility actions.
+- `.button-secondary`: transparent or `--paper`, strong text, one rule.
+- `.button-tertiary`: text action with no container.
+- Minimum target: 44×44px; standard button height: 3.25rem.
+- At most one orange primary action in a visible viewport.
+- Hover may shift `translateY(-1px)`; `.action-glow` may also use `--shadow-action-hover` on pointer devices. Press uses `scale(.98)`.
 
-### Rules
-- Max one `.button-primary` per visible viewport.
-- All buttons: `border-radius: var(--radius-full)`, `min-height: 3rem`, `font-weight: 700`.
-- Hover: `translateY(-1px)` on pointer devices. Active: `scale(0.98)`.
-- No shimmer, shine, or glow animations on buttons.
+### `.chip`
 
----
+Interactive filter or home room-preview toggle only. Rounded rectangle, not a capsule. Active uses a quiet mint status tint on light surfaces; the home switcher may use solid mint with ink text on the hero. Always use `aria-pressed`.
 
-## 9. Chip / Badge / Status Rules
+### `.label-upper`
 
-### `.chip` — interactive filter toggle
-- Used in catalog toolbar and filter sheet.
-- `border-radius: var(--radius-md)`, `min-height: 2.5rem`.
-- Default: `surface-input` styling. Active: mint tint border + background.
-- Has hover and active states.
+Text-only uppercase metadata. No border, fill, or pill treatment.
 
-### `.badge` — non-interactive indicator
-- Used for room reference ID, "Featured" flag.
-- `border-radius: var(--radius-full)`, small padding.
-- Comes in two variants: light (on cards) and inverse (on images).
+### Badges and status
 
-### `.label-upper` — uppercase metadata label
-- Replaces: eyebrow, kicker, toolbar-label, section-kicker, group-label.
-- `font-size: var(--text-label)`, `font-weight: 700`, `letter-spacing: 0.06em`, `text-transform: uppercase`.
-- Just text styling — no border, no background, no pill shape.
-
-### What NOT to create
-- No new pill variants.
-- No new chip shapes.
-- No new badge colors.
-- If you think you need a new variant, update this guide first.
+Room reference and availability may use the existing badge pattern. Keep them small, factual, and non-interactive. “Room ID” and its two-digit code remain on one unbroken line. Do not create new variants.
 
 ---
 
-## 10. Card Templates
+## 9. Responsive header and mobile action tray
 
-### Room card (`.room-card`)
-Vertical stack: image → body (title, price + status, summary, CTA).
+### Header
 
-Content rules:
-- Image: `aspect-ratio: 5/4`, full-width.
-- Title: h3 (Manrope 700).
-- Price + availability: one line, meta weight.
-- Summary: 2-line clamp, muted text.
-- CTA: one `.button-primary`.
-- Max 5 information items visible. Details go to the room page.
+- One real header on every route.
+- Sticky, solid ink, and 56–64px tall.
+- Mobile exposes Home/Rooms and one direct help action without a hidden focusable menu.
+- Desktop shows Home, Rooms, Location, FAQs, and one contact action in a stable order.
+- Below the 960px desktop-navigation breakpoint, do not repeat exposed Home/Rooms links in a second breadcrumb strip. Catalogue and room content follow the header directly.
+- Deep-page breadcrumbs return with desktop navigation at 960px and above.
+- Include a skip link that targets the page `main` landmark.
 
-### Featured card (hero)
-Same structure as room card but larger, with optional badge overlay on image.
+### Mobile action tray
 
----
-
-## 11. Modal / Sheet / Drawer Rules
-
-### Sheet (mobile-first)
-- Anchored to bottom on mobile. Centered on desktop.
-- Max height: `92svh`. Has header, scrollable body, sticky actions.
-- Uses `overlay-backdrop` + `surface-card` for the panel.
-- Single transition: opacity fade (0.15s).
-- Close button: icon circle in header.
-
-### Dialog (quick preview)
-- Same overlay pattern as sheet.
-- Anchored to bottom on mobile, centered on desktop.
-- Uses `surface-card` for the panel.
-- Keep lightweight. If it grows too complex, link to the full page instead.
-
-### Rules
-- No backdrop-filter on mobile (performance).
-- Always trap focus inside the dialog.
-- Always provide an accessible close button + backdrop click-to-close.
-- `z-index: 50` for sheets, `z-index: 70` for dialogs.
+- One tray only, positioned consistently and safe-area aware.
+- It may show filters/results on the catalogue or room/price context on detail.
+- Primary room-detail action is WhatsApp with a room-specific prefilled message; call is secondary.
+- Add page scroll padding so the tray never obscures focused content.
+- Hide it while a sheet/dialog or on-screen keyboard is open.
 
 ---
 
-## 12. Mobile Navigation Rules
+## 10. Room card
 
-### MobileSectionNav
-- Fixed top bar on mobile. Hidden on desktop (≥960px).
-- Shows on scroll-up, hides on scroll-down.
-- Accepts a `context` prop to control which items appear.
-- Uses `surface-dark` styling.
-- Links use label typography, pill shape.
-
-### Rules
-- The nav should show context-relevant links, not a global sitemap.
-- On the home page: section anchors. On the catalog page: section anchors.
-- Max 4–5 items to avoid horizontal overflow.
+- The whole card is one clear navigation target.
+- Image ratio: `4 / 3`; image is the dominant area.
+- Visible information order: title → price/status → occupancy, kitchen, washroom.
+- Summary may be one short line where space allows.
+- No repeated orange “View room” button and no quick-preview button on every card.
+- Desktop: three columns where space permits. Tablet: two. Mobile: one or a deliberate horizontal discovery rail on home.
 
 ---
 
-## 13. Page Composition Rules
+## 11. Catalogue and filters
 
-### Home page
-1. Hero: headline + featured room + CTA. Room image has visual weight.
-2. Available rooms: section heading + room card grid.
-3. Trust/proof: section heading + cards (max 4).
-4. Process: section heading + steps.
-5. FAQ: section heading + accordion.
-6. CTA banner: simple call-to-action.
-
-### Catalog page
-1. Section heading with summary.
-2. Toolbar: result count, availability filter, sort, advanced filter trigger.
-3. Results grid.
-4. Filter sheet (mobile) / filter panel (desktop).
-
-### Room detail page
-1. Showcase: image stage + thumbnail rail.
-2. Details: title, price, availability, room facts, description, included items.
-3. CTA: contact actions.
-4. Similar rooms (if any).
+- Catalogue begins with a real `h1`, short orientation, result count, and compact controls.
+- Only decision-making filters: availability, budget, occupancy, kitchen, washroom; plus sort.
+- Mobile filters open in a bottom sheet and remain local until “Show rooms.”
+- Show selected filters plainly and keep “Clear” visible.
+- Do not add a map for this small inventory.
 
 ---
 
-## 14. Motion Rules
+## 12. Room detail and gallery
 
-Animations are a core part of the DiviStays identity. Keep them.
-
-### Existing animations (preserve all)
-- `page-rise`: entrance stagger for section content.
-- `hero-shimmer`: brand-line text shimmer.
-- `hero-orbit`: decorative circle rotation on hero.
-- `hero-glow-pulse`: warm glow pulse on hero.
-- `hero-live-pulse`: availability dot pulse.
-- `hero-btn-shine`: CTA button shine sweep.
-- `hero-call-ring` / `hero-call-dot`: phone call ring animation.
-- `ticker` / `footer-room-ticker`: horizontal marquee for overflow content.
-- Hover `translateY(-1px)` on interactive cards/buttons (pointer devices only).
-- Active `scale(0.98)` press feedback.
-- Opacity fade (0.15s) for modals/sheets.
-
-### Rules for new animations
-- Keep animations purposeful — they should draw attention to interactive or live-status elements.
-- Prefer CSS keyframes over JS-driven animation.
-- Always gate hover effects behind `@media (hover: hover)`.
-- Infinite loops are fine for status indicators and tickers. Keep durations relaxed (>2s).
-
-### Reduced motion
-Always respect `prefers-reduced-motion: reduce`. All animations and transitions must disable instantly via the global media query.
+- Gallery comes first on mobile. The first image is eager and high priority.
+- Show an explicit count and an over-image “View full screen” control.
+- Swipe/drag always has tap-button alternatives.
+- The fullscreen viewer occupies the entire dynamic viewport at every breakpoint. It uses an opaque ink canvas, contained photography, a sparse header/footer, and safe-area padding.
+- The fullscreen viewer traps focus, closes with Escape or its close control, restores the opener, and supports arrow keys.
+- Put title, monthly price, availability, occupancy, kitchen, and washroom directly after the gallery.
+- Use open definition rows and rules instead of cards within cards.
+- Walkthrough video remains click-to-load.
 
 ---
 
-## 15. Accessibility Rules
+## 13. Page composition
 
-- **Focus visible**: `outline: 2px solid var(--sun); outline-offset: 3px` on all interactive elements.
-- **Color contrast**: text on surfaces must meet WCAG AA (4.5:1 for body, 3:1 for large text).
-- **Touch targets**: minimum 44×44px tap area on mobile.
-- **Screen reader**: `.sr-only` class for visually hidden but accessible text.
-- **Modals**: focus trap, `aria-modal="true"`, `role="dialog"`, `aria-labelledby`.
-- **Interactive chips**: `aria-pressed` for toggles.
-- **Images**: always provide `alt` text.
+### Home room preview switcher
+
+- The opening interaction previews exactly four real current listings: the visual lead, lowest monthly rent, private-kitchen setup, and higher-occupancy setup. It is not a quiz, filter, or recommendation engine.
+- Each control label comes directly from its listing, such as monthly rent, kitchen type, or occupancy. A “Lowest” label must be recalculated from current available-room data. Do not use unqualified relative claims such as “more,” “best,” or “ideal.”
+- Each choice immediately updates its photograph, room ID, monthly rent, availability, and setup.
+- Keep a concise, live “Now showing” result directly under the controls. A change must remain visible even when the full room preview is below the viewport.
+- Curate the default first listing for the strongest real photograph, while keeping its control label factual and avoiding “best” or “prettiest” claims.
+- Use `aria-pressed` buttons inside a labelled group. Never auto-advance the selected room.
+- The selected room is one whole navigation target. Only its default photograph is eager and high priority; below-fold room cards remain lazy.
+- Room changes use one brief opacity/translation transition and respect reduced motion.
+
+### Home
+
+1. Compact header.
+2. Concise proposition, four factual room samples, and one responsive real-room preview.
+3. Three representative available rooms and a link to all rooms.
+4. Factual proof and approximate location.
+5. Three-step visit path.
+6. FAQs and direct contact.
+
+### Catalogue
+
+1. Header and `h1` orientation.
+2. Compact result/filter/sort controls.
+3. Room grid.
+4. Mobile filter sheet / desktop inline filters.
+
+### Detail
+
+1. Gallery and key facts on mobile; desktop adds breadcrumb context first.
+2. Included items, visit notes, optional walkthrough.
+3. One direct contact path.
+4. Similar rooms.
 
 ---
 
-## 16. Do / Don't
+## 14. Motion
+
+Allowed motion:
+
+- One composed page/hero entrance using opacity and transform.
+- Gallery, sheet, and dialog continuity.
+- Brief hover/press feedback.
+- A restrained live availability pulse.
+- A brief forward-arrow or interactive-edge reveal on whole-card links.
+
+Retired motion:
+
+- Hero shimmer, orbit, ambient glow pulse, button shine, call rings.
+- Automatic amenity or room tickers.
+- Decorative infinite loops, parallax, scroll-jacking, and cursor followers.
+
+Motion is brief, cancellable, and disabled by `prefers-reduced-motion`. Animate `transform` and `opacity`, not layout.
+
+---
+
+## 15. Accessibility and performance floor
+
+- Work without horizontal page scrolling at 320px.
+- Touch targets are at least 44×44px.
+- Body text contrast is 4.5:1; large text and UI boundaries are at least 3:1.
+- Every interactive element receives a visible 2px `--sun` focus ring.
+- Focus must not be obscured by sticky chrome.
+- Closed menus contain no focusable controls.
+- Dialogs trap focus and restore it on close.
+- All images have dimensions and useful alt text; decorative images use empty alt.
+- The hero/LCP image is HTML-discoverable, eager, and `fetchpriority="high"`.
+- Below-fold media is lazy. Video is click-to-load.
+- Target Core Web Vitals at the 75th percentile: LCP ≤2.5s, INP ≤200ms, CLS ≤0.1.
+
+---
+
+## 16. Do / do not
 
 ### Do
-- Use `surface-card` for elevated content areas.
-- Use `label-upper` for uppercase metadata text.
-- Use `--accent` for the primary CTA only.
-- Use `--brand` for availability/status only.
-- Use spacing tokens for all gaps and padding.
-- Compose global primitives — don't redefine them locally.
 
-### Don't
-- Don't create a new surface class. Use the 3 that exist.
-- Don't use Syne for anything smaller than a section heading.
-- Don't add a new pill/chip/badge variant. Collapse into existing ones.
-- Don't use `--accent` for status indicators or `--brand` for buttons.
-- Don't define shadows inline. Use `--shadow-sm`, `--shadow-md`, `--shadow-lg`.
-- Don't add new infinite-loop animations without documenting them in the style guide first.
-- Don't use `backdrop-filter` on mobile.
-- Don't stack surfaces (`surface-card` inside `surface-card`).
+- Lead with real photography and specific facts.
+- Use solid color planes, rules, and meaningful whitespace.
+- Keep contact and help locations consistent.
+- Use semantic headings, landmarks, lists, and native disclosures.
+- Keep files below roughly 600 lines by splitting responsibilities.
 
-### Examples from this repo
+### Do not
 
-**Before** (too many pills):
-```html
-<span class="eyebrow hero-eyebrow hero-top-note">Available now</span>
-<p class="room-kicker">{{ room.highlightLabel }}</p>
-<span class="featured-badge">Featured</span>
-```
-
-**After** (one label pattern):
-```html
-<span class="label-upper">Available now</span>
-<p class="label-upper" style="color: var(--accent-deep)">{{ room.highlightLabel }}</p>
-<span class="badge badge-highlight">Featured</span>
-```
-
-**Before** (stacked surface classes):
-```html
-<article class="room-card surface-panel surface-soft-panel">
-```
-
-**After** (one surface):
-```html
-<article class="room-card surface-card">
-```
+- Add glass cards, ambient glow fields, button gradients, bento mosaics, or pill soup.
+- Put a card around every paragraph.
+- Use orange decoratively or mint as an action.
+- Add fake scarcity, visitor counts, reviews, or live claims.
+- Stack fixed chat bubbles over the action tray.
+- hide essential information behind animation or client-only interaction.
 
 ---
 
-## 17. How to Add a New UI Pattern
+## 17. Adding a pattern
 
-1. Check this guide first. Does an existing pattern cover your need?
-2. If yes, use it. Compose existing primitives.
-3. If no, **update this guide first** with the new pattern, including:
-   - Name and purpose
-   - Token values (use existing tokens)
-   - Do/don't rules
-   - Which pages it appears on
-4. Get the guide change reviewed alongside the implementation.
-5. Add the primitive to `src/app/style.css` if it's reusable.
-6. Never define a new shadow, radius, or color outside the token system.
-
----
-
-## 18. Migration Map
-
-| Old class / token | New canonical | Action |
-|---|---|---|
-| `.surface-panel` | `.surface-card` | Alias kept; prefer new name |
-| `.surface-paper-panel` | `.surface-card` | Alias kept; prefer new name |
-| `.surface-soft-panel` | `.surface-card` | Alias kept; prefer new name |
-| `.glass-panel` | `.surface-card` | Alias kept; prefer new name |
-| `.glass-panel-dark` | `.surface-dark` | Alias kept; prefer new name |
-| `.surface-field-panel` | `.surface-input` | Alias kept; prefer new name |
-| `.glass-chip` | `.surface-input` | Alias kept; prefer new name |
-| `.glass-overlay` | `.overlay-backdrop` | Alias kept; prefer new name |
-| `.surface-dark-shell` | `.surface-dark` | Alias kept; prefer new name |
-| `.eyebrow` | `.label-upper` (text only) | Alias kept; prefer new name |
-| `.signal-pill` | `.label-upper` | Alias kept |
-| `.soft-chip` | `.chip` | Alias kept |
-| `--radius-xl` | `--radius-lg` | Value tightened |
-| `--radius-sheet` | `--radius-lg` | Removed (use --radius-lg) |
-| `--glass-shadow` | `--shadow-md` | Alias kept |
-| `--shadow-paper` | `--shadow-md` | Alias kept |
-| `--shadow-dark` | `--shadow-lg` | Alias kept |
-| `--shadow-field` | `--shadow-sm` | Alias kept |
-| `--shadow-chip` | `--shadow-sm` | Alias kept |
+1. Check whether an existing primitive covers it.
+2. Prefer composition over a new variant.
+3. If genuinely new, update this guide first with its purpose, tokens, pages, and constraints.
+4. Add reusable CSS to `src/app/style.css` only.
+5. Review the guide and implementation together.
