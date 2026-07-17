@@ -3,6 +3,7 @@ import { constants } from 'node:fs'
 import { access, mkdir, stat } from 'node:fs/promises'
 import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import ffmpegPath from 'ffmpeg-static'
 import sharp from 'sharp'
 import { loadRoomSourceCatalog } from './lib/load-room-content.mjs'
 
@@ -11,6 +12,7 @@ const rootDir = resolve(scriptDir, '..')
 const mediaDir = resolve(rootDir, 'public/media/rooms')
 const imageWidths = [480, 960, 1440]
 const videoScaleFilter = "scale=w='min(1280,iw)':h=-2"
+const ffmpegCommand = ffmpegPath
 
 async function exists(filePath) {
   try {
@@ -83,7 +85,7 @@ async function buildImageVariants(room, media) {
 
 function runFfmpeg(args) {
   return new Promise((resolveRun, rejectRun) => {
-    const child = spawn('ffmpeg', args, { stdio: 'ignore' })
+    const child = spawn(ffmpegCommand, args, { stdio: 'ignore' })
 
     child.on('error', rejectRun)
     child.on('close', (code) => {
@@ -133,7 +135,7 @@ async function buildVideoAssets(room, video) {
   const posterReady = videoReady && await isFresh(posterTarget, videoStats.mtimeMs)
 
   if (!videoReady || !posterReady) {
-    await ensureCommand('ffmpeg')
+    await ensureCommand(ffmpegCommand)
   }
 
   if (!videoReady) {
