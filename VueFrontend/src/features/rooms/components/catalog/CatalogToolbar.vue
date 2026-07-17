@@ -1,4 +1,5 @@
 <script setup>
+import { computed } from 'vue'
 import CatalogFilterSheet from '@/features/rooms/components/catalog/CatalogFilterSheet.vue'
 import CatalogFiltersDesktop from '@/features/rooms/components/catalog/CatalogFiltersDesktop.vue'
 import { siteConfig } from '@/features/site/config/site'
@@ -21,11 +22,10 @@ const props = defineProps({
   isSheetOpen: { type: Boolean, required: true },
   isDesktopFiltersOpen: { type: Boolean, required: true },
   resultLabel: { type: String, required: true },
-  toolbarNote: { type: String, required: true },
-  resultCount: { type: Number, required: true },
 })
 
 const emit = defineEmits(['update:sheet-open', 'toggle-desktop-filters'])
+const hasUnavailableRooms = computed(() => props.allRooms.some((room) => !room.available))
 
 function applyDraft(draft) {
   props.actions.applyFilters(draft)
@@ -38,12 +38,30 @@ function applyDraft(draft) {
     <div class="toolbar-main">
       <div class="toolbar-copy">
         <strong>{{ resultLabel }}</strong>
-        <span>{{ toolbarNote }}</span>
+      </div>
+
+      <div
+        v-if="hasUnavailableRooms"
+        class="availability-row"
+        role="group"
+        aria-label="Availability"
+      >
+        <button
+          v-for="item in availabilityOptions"
+          :key="item.value"
+          type="button"
+          class="chip"
+          :class="{ active: filters.availability === item.value }"
+          :aria-pressed="filters.availability === item.value"
+          @click="actions.setAvailability(item.value)"
+        >
+          {{ item.label }}
+        </button>
       </div>
 
       <div class="toolbar-actions">
         <label class="sort-control">
-          <span class="sr-only">Sort rooms</span>
+          <span class="sort-label">Sort</span>
           <select
             :value="filters.sort"
             aria-label="Sort rooms"
@@ -63,11 +81,12 @@ function applyDraft(draft) {
           type="button"
           class="filter-button"
           :aria-expanded="isDesktopFiltersOpen"
+          :aria-label="isDesktopFiltersOpen ? 'Hide filters' : 'Open filters'"
           aria-controls="catalog-filter-panel"
           @click="emit('toggle-desktop-filters')"
         >
-          Filters
-          <span v-if="advancedFilterCount">{{ advancedFilterCount }}</span>
+          {{ isDesktopFiltersOpen ? 'Hide filters' : 'Filters' }}
+          <span v-if="advancedFilterCount" class="filter-count">{{ advancedFilterCount }}</span>
         </button>
 
         <button
@@ -78,27 +97,9 @@ function applyDraft(draft) {
           @click="emit('update:sheet-open', true)"
         >
           Filters
-          <span v-if="advancedFilterCount">{{ advancedFilterCount }}</span>
+          <span v-if="advancedFilterCount" class="filter-count">{{ advancedFilterCount }}</span>
         </button>
       </div>
-    </div>
-
-    <div
-      class="availability-row"
-      role="group"
-      aria-label="Availability"
-    >
-      <button
-        v-for="item in availabilityOptions"
-        :key="item.value"
-        type="button"
-        class="chip"
-        :class="{ active: filters.availability === item.value }"
-        :aria-pressed="filters.availability === item.value"
-        @click="actions.setAvailability(item.value)"
-      >
-        {{ item.label }}
-      </button>
     </div>
 
     <Transition name="filter-panel">
@@ -154,20 +155,23 @@ function applyDraft(draft) {
 <style scoped>
 .catalog-toolbar {
   display: grid;
-  gap: var(--space-md);
+  gap: var(--space-sm);
   padding: var(--space-md);
   box-shadow: var(--shadow-sm);
 }
 
 .toolbar-main {
-  display: flex;
+  display: grid;
+  grid-template-areas:
+    'copy actions'
+    'availability availability';
+  grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
-  justify-content: space-between;
   gap: var(--space-sm);
 }
 
 .toolbar-copy {
-  display: grid;
+  grid-area: copy;
   min-width: 0;
 }
 
@@ -176,13 +180,8 @@ function applyDraft(draft) {
   font-size: 1.0625rem;
 }
 
-.toolbar-copy span {
-  display: none;
-  color: var(--muted);
-  font-size: 0.8125rem;
-}
-
 .toolbar-actions {
+  grid-area: actions;
   display: flex;
   align-items: center;
   gap: var(--space-sm);
@@ -196,6 +195,14 @@ function applyDraft(draft) {
 
 .sort-control {
   display: none;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.sort-label {
+  color: var(--muted);
+  font-size: 0.8125rem;
+  font-weight: 700;
 }
 
 .sort-control select,
@@ -219,7 +226,7 @@ function applyDraft(draft) {
   padding: 0 var(--space-md);
 }
 
-.filter-button span {
+.filter-count {
   display: inline-grid;
   place-items: center;
   min-width: 1.35rem;
@@ -235,9 +242,9 @@ function applyDraft(draft) {
 }
 
 .availability-row {
+  grid-area: availability;
   display: flex;
   gap: var(--space-sm);
-  padding-bottom: var(--space-xs);
   overflow-x: auto;
   scrollbar-width: none;
 }
@@ -293,20 +300,25 @@ function applyDraft(draft) {
 }
 
 @media (min-width: 760px) {
-  .toolbar-copy span {
-    display: block;
-  }
-
   .sort-control {
-    display: block;
+    display: flex;
   }
 }
 
 @media (min-width: 960px) {
   .catalog-toolbar {
-    position: sticky;
-    top: 4.5rem;
-    z-index: 15;
+    padding: var(--space-sm) var(--space-md);
+  }
+
+  .toolbar-main {
+    grid-template-areas: 'copy availability actions';
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    gap: var(--space-lg);
+  }
+
+  .availability-row {
+    justify-self: start;
+    overflow: visible;
   }
 
   .filter-button {

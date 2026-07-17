@@ -17,7 +17,7 @@ That single room file now drives:
 - room detail loading
 - generated room routes
 - filter options and room counts
-- footer room ticker input
+- footer room register input
 - sitemap input
 - media build input
 

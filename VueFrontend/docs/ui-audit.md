@@ -67,7 +67,7 @@ Retired:
 ### Navigation and conversion
 
 - One real sticky header serves every route.
-- Mobile exposes Home, Rooms, and Call without a hidden drawer.
+- Mobile exposes Home, Rooms, and an orange Contact action that opens Call and WhatsApp without a hidden drawer.
 - Desktop keeps Home, Rooms, Location, FAQs, and Call in a stable order.
 - Redundant breadcrumb strips stay out of mobile and tablet layouts; catalogue and room content begin immediately below the primary header.
 - A skip link moves both scroll position and keyboard focus to the focusable `#main-content` landmark.

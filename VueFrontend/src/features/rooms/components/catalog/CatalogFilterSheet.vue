@@ -32,6 +32,7 @@ function createDraft(filters) {
 }
 
 const draft = ref(createDraft(props.filters))
+const hasUnavailableRooms = computed(() => props.allRooms.some((room) => !room.available))
 
 const groups = computed(() => [
   { key: 'occupancy', label: 'Occupancy', options: props.occupancyOptions },
@@ -112,7 +113,10 @@ useOverlayDialog({
           </header>
 
           <div class="sheet-body">
-            <fieldset class="sheet-group">
+            <fieldset
+              v-if="hasUnavailableRooms"
+              class="sheet-group"
+            >
               <legend>Availability</legend>
               <div class="chip-row">
                 <button

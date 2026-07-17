@@ -1,16 +1,50 @@
 import { getRoomPath } from '../../src/features/rooms/model/room-record.js'
+import { buildImagePath } from '../../src/features/rooms/media.js'
 
 const routePathPattern = /^\/(?:[a-z0-9]+(?:-[a-z0-9]+)*(?:\/[a-z0-9]+(?:-[a-z0-9]+)*)*)?$/
+const isoDatePattern = /^\d{4}-\d{2}-\d{2}$/
+
+function normalizeDate(value, label) {
+  if (typeof value !== 'string' || !isoDatePattern.test(value)) {
+    throw new Error(`${label} must be an ISO date in YYYY-MM-DD format.`)
+  }
+
+  const parsedDate = new Date(`${value}T00:00:00Z`)
+
+  if (Number.isNaN(parsedDate.valueOf()) || parsedDate.toISOString().slice(0, 10) !== value) {
+    throw new Error(`${label} is not a valid calendar date: ${value}`)
+  }
+
+  return value
+}
+
+function latestDate(values) {
+  return [...values].sort().at(-1)
+}
+
+function getRoomLastmod(room) {
+  return latestDate([
+    normalizeDate(room.updatedAt, `${room.slug}.updatedAt`),
+    normalizeDate(room.availabilityUpdatedAt, `${room.slug}.availabilityUpdatedAt`),
+  ])
+}
 
 export function buildSeoPages(roomCatalog) {
+  const roomPages = roomCatalog.map((room) => ({
+    path: getRoomPath(room.slug),
+    lastmod: getRoomLastmod(room),
+    images: room.gallery.map((media) => buildImagePath(room.slug, media.key, 1440, 'jpg')),
+  }))
+  const catalogLastmod = latestDate(roomPages.map((page) => page.lastmod))
+  const coverImages = roomPages.map((page) => page.images[0]).filter(Boolean)
+  const availableCoverImages = roomCatalog
+    .filter((room) => room.available)
+    .map((room) => buildImagePath(room.slug, room.gallery[0].key, 1440, 'jpg'))
+
   return [
-    { path: '/', changefreq: 'weekly', priority: '1.0' },
-    { path: '/rooms', changefreq: 'weekly', priority: '0.9' },
-    ...roomCatalog.map((room) => ({
-      path: getRoomPath(room.slug),
-      changefreq: 'weekly',
-      priority: room.available ? '0.85' : '0.7',
-    })),
+    { path: '/', lastmod: catalogLastmod, images: availableCoverImages },
+    { path: '/rooms', lastmod: catalogLastmod, images: coverImages },
+    ...roomPages,
   ]
 }
 
@@ -24,6 +58,16 @@ export function validateSeoPages(pages) {
 
     if (paths.has(page.path)) {
       throw new Error(`Duplicate SEO route path: ${page.path}`)
+    }
+
+    normalizeDate(page.lastmod, `${page.path}.lastmod`)
+
+    if (!Array.isArray(page.images) || page.images.some((imagePath) => !imagePath.startsWith('/'))) {
+      throw new Error(`Invalid SEO image list for ${page.path}`)
+    }
+
+    if (page.images.length !== new Set(page.images).size) {
+      throw new Error(`Duplicate SEO image path for ${page.path}`)
     }
 
     paths.add(page.path)

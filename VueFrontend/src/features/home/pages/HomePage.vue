@@ -1,5 +1,5 @@
 <script setup>
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { useHead, useSeoMeta } from '@unhead/vue'
 import ApproximateLocationSection from '@/features/home/components/ApproximateLocationSection.vue'
 import AvailableRoomsSection from '@/features/home/components/AvailableRoomsSection.vue'
@@ -28,6 +28,8 @@ const defaultWhatsAppHref = getWhatsAppHref()
 const stickyContactOptions = buildStickyContactOptions(callHref, defaultWhatsAppHref)
 const siteUrl = resolveSiteUrl(import.meta.env.VITE_SITE_URL)
 const ogImage = getPageOgImage(siteUrl)
+const isEnquiryVisible = ref(false)
+const isFooterVisible = ref(false)
 
 const structuredData = computed(() =>
   buildHomeStructuredData({
@@ -41,11 +43,14 @@ const structuredData = computed(() =>
 useSeoMeta({
   title: siteConfig.defaultTitle,
   description: siteConfig.description,
+  robots: siteConfig.robotsDirective,
   ogTitle: siteConfig.defaultTitle,
   ogDescription: siteConfig.description,
   ogImage,
-  ogImageWidth: 1440,
-  ogImageHeight: 1080,
+  ogImageAlt: siteConfig.ogImageAlt,
+  ogImageWidth: siteConfig.ogImageWidth,
+  ogImageHeight: siteConfig.ogImageHeight,
+  ogImageType: siteConfig.ogImageType,
   ogType: 'website',
   ogLocale: 'en_IN',
   ogUrl: `${siteUrl}/`,
@@ -54,11 +59,12 @@ useSeoMeta({
   twitterTitle: siteConfig.defaultTitle,
   twitterDescription: siteConfig.description,
   twitterImage: ogImage,
+  twitterImageAlt: siteConfig.ogImageAlt,
 })
 
 useHead(() => ({
   htmlAttrs: {
-    lang: 'en',
+    lang: 'en-IN',
   },
   title: siteConfig.defaultTitle,
   link: [
@@ -106,29 +112,38 @@ useHead(() => ({
       :site="siteConfig"
       :call-href="callHref"
       :whatsapp-href="defaultWhatsAppHref"
-    />
-
-    <SiteFooter
-      :site="siteConfig"
-      :call-href="callHref"
-      :whatsapp-href="defaultWhatsAppHref"
-      :rooms="availableRooms"
-    />
-
-    <MobileEnquiryBar
-      :primary-href="'/rooms?availability=available'"
-      :primary-label="siteConfig.uiText.actions.viewRooms"
-      :secondary-label="siteConfig.uiText.actions.talkToUs"
-      :secondary-menu-options="stickyContactOptions"
-      :secondary-menu-title="siteConfig.uiText.contactSheet.title"
-      :secondary-menu-summary="siteConfig.uiText.contactSheet.summary"
-      :reveal-after="440"
+      @visibility-change="isEnquiryVisible = $event"
     />
   </main>
+
+  <SiteFooter
+    class="home-footer"
+    :site="siteConfig"
+    :call-href="callHref"
+    :whatsapp-href="defaultWhatsAppHref"
+    :rooms="availableRooms"
+    @visibility-change="isFooterVisible = $event"
+  />
+
+  <MobileEnquiryBar
+    :primary-href="'/rooms'"
+    :primary-label="siteConfig.uiText.actions.viewRooms"
+    :secondary-label="siteConfig.uiText.actions.talkToUs"
+    :secondary-menu-options="stickyContactOptions"
+    :secondary-menu-title="siteConfig.uiText.contactSheet.title"
+    :secondary-menu-summary="siteConfig.uiText.contactSheet.summary"
+    :reveal-after="440"
+    :hidden="isEnquiryVisible || isFooterVisible"
+  />
 </template>
 
 <style scoped>
 .home-page-main {
+  padding-bottom: 0;
   background: var(--canvas);
+}
+
+.home-footer {
+  margin-top: 0;
 }
 </style>

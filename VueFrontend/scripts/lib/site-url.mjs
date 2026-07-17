@@ -47,5 +47,9 @@ export function resolveBuildSiteUrl(candidate, { production = false } = {}) {
     throw new Error('Production VITE_SITE_URL must use a public hostname.')
   }
 
+  if (production && configuredValue && url.origin !== new URL(configuredValue).origin) {
+    throw new Error(`Production VITE_SITE_URL must match the canonical origin: ${new URL(configuredValue).origin}`)
+  }
+
   return url.origin
 }

@@ -20,6 +20,7 @@ import { useScrollLock } from '@/shared/composables/useScrollLock'
 
 const AsyncRoomDetailDialog = defineAsyncComponent(() => import('@/features/rooms/components/RoomDetailDialog.vue'))
 const isSheetOpen = ref(false)
+const isFooterVisible = ref(false)
 const catalog = useRoomCatalog()
 const callHref = getCallHref()
 const defaultWhatsAppHref = getWhatsAppHref()
@@ -66,11 +67,14 @@ useScrollLock(isOverlayOpen)
 useSeoMeta({
   title: siteConfig.roomsTitle,
   description: siteConfig.roomsDescription,
+  robots: siteConfig.robotsDirective,
   ogTitle: siteConfig.roomsTitle,
   ogDescription: siteConfig.roomsDescription,
   ogImage,
-  ogImageWidth: 1440,
-  ogImageHeight: 1080,
+  ogImageAlt: siteConfig.ogImageAlt,
+  ogImageWidth: siteConfig.ogImageWidth,
+  ogImageHeight: siteConfig.ogImageHeight,
+  ogImageType: siteConfig.ogImageType,
   ogType: 'website',
   ogLocale: 'en_IN',
   ogUrl: `${siteUrl}/rooms`,
@@ -79,11 +83,12 @@ useSeoMeta({
   twitterTitle: siteConfig.roomsTitle,
   twitterDescription: siteConfig.roomsDescription,
   twitterImage: ogImage,
+  twitterImageAlt: siteConfig.ogImageAlt,
 })
 
 useHead(() => ({
   htmlAttrs: {
-    lang: 'en',
+    lang: 'en-IN',
   },
   title: siteConfig.roomsTitle,
   link: [
@@ -132,30 +137,32 @@ useHead(() => ({
       :room-slug="catalog.selectedRoomSlug.value"
       @close="catalog.closePreview()"
     />
-
-    <SiteFooter
-      :site="siteConfig"
-      :call-href="callHref"
-      :whatsapp-href="defaultWhatsAppHref"
-      :rooms="availableRooms"
-    />
-
-    <MobileEnquiryBar
-      :primary-href="'#catalog-filters'"
-      :primary-label="siteConfig.uiText.catalog.mobileFiltersLabel"
-      :secondary-label="siteConfig.uiText.actions.talkToUs"
-      :secondary-menu-options="stickyContactOptions"
-      :secondary-menu-title="siteConfig.uiText.contactSheet.title"
-      :secondary-menu-summary="siteConfig.uiText.contactSheet.summary"
-      :hidden="isOverlayOpen"
-      primary-button
-      @primary-click="setSheetOpen(true)"
-    />
   </main>
+
+  <SiteFooter
+    :site="siteConfig"
+    :call-href="callHref"
+    :whatsapp-href="defaultWhatsAppHref"
+    :rooms="availableRooms"
+    @visibility-change="isFooterVisible = $event"
+  />
+
+  <MobileEnquiryBar
+    :primary-href="'#catalog-filters'"
+    :primary-label="siteConfig.uiText.catalog.mobileFiltersLabel"
+    :secondary-label="siteConfig.uiText.actions.talkToUs"
+    :secondary-menu-options="stickyContactOptions"
+    :secondary-menu-title="siteConfig.uiText.contactSheet.title"
+    :secondary-menu-summary="siteConfig.uiText.contactSheet.summary"
+    :hidden="isOverlayOpen || isFooterVisible"
+    primary-button
+    @primary-click="setSheetOpen(true)"
+  />
 </template>
 
 <style scoped>
 .rooms-page {
+  padding-bottom: 0;
   background: var(--canvas);
 }
 

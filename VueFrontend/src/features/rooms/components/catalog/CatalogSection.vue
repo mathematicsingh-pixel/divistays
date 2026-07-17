@@ -1,5 +1,5 @@
 <script setup>
-import { computed, ref, watch } from 'vue'
+import { computed, ref } from 'vue'
 import { kitchenOptions, occupancyOptions, priceBands, washroomOptions } from '@/features/rooms'
 import { siteConfig } from '@/features/site/config/site'
 import CatalogResults from '@/features/rooms/components/catalog/CatalogResults.vue'
@@ -54,10 +54,39 @@ const sortOptions = [
   { value: 'updated', label: 'Recently updated' },
 ]
 
+const occupancyShortLabels = {
+  single: 'Single',
+  'single/double': 'Single or double',
+  double: 'Double',
+  flex: 'Double or triple',
+}
+
+function withShortLabels(options, labels) {
+  return options.map((item) => ({
+    ...item,
+    shortLabel: labels[item.value] || item.label,
+  }))
+}
+
 const filterGroups = [
-  { key: 'occupancy', label: 'Occupancy', options: occupancyOptions, action: 'toggleOccupancy' },
-  { key: 'kitchen', label: 'Kitchen', options: kitchenOptions, action: 'toggleKitchen' },
-  { key: 'washroom', label: 'Washroom', options: washroomOptions, action: 'toggleWashroom' },
+  {
+    key: 'occupancy',
+    label: 'Occupancy',
+    options: withShortLabels(occupancyOptions, occupancyShortLabels),
+    action: 'toggleOccupancy',
+  },
+  {
+    key: 'kitchen',
+    label: 'Kitchen',
+    options: withShortLabels(kitchenOptions, { private: 'Private', common: 'Shared' }),
+    action: 'toggleKitchen',
+  },
+  {
+    key: 'washroom',
+    label: 'Washroom',
+    options: withShortLabels(washroomOptions, { attached: 'Attached', common: 'Shared' }),
+    action: 'toggleWashroom',
+  },
   { key: 'price', label: 'Budget', options: priceBands, action: 'togglePrice' },
 ]
 
@@ -107,22 +136,7 @@ const resultLabel = computed(() => {
     ? `${props.rooms.length} available room${props.rooms.length === 1 ? '' : 's'}`
     : `${roomLabel} shown`
 })
-const toolbarNote = computed(() =>
-  props.hasActiveFilters
-    ? `${props.activeFilterCount} active filter${props.activeFilterCount === 1 ? '' : 's'}`
-    : siteConfig.uiText.catalog.defaultNote,
-)
 const isDesktopFiltersOpen = ref(false)
-
-watch(
-  advancedFilterCount,
-  (count) => {
-    if (count > 0) {
-      isDesktopFiltersOpen.value = true
-    }
-  },
-  { immediate: true },
-)
 
 function toggleDesktopFilters() {
   isDesktopFiltersOpen.value = !isDesktopFiltersOpen.value
@@ -160,8 +174,6 @@ function toggleDesktopFilters() {
         :is-sheet-open="isSheetOpen"
         :is-desktop-filters-open="isDesktopFiltersOpen"
         :result-label="resultLabel"
-        :toolbar-note="toolbarNote"
-        :result-count="rooms.length"
         @update:sheet-open="emit('update:sheet-open', $event)"
         @toggle-desktop-filters="toggleDesktopFilters"
       />

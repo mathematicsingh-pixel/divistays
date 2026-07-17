@@ -10,7 +10,7 @@ DiviStays is a small, direct rental catalogue for Kakadeo, Kanpur. It should fee
 
 ### Visual thesis
 
-**Urban garden rooms with night-time confidence.** Deep ink architecture, warm light content planes, solid orange actions, mint availability, and large real room photography. Quality comes from proportion, type, and restraint, with tightly bounded light around real actions.
+**Urban garden rooms with night-time confidence.** Deep ink architecture, warm light content planes, mango-orange actions, mint availability, and large real room photography. Quality comes from proportion, type, and restraint, with tightly bounded light around real actions.
 
 ### Brand mark
 
@@ -84,18 +84,19 @@ Use a stable responsive header, whole-card room navigation, staged mobile filter
 | `--muted` | `#68777e` | Secondary text on light |
 | `--text-inverse` | `#fffaf2` | Primary text on ink |
 | `--muted-inverse` | `#c8d2d2` | Secondary text on ink |
-| `--accent` | `#f47a2a` | Primary action only |
-| `--accent-deep` | `#c85416` | Action hover/text treatment |
+| `--accent` | `#ff7a1a` | Primary action; mango gradient start |
+| `--accent-deep` | `#a94210` | Action hover/text treatment |
 | `--brand` | `#7ed7c4` | Availability/success only |
-| `--brand-strong` | `#167d6d` | Availability text on light |
+| `--brand-strong` | `#126d60` | Availability text on light |
 | `--sun` | `#ffd38e` | Focus ring; rare highlight |
+| `--gradient-enquiry` | `#ff7a1a → #ff9d3b` + `--sun` | Final enquiry plane only |
 | `--line` | `rgba(16,29,36,.14)` | Light-plane rules |
 | `--line-strong` | `rgba(16,29,36,.28)` | Emphasized rules |
 | `--line-inverse` | `rgba(255,250,242,.18)` | Ink-plane rules |
 
 ### Rules
 
-- Orange is action. A primary button may cast a tight, static halo, and a whole-card link may reveal a thin orange edge. Do not use orange for badges, status, gradients, or ambient decoration.
+- Orange is action. It may form a primary button, a tight static action halo, an explicit text action, or the one documented mango gradient on the final enquiry plane. Do not use orange for card-edge decoration, badges, status, other gradients, or ambient decoration.
 - Mint is availability/status. It is never a primary button color.
 - Sun is a focus color and appears rarely elsewhere.
 - Dark content planes are solid. No ambient glow fields, glass tints, or blur-heavy translucency.
@@ -140,7 +141,7 @@ Use a stable responsive header, whole-card room navigation, staged mobile filter
 
 ### Architectural brand glyph
 
-`.brand-glyph-motif` repeats the four-part DiviStays symbol as a low-contrast silhouette. It may appear once in the dark hero and once in the final dark enquiry panel. Keep it behind content, never put copy inside it, and use only `--line-inverse`. It is not a surface and never receives orange, glow, or additional detail.
+`.brand-glyph-motif` repeats the four-part DiviStays symbol as a low-contrast silhouette. It may appear once in the dark hero and once in the final enquiry plane. Keep it behind content and never put copy inside it. Use `--line-inverse` on ink or `--line` on the mango gradient; never add a second color, glow, or additional detail.
 
 ---
 
@@ -179,6 +180,7 @@ Solid `--bg-soft` panel on ink. One `--line-inverse` border. No gradient, glow, 
 - `.button-primary`: solid `--accent`, ink text, and `--radius-md`.
 - `.button-primary.action-glow`: uses `--shadow-action` for the single contextual conversion action. Do not apply it to the header, filters, empty states, or other utility actions.
 - `.button-secondary`: transparent or `--paper`, strong text, one rule.
+- On the final orange enquiry plane, invert the hierarchy: the primary action is solid `--bg` with `--text-inverse`; the secondary is `--paper` with a solid `--bg` border. Do not add an action halo there.
 - `.button-tertiary`: text action with no container.
 - Minimum target: 44×44px; standard button height: 3.25rem.
 - At most one orange primary action in a visible viewport.
@@ -223,9 +225,12 @@ Room reference and availability may use the existing badge pattern. Keep them sm
 ## 10. Room card
 
 - The whole card is one clear navigation target.
+- The paper field and shadow define the card; keep its reserved border transparent. Do not add resting or interactive bottom-edge lines.
 - Image ratio: `4 / 3`; image is the dominant area.
 - Visible information order: title → price/status → occupancy, kitchen, washroom.
 - Summary may be one short line where space allows.
+- “See photos & details →” is the explicit, full-width action cue and uses `--accent-deep`. On hover or focus, move the arrow briefly and let the photograph scale slightly; do not add another CTA container.
+- Draw keyboard focus as an inset ink-and-sun ring on the card link so `overflow: hidden` and horizontal rails cannot clip it.
 - No repeated orange “View room” button and no quick-preview button on every card.
 - Desktop: three columns where space permits. Tablet: two. Mobile: one or a deliberate horizontal discovery rail on home.
 
@@ -236,6 +241,8 @@ Room reference and availability may use the existing badge pattern. Keep them sm
 - Catalogue begins with a real `h1`, short orientation, result count, and compact controls.
 - Only decision-making filters: availability, budget, occupancy, kitchen, washroom; plus sort.
 - Mobile filters open in a bottom sheet and remain local until “Show rooms.”
+- Desktop filters begin at 960px, stay in normal document flow, and never become part of sticky chrome.
+- Desktop filter chips remain content-sized and natural-height; unequal groups must not stretch sibling controls.
 - Show selected filters plainly and keep “Clear” visible.
 - Do not add a map for this small inventory.
 
@@ -258,7 +265,7 @@ Room reference and availability may use the existing badge pattern. Keep them sm
 
 ### Home room preview switcher
 
-- The opening interaction previews exactly four real current listings: the visual lead, lowest monthly rent, private-kitchen setup, and higher-occupancy setup. It is not a quiz, filter, or recommendation engine.
+- The opening interaction previews up to five real current listings: the visual lead, lowest monthly rent, private-kitchen setup, higher-occupancy setup, and an attached-washroom option. It is not a quiz, filter, or recommendation engine.
 - Each control label comes directly from its listing, such as monthly rent, kitchen type, or occupancy. A “Lowest” label must be recalculated from current available-room data. Do not use unqualified relative claims such as “more,” “best,” or “ideal.”
 - Each choice immediately updates its photograph, room ID, monthly rent, availability, and setup.
 - Keep a concise, live “Now showing” result directly under the controls. A change must remain visible even when the full room preview is below the viewport.
@@ -270,11 +277,31 @@ Room reference and availability may use the existing badge pattern. Keep them sm
 ### Home
 
 1. Compact header.
-2. Concise proposition, four factual room samples, and one responsive real-room preview.
+2. Concise proposition, five factual room samples, and one responsive real-room preview.
 3. Three representative available rooms and a link to all rooms.
 4. Factual proof and approximate location.
 5. Three-step visit path.
-6. FAQs and direct contact.
+6. FAQs, one final orange enquiry plane, and an ink footer.
+
+### Final enquiry plane
+
+- Use once per page, immediately before the ink footer. The surrounding section is solid `--bg`; the plane uses `--gradient-enquiry`, the original DiviStays mango treatment: `#ff7a1a` to `#ff9d3b` at 135 degrees, plus one upper-right `--sun` bloom at 34% opacity. Keep `--radius-lg` and a `--line-strong` border.
+- This is a page composition, not a reusable surface class. Do not introduce a fifth surface primitive for it.
+- Lead with the current compact, one-colour `BrandMark`; keep one oversized `BrandGlyph` behind it as a quiet `--line` watermark. Never redraw or embellish the cutout.
+- Use ink for the headline and `--text-strong` for body copy. Keep the statement short enough to read as one confident invitation.
+- Use the contextual dark primary and paper secondary button treatment defined above. The mango plane itself supplies the emphasis, so it gets no shadow, animated gradient, or additional glow field.
+- On mobile, hide the fixed action tray while this plane is visible so the two conversion paths do not compete.
+
+### Footer room register
+
+- The site footer is a page-level `contentinfo` landmark after `main`, composed as a cardless architectural ledger on solid `--bg`.
+- Lead with one short brand statement and one natural furnished-room/location description. Do not repeat the same Kakadeo/Kanpur proposition across multiple footer blocks.
+- Preserve live catalogue character with up to three static available-room links. Each ruled row shows the real room ID, title, monthly rent, and canonical detail route; omit the current room on its own detail page.
+- Follow the register with one compact navigation/contact rail and a quiet baseline. Use semantic lists, a visible navigation heading, and an `address` for phone and WhatsApp contact.
+- Mobile remains one clear reading sequence; the asymmetric brand/register split begins at 960px. Do not create separate mobile and desktop footer DOM.
+- Mint identifies live availability. Orange may mark the forward arrow because it is part of an action; it is not footer decoration.
+- No ticker, marquee, chips, cards, image collage, decorative gradient, or ambient animation. Hover/focus may reveal a solid ink plane and shift the forward arrow once.
+- Hide the fixed mobile action tray whenever the footer intersects the viewport so footer links and focus are never covered.
 
 ### Catalogue
 
@@ -300,7 +327,7 @@ Allowed motion:
 - Gallery, sheet, and dialog continuity.
 - Brief hover/press feedback.
 - A restrained live availability pulse.
-- A brief forward-arrow or interactive-edge reveal on whole-card links.
+- A brief forward-arrow shift or restrained photograph scale on whole-card links.
 
 Retired motion:
 
@@ -333,14 +360,14 @@ Motion is brief, cancellable, and disabled by `prefers-reduced-motion`. Animate 
 ### Do
 
 - Lead with real photography and specific facts.
-- Use solid color planes, rules, and meaningful whitespace.
+- Use solid color planes, rules, and meaningful whitespace; reserve the documented mango gradient for the final enquiry plane.
 - Keep contact and help locations consistent.
 - Use semantic headings, landmarks, lists, and native disclosures.
 - Keep files below roughly 600 lines by splitting responsibilities.
 
 ### Do not
 
-- Add glass cards, ambient glow fields, button gradients, bento mosaics, or pill soup.
+- Add glass cards, ambient glow fields, button gradients, unbounded decorative gradients, bento mosaics, or pill soup.
 - Put a card around every paragraph.
 - Use orange decoratively or mint as an action.
 - Add fake scarcity, visitor counts, reviews, or live claims.

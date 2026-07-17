@@ -22,6 +22,18 @@ const previewDefinitions = [
       room.kitchenType === 'private' && room.washroomType === 'attached',
     ),
   },
+  {
+    id: 'higher-occupancy',
+    getLabel: (room) => room.occupancyLabel,
+    pick: (rooms) => rooms.find((room) => room.occupancy === 'flex'),
+  },
+  {
+    id: 'attached-washroom',
+    getLabel: (room) => room.washroomLabel,
+    pick: (rooms) => rooms.find((room) =>
+      room.washroomType === 'attached' && room.kitchenType === 'common',
+    ) || rooms.find((room) => room.washroomType === 'attached'),
+  },
 ]
 
 const props = defineProps({

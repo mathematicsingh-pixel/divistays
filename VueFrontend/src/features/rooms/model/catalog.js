@@ -1,6 +1,6 @@
 import { roomSummarySourceCatalog } from '../content/summary-registry.js'
 import { decorateRoomRecord, formatPriceLabel } from './room-record.js'
-const occupancyOrder = ['single', 'double', 'flex']
+const occupancyOrder = ['single', 'single/double', 'double', 'flex']
 const kitchenOrder = ['private', 'common']
 const washroomOrder = ['attached', 'common']
 

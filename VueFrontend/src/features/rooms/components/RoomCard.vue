@@ -61,7 +61,7 @@ defineProps({
         <p class="room-summary">{{ room.fitSummary }}</p>
 
         <span class="room-link-label">
-          Open listing
+          See photos &amp; details
           <span aria-hidden="true">→</span>
         </span>
       </div>
@@ -73,27 +73,20 @@ defineProps({
 .room-card {
   min-width: 0;
   overflow: hidden;
+  border-color: transparent;
   transition: transform 180ms ease, box-shadow 180ms ease;
-}
-
-.room-card::after {
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  z-index: 1;
-  height: 2px;
-  background: var(--accent);
-  content: '';
-  pointer-events: none;
-  transform: scaleX(0.18);
-  transform-origin: left;
-  transition: transform 220ms cubic-bezier(0.2, 0.75, 0.24, 1);
 }
 
 .room-card-link {
   display: grid;
   height: 100%;
+  border-radius: inherit;
+}
+
+.room-card-link:focus-visible {
+  outline: 2px solid var(--bg);
+  outline-offset: -2px;
+  box-shadow: inset 0 0 0 5px var(--sun);
 }
 
 .room-media {
@@ -201,20 +194,17 @@ defineProps({
 .room-link-label {
   display: inline-flex;
   align-items: center;
+  justify-content: space-between;
   gap: var(--space-sm);
-  width: fit-content;
+  width: 100%;
   margin-top: var(--space-sm);
-  color: var(--text-strong);
+  color: var(--accent-deep);
   font-size: 0.875rem;
   font-weight: 700;
 }
 
 .room-link-label > span {
   transition: transform 180ms ease;
-}
-
-.room-card:focus-within::after {
-  transform: scaleX(1);
 }
 
 .room-card:focus-within .room-link-label > span {
@@ -225,10 +215,6 @@ defineProps({
   .room-card:hover {
     transform: translateY(-2px);
     box-shadow: var(--shadow-md);
-  }
-
-  .room-card:hover::after {
-    transform: scaleX(1);
   }
 
   .room-card:hover .room-media :deep(img) {

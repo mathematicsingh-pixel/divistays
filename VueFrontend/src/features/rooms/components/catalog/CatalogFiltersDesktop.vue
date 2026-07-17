@@ -26,10 +26,11 @@ function isActive(list, value) {
           type="button"
           class="chip"
           :class="{ active: isActive(filters[group.key], item.value) }"
+          :aria-label="`${group.label}: ${item.label}`"
           :aria-pressed="isActive(filters[group.key], item.value)"
           @click="actions[group.action](item.value)"
         >
-          {{ item.label }}
+          {{ item.shortLabel || item.label }}
         </button>
       </div>
     </fieldset>
@@ -38,7 +39,7 @@ function isActive(list, value) {
 
 <style scoped>
 .desktop-groups {
-  display: grid;
+  display: none;
   gap: var(--space-lg);
   padding-top: var(--space-md);
   border-top: 1px solid var(--line);
@@ -46,14 +47,19 @@ function isActive(list, value) {
 
 .filter-group {
   display: grid;
+  grid-template-rows: auto auto;
+  align-self: start;
+  align-content: start;
   gap: var(--space-sm);
   min-width: 0;
+  min-inline-size: 0;
+  margin: 0;
   padding: 0;
   border: 0;
 }
 
 .filter-group legend {
-  margin-bottom: var(--space-sm);
+  margin: 0;
   color: var(--muted);
   font-size: var(--text-label);
   font-weight: 700;
@@ -64,12 +70,35 @@ function isActive(list, value) {
 .chip-row {
   display: flex;
   flex-wrap: wrap;
+  align-items: flex-start;
+  align-content: flex-start;
   gap: var(--space-sm);
+}
+
+.chip-row .chip {
+  width: fit-content;
+  max-width: 100%;
+  height: auto;
+  flex: 0 0 auto;
+  align-self: flex-start;
 }
 
 @media (min-width: 960px) {
   .desktop-groups {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: start;
+    gap: var(--space-md) var(--space-lg);
+  }
+}
+
+@media (min-width: 1280px) {
+  .desktop-groups {
+    grid-template-columns:
+      minmax(17rem, 1.35fr)
+      minmax(11rem, 0.8fr)
+      minmax(11rem, 0.8fr)
+      minmax(17rem, 1fr);
   }
 }
 </style>

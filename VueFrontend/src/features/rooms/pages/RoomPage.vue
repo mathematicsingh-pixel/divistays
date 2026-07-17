@@ -1,5 +1,5 @@
 <script setup>
-import { computed, toRef } from 'vue'
+import { computed, ref, toRef } from 'vue'
 import { useHead, useSeoMeta } from '@unhead/vue'
 import RoomCard from '@/features/rooms/components/RoomCard.vue'
 import RoomShowcase from '@/features/rooms/components/showcase/RoomShowcase.vue'
@@ -29,6 +29,7 @@ const props = defineProps({
 
 const { roomSummary, roomDetail, isLoading } = useRoomDetail(toRef(props, 'roomSlug'))
 const similarRooms = computed(() => getSimilarRooms(roomSummary.value))
+const isFooterVisible = ref(false)
 const callHref = getCallHref()
 const whatsappHref = computed(() => getWhatsAppHref(buildRoomEnquiry(roomSummary.value)))
 const siteUrl = resolveSiteUrl(import.meta.env.VITE_SITE_URL)
@@ -38,6 +39,9 @@ const ogImage = computed(() =>
   roomSummary.value
     ? `${siteUrl}${buildImagePath(roomSummary.value.slug, roomSummary.value.gallery[0].key, 1440, 'jpg')}`
     : getPageOgImage(siteUrl),
+)
+const ogImageAlt = computed(() =>
+  roomSummary.value?.gallery[0]?.alt || siteConfig.ogImageAlt,
 )
 const pageUrl = computed(() =>
   roomSummary.value ? `${siteUrl}${roomSummary.value.detailsHref}` : `${siteUrl}/rooms`,
@@ -56,22 +60,26 @@ const structuredData = computed(() =>
 useSeoMeta({
   title,
   description,
+  robots: siteConfig.robotsDirective,
   ogTitle: title,
   ogDescription: description,
   ogImage,
+  ogImageAlt,
+  ogImageType: 'image/jpeg',
   ogUrl: pageUrl,
   ogSiteName: siteConfig.name,
-  ogType: 'article',
+  ogType: 'website',
   ogLocale: 'en_IN',
   twitterCard: 'summary_large_image',
   twitterTitle: title,
   twitterDescription: description,
   twitterImage: ogImage,
+  twitterImageAlt: ogImageAlt,
 })
 
 useHead(() => ({
   htmlAttrs: {
-    lang: 'en',
+    lang: 'en-IN',
   },
   title: title.value,
   link: [
@@ -158,28 +166,30 @@ useHead(() => ({
         </RouterLink>
       </div>
     </section>
-
-    <SiteFooter
-      :site="siteConfig"
-      :call-href="callHref"
-      :whatsapp-href="whatsappHref"
-      :rooms="availableRooms"
-    />
-
-    <MobileEnquiryBar
-      :primary-href="whatsappHref"
-      :primary-label="siteConfig.uiText.actions.askOnWhatsApp"
-      primary-blank
-      :secondary-href="callHref"
-      :secondary-label="siteConfig.uiText.actions.callDirect"
-      :hidden="isLoading"
-      :reveal-after="320"
-    />
   </main>
+
+  <SiteFooter
+    :site="siteConfig"
+    :call-href="callHref"
+    :whatsapp-href="whatsappHref"
+    :rooms="availableRooms"
+    @visibility-change="isFooterVisible = $event"
+  />
+
+  <MobileEnquiryBar
+    :primary-href="whatsappHref"
+    :primary-label="siteConfig.uiText.actions.askOnWhatsApp"
+    primary-blank
+    :secondary-href="callHref"
+    :secondary-label="siteConfig.uiText.actions.callDirect"
+    :hidden="isLoading || isFooterVisible"
+    :reveal-after="320"
+  />
 </template>
 
 <style scoped>
 .room-page {
+  padding-bottom: 0;
   background: var(--canvas);
 }
 

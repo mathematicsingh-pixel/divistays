@@ -9,7 +9,7 @@ const defaultState = {
 
 const allowedAvailability = new Set(['available', 'all'])
 const allowedSort = new Set(['available-first', 'price-asc', 'price-desc', 'updated'])
-const allowedOccupancy = new Set(['single', 'double', 'flex'])
+const allowedOccupancy = new Set(roomCatalog.map((room) => room.occupancy))
 const allowedKitchen = new Set(['private', 'common'])
 const allowedWashroom = new Set(['attached', 'common'])
 const allowedPrice = new Set(priceBands.map((item) => item.value))

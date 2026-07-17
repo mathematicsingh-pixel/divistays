@@ -28,7 +28,7 @@ const featuredRooms = computed(() => props.rooms.slice(0, 3))
 
         <RouterLink
           class="rooms-all-link"
-          to="/rooms?availability=available"
+          to="/rooms"
         >
           See all {{ rooms.length }} available {{ rooms.length === 1 ? 'room' : 'rooms' }}
           <span aria-hidden="true">→</span>
@@ -46,7 +46,7 @@ const featuredRooms = computed(() => props.rooms.slice(0, 3))
 
       <RouterLink
         class="button-secondary rooms-mobile-action"
-        to="/rooms?availability=available"
+        to="/rooms"
       >
         See all available rooms
       </RouterLink>

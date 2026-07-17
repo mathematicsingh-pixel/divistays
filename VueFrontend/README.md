@@ -32,7 +32,7 @@ These derive automatically:
 - room detail loading
 - room routes
 - room filters and counts
-- footer room ticker
+- footer room register
 - sitemap input
 - media build input
 

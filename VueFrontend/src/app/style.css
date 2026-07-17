@@ -11,11 +11,14 @@
   --muted: #68777e;
   --text-inverse: #fffaf2;
   --muted-inverse: #c8d2d2;
-  --accent: #f47a2a;
+  --accent: #ff7a1a;
   --accent-deep: #a94210;
   --brand: #7ed7c4;
   --brand-strong: #126d60;
   --sun: #ffd38e;
+  --gradient-enquiry:
+    radial-gradient(circle at 100% 0%, rgba(255, 211, 142, 0.34) 0%, rgba(255, 211, 142, 0) 28%),
+    linear-gradient(135deg, #ff7a1a 0%, #ff9d3b 100%);
   --forest: var(--bg);
   --forest-soft: var(--bg-soft);
   --line: rgba(16, 29, 36, 0.14);
@@ -40,8 +43,8 @@
   --shadow-sm: 0 1px 2px rgba(8, 22, 30, 0.08);
   --shadow-md: 0 18px 48px rgba(8, 22, 30, 0.12);
   --shadow-lg: 0 28px 80px rgba(0, 0, 0, 0.28);
-  --shadow-action: 0 8px 22px rgba(244, 122, 42, 0.18), 0 0 20px rgba(244, 122, 42, 0.14);
-  --shadow-action-hover: 0 12px 28px rgba(244, 122, 42, 0.24), 0 0 26px rgba(244, 122, 42, 0.2);
+  --shadow-action: 0 8px 22px rgba(255, 122, 26, 0.18), 0 0 20px rgba(255, 122, 26, 0.14);
+  --shadow-action-hover: 0 12px 28px rgba(255, 122, 26, 0.24), 0 0 26px rgba(255, 122, 26, 0.2);
 
   --radius-lg: 1rem;
   --radius-md: 0.625rem;

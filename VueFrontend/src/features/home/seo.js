@@ -1,11 +1,14 @@
-import { buildBreadcrumbStructuredData, buildBusiness, buildFaqStructuredData } from '../rooms/seo.js'
+import {
+  buildFaqStructuredData,
+  buildOrganization,
+  buildStructuredDataGraph,
+  buildWebsite,
+} from '../rooms/seo.js'
 
-export function buildHomeStructuredData({ site, siteUrl, rooms, faqs }) {
-  return [
-    buildBusiness(site, siteUrl, rooms),
-    buildFaqStructuredData(faqs),
-    buildBreadcrumbStructuredData(siteUrl, [
-      { name: 'Home', path: '/' },
-    ]),
-  ]
+export function buildHomeStructuredData({ site, siteUrl, faqs }) {
+  return buildStructuredDataGraph([
+    buildWebsite(site, siteUrl),
+    buildOrganization(site, siteUrl),
+    buildFaqStructuredData(faqs, siteUrl),
+  ])
 }

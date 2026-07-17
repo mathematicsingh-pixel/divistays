@@ -34,15 +34,20 @@ const mobileFiltersSummary = occupancyOptions.length
 export const siteConfig = {
   name: 'DiviStays',
   shortName: 'DiviStays',
-  defaultTitle: 'Furnished Rooms in Kakadeo, Kanpur | DiviStays',
+  defaultTitle: 'Furnished Rooms for Rent in Kakadeo, Kanpur | DiviStays',
   roomsTitle: 'Rooms for Rent in Kakadeo, Kanpur | DiviStays',
   description:
     'Browse furnished rooms and studio apartments for rent in Kakadeo, Kanpur. Compare photos, monthly rent, facilities, and availability.',
   roomsDescription:
     'Find furnished rooms and studio apartments for rent in Kakadeo, Kanpur. Compare photos, monthly rent, occupancy, kitchen, washroom, and availability.',
   defaultSiteUrl: productionSiteUrl,
+  robotsDirective: 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1',
   themeColor: '#08161e',
   ogImagePath: '/media/rooms/garden-view-studio/01-1440.jpg',
+  ogImageAlt: 'Furnished garden-view studio apartment available through DiviStays in Kakadeo, Kanpur.',
+  ogImageWidth: 1440,
+  ogImageHeight: 1080,
+  ogImageType: 'image/jpeg',
   phoneDisplay: '8306709248',
   phoneE164: '+918306709248',
   whatsappNumber: '918306709248',
@@ -104,12 +109,11 @@ export const siteConfig = {
   faqTitle: 'Questions about the rooms',
   faqSummary: 'Furnishing, facilities, location, monthly rent, and room visits.',
   faqs: siteFaqs,
-  ctaEyebrow: 'Direct contact',
-  ctaTitle: 'Want to see a room?',
+  ctaTitle: 'Ask what is open today',
   ctaSummary:
-    'Send the room ID on WhatsApp or call us. We will confirm whether it is still available and arrange a time.',
-  ctaPrimaryLabel: 'WhatsApp the room ID',
-  ctaSecondaryLabel: 'Call DiviStays',
+    'Send us the room ID if you have one. We will confirm current availability and arrange a visit.',
+  ctaPrimaryLabel: 'Ask on WhatsApp',
+  ctaSecondaryLabel: 'Call us',
   footerDescriptor: 'Furnished rooms and studio apartments for rent in Kakadeo, Kanpur.',
   footerSummary:
     'Photos, monthly rent, facilities, and availability are listed for each room.',
@@ -150,7 +154,7 @@ export const siteConfig = {
       previewLabel: 'Room preview',
     },
     footer: {
-      headline: 'See the details, then book a visit.',
+      headline: 'Real rooms. Clear monthly rent.',
     },
   },
   localityPage: {
@@ -216,7 +220,7 @@ export function getPageOgImage(siteUrl, path = siteConfig.ogImagePath) {
 }
 
 export function getRoomPageTitle(room) {
-  return `${room.title} in Kakadeo | DiviStays`
+  return `${room.title} for Rent in Kakadeo | DiviStays`
 }
 
 export function getRoomPageDescription(room) {

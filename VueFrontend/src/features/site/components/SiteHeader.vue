@@ -1,7 +1,14 @@
 <script setup>
-import { computed } from 'vue'
+import { computed, ref, watch } from 'vue'
+import { useRoute } from 'vue-router'
 import BrandMark from '@/features/site/components/brand/BrandMark.vue'
-import { getCallHref, siteConfig } from '@/features/site/config/site'
+import MobileContactSheet from '@/features/site/components/MobileContactSheet.vue'
+import {
+  buildStickyContactOptions,
+  getCallHref,
+  getWhatsAppHref,
+  siteConfig,
+} from '@/features/site/config/site'
 
 const props = defineProps({
   site: {
@@ -12,14 +19,36 @@ const props = defineProps({
     type: String,
     default: '',
   },
+  whatsappHref: {
+    type: String,
+    default: '',
+  },
   skipTarget: {
     type: String,
     default: '#main-content',
   },
 })
 
+const route = useRoute()
+const isContactSheetOpen = ref(false)
 const resolvedCallHref = computed(() => props.callHref || getCallHref())
+const resolvedWhatsAppHref = computed(() => props.whatsappHref || getWhatsAppHref())
 const phoneLabel = computed(() => props.site?.phoneDisplay || siteConfig.phoneDisplay)
+const contactOptions = computed(() =>
+  isContactSheetOpen.value
+    ? buildStickyContactOptions(resolvedCallHref.value, resolvedWhatsAppHref.value)
+    : [],
+)
+
+function openContactSheet() {
+  isContactSheetOpen.value = true
+}
+
+function closeContactSheet() {
+  isContactSheetOpen.value = false
+}
+
+watch(() => route.fullPath, closeContactSheet)
 
 function focusSkipTarget() {
   window.requestAnimationFrame(() => {
@@ -41,6 +70,12 @@ function focusSkipTarget() {
     Skip to main content
   </a>
 
+  <MobileContactSheet
+    :options="contactOptions"
+    title="Contact DiviStays"
+    @close="closeContactSheet"
+  />
+
   <header class="site-header surface-dark">
     <div class="container site-header-inner">
       <RouterLink
@@ -60,7 +95,16 @@ function focusSkipTarget() {
       >
         <RouterLink to="/">Home</RouterLink>
         <RouterLink to="/rooms">Rooms</RouterLink>
-        <a :href="resolvedCallHref">Call</a>
+        <button
+          class="mobile-contact-trigger button-primary"
+          type="button"
+          aria-haspopup="dialog"
+          :aria-expanded="isContactSheetOpen"
+          aria-label="Contact DiviStays by WhatsApp or phone"
+          @click="openContactSheet"
+        >
+          Contact
+        </button>
       </nav>
 
       <nav
@@ -155,6 +199,14 @@ function focusSkipTarget() {
 
 .mobile-primary-nav a {
   padding-inline: var(--space-xs);
+}
+
+.mobile-contact-trigger {
+  flex: 0 0 auto;
+  min-height: 2.75rem;
+  padding: var(--space-sm);
+  font-size: 0.875rem;
+  white-space: nowrap;
 }
 
 .mobile-primary-nav a.router-link-exact-active,
