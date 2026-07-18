@@ -40,6 +40,13 @@ function getMaximumOccupancy(room) {
   return 1
 }
 
+function getLatestModifiedDate(room) {
+  return [room.updatedAt, room.availabilityUpdatedAt]
+    .filter(Boolean)
+    .sort()
+    .at(-1)
+}
+
 function buildAccommodation(siteUrl, room) {
   const roomUrl = toAbsoluteUrl(siteUrl, room.detailsHref)
 
@@ -57,6 +64,16 @@ function buildAccommodation(siteUrl, room) {
       '@type': 'QuantitativeValue',
       maxValue: getMaximumOccupancy(room),
       unitText: 'people',
+    },
+    address: {
+      '@type': 'PostalAddress',
+      addressLocality: 'Kanpur',
+      addressRegion: 'Uttar Pradesh',
+      addressCountry: 'IN',
+    },
+    containedInPlace: {
+      '@type': 'Place',
+      name: 'Kakadeo, Kanpur',
     },
     amenityFeature: room.included.map(feature),
     additionalProperty: [
@@ -156,10 +173,10 @@ export function buildBreadcrumbStructuredData(siteUrl, items) {
   }
 }
 
-export function buildFaqStructuredData(faqs, siteUrl) {
+export function buildFaqStructuredData(faqs, siteUrl, path = '/') {
   return {
     '@type': 'FAQPage',
-    '@id': `${toAbsoluteUrl(siteUrl, '/')}#faq`,
+    '@id': `${toAbsoluteUrl(siteUrl, path)}#faq`,
     mainEntity: faqs.map((item) => ({
       '@type': 'Question',
       name: item.question,
@@ -230,7 +247,7 @@ export function buildRoomStructuredData({ site, siteUrl, room }) {
       name: room.title,
       url: roomUrl,
       description: room.summary,
-      dateModified: room.updatedAt,
+      dateModified: getLatestModifiedDate(room),
       inLanguage: 'en-IN',
       isPartOf: {
         '@id': getWebsiteId(siteUrl),

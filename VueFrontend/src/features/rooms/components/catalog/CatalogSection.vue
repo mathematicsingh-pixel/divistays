@@ -154,6 +154,14 @@ function toggleDesktopFilters() {
         <span class="label-upper">Rooms for rent</span>
         <h1 id="catalog-title">{{ siteConfig.uiText.catalog.title }}</h1>
         <p>{{ siteConfig.uiText.catalog.summary }}</p>
+        <nav class="catalog-category-links" aria-label="Browse by room setup">
+          <RouterLink to="/pg-hostel-in-kakadeo-kanpur">
+            PG &amp; hostel-style rooms
+          </RouterLink>
+          <RouterLink to="/studio-apartments-in-kakadeo-kanpur">
+            Studios &amp; 1 RK rooms
+          </RouterLink>
+        </nav>
       </div>
 
       <CatalogToolbar
@@ -198,5 +206,22 @@ function toggleDesktopFilters() {
 
 .catalog-heading h1 {
   max-width: 12ch;
+}
+
+.catalog-category-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm) var(--space-lg);
+}
+
+.catalog-category-links a {
+  display: inline-flex;
+  min-height: 2.75rem;
+  align-items: center;
+  color: var(--accent-deep);
+  font-size: 0.875rem;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: var(--space-xs);
 }
 </style>

@@ -151,6 +151,8 @@ onBeforeUnmount(() => {
           <h3 id="footer-nav-title">Explore</h3>
           <ul>
             <li><RouterLink to="/rooms">All rooms</RouterLink></li>
+            <li><RouterLink to="/pg-hostel-in-kakadeo-kanpur">PG &amp; hostel-style</RouterLink></li>
+            <li><RouterLink to="/studio-apartments-in-kakadeo-kanpur">Studios &amp; 1 RK</RouterLink></li>
             <li><RouterLink :to="{ path: '/', hash: '#location' }">Location</RouterLink></li>
             <li><RouterLink :to="{ path: '/', hash: '#faqs' }">FAQs</RouterLink></li>
           </ul>

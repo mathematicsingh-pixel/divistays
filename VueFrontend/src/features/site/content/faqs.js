@@ -1,5 +1,13 @@
 export const siteFaqs = [
   {
+    question: 'Do you offer PG or hostel rooms in Kakadeo?',
+    answer: 'DiviStays offers furnished monthly rooms in Kakadeo. Some lower-rent listings have common facilities, similar to what people often mean by PG (paying guest) or hostel accommodation, while other rooms and studios are more private. Check the exact occupancy, kitchen, and washroom on each listing.',
+  },
+  {
+    question: 'Do you have rooms and studio apartments in Kanpur?',
+    answer: 'Yes. The rooms and studio apartments listed on this site are in Kakadeo, Kanpur. You can compare current monthly rent, photos, occupancy, kitchen, washroom, and availability before arranging a visit.',
+  },
+  {
     question: 'Are the rooms furnished?',
     answer: 'Yes. Furnishings vary by room, so each listing names the furniture and facilities included in that specific room.',
   },
@@ -14,6 +22,10 @@ export const siteFaqs = [
   {
     question: 'Where are the rooms located?',
     answer: 'The rooms are in Kakadeo, Kanpur. The site shows an approximate Google Maps area pin; the exact building location is shared after you enquire about a room.',
+  },
+  {
+    question: 'Are Kakadeo, Kakadev, and Kaka Deo the same area?',
+    answer: 'Yes. Kakadev and Kaka Deo are common alternative spellings for the Kakadeo locality in Kanpur. DiviStays uses Kakadeo throughout the site for consistency.',
   },
   {
     question: 'How do I know whether a room is still available?',

@@ -1,3 +1,4 @@
+import { accommodationCategoryRoutes } from '@/features/accommodation/routes'
 import { roomRoutes, roomsRoute } from '@/features/rooms/routes'
 
 const NotFoundPage = () => import('@/features/site/pages/NotFoundPage.vue')
@@ -9,6 +10,7 @@ const routes = [
     component: () => import('@/features/home/pages/HomePage.vue'),
   },
   roomsRoute,
+  ...accommodationCategoryRoutes,
   ...roomRoutes,
   {
     path: '/404',

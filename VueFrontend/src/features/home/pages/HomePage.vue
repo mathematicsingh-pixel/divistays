@@ -7,6 +7,7 @@ import EnquiryBanner from '@/features/home/components/EnquiryBanner.vue'
 import FAQSection from '@/features/home/components/FAQSection.vue'
 import HeroSection from '@/features/home/components/HeroSection.vue'
 import ProcessSection from '@/features/home/components/ProcessSection.vue'
+import StayTypesSection from '@/features/home/components/StayTypesSection.vue'
 import TrustSection from '@/features/home/components/TrustSection.vue'
 import { buildHomeStructuredData } from '@/features/home/seo'
 import {
@@ -99,6 +100,8 @@ useHead(() => ({
       :rooms="availableRooms"
       :site="siteConfig"
     />
+
+    <StayTypesSection />
 
     <TrustSection :site="siteConfig" />
 

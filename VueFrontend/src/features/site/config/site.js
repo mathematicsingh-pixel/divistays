@@ -34,12 +34,13 @@ const mobileFiltersSummary = occupancyOptions.length
 export const siteConfig = {
   name: 'DiviStays',
   shortName: 'DiviStays',
-  defaultTitle: 'Furnished Rooms for Rent in Kakadeo, Kanpur | DiviStays',
+  contentUpdatedAt: '2026-07-18',
+  defaultTitle: 'Rooms, PG, Hostel & Studios in Kakadeo, Kanpur | DiviStays',
   roomsTitle: 'Rooms for Rent in Kakadeo, Kanpur | DiviStays',
   description:
-    'Browse furnished rooms and studio apartments for rent in Kakadeo, Kanpur. Compare photos, monthly rent, facilities, and availability.',
+    'Compare furnished rooms, PG and hostel-style accommodation, and studio apartments in Kakadeo, Kanpur. See photos, monthly rent, facilities, and availability.',
   roomsDescription:
-    'Find furnished rooms and studio apartments for rent in Kakadeo, Kanpur. Compare photos, monthly rent, occupancy, kitchen, washroom, and availability.',
+    'Browse current furnished rooms and studio apartments for rent in Kakadeo, Kanpur. Filter by monthly budget, occupancy, kitchen, washroom, and availability.',
   defaultSiteUrl: productionSiteUrl,
   robotsDirective: 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1',
   themeColor: '#08161e',
@@ -53,11 +54,11 @@ export const siteConfig = {
   whatsappNumber: '918306709248',
   locationLabel: 'Kakadeo, Kanpur, Uttar Pradesh',
   locationShort: 'Kakadeo, Kanpur',
-  audienceLabel: 'People looking for furnished rooms in Kakadeo, Kanpur',
+  audienceLabel: 'People looking for rooms, PG accommodation, or studios in Kakadeo, Kanpur',
   brandLine: 'See photos and rent before you call.',
-  supportLine: 'Furnished rooms and studio apartments for rent in Kakadeo, Kanpur.',
-  heroEyebrow: 'Rooms for rent in Kakadeo',
-  heroTitle: 'Rooms and studio apartments in Kakadeo.',
+  supportLine: 'Furnished rooms, PG-style stays, and studio apartments for rent in Kakadeo, Kanpur.',
+  heroEyebrow: 'Rooms and PG stays in Kakadeo',
+  heroTitle: 'Rooms, PGs and studios in Kakadeo.',
   heroSummary:
     'See photos, monthly rent, and facilities before you call. If you like a room, send us the room ID to arrange a visit.',
   heroPrimaryLabel: 'See room details',
@@ -107,14 +108,14 @@ export const siteConfig = {
   ],
   faqEyebrow: 'FAQs',
   faqTitle: 'Questions about the rooms',
-  faqSummary: 'Furnishing, facilities, location, monthly rent, and room visits.',
+  faqSummary: 'Rooms, PG-style options, studios, facilities, monthly rent, location, and visits.',
   faqs: siteFaqs,
   ctaTitle: 'Ask what is open today',
   ctaSummary:
     'Send us the room ID if you have one. We will confirm current availability and arrange a visit.',
   ctaPrimaryLabel: 'Ask on WhatsApp',
   ctaSecondaryLabel: 'Call us',
-  footerDescriptor: 'Furnished rooms and studio apartments for rent in Kakadeo, Kanpur.',
+  footerDescriptor: 'Furnished rooms, PG-style stays, and studio apartments for rent in Kakadeo, Kanpur.',
   footerSummary:
     'Photos, monthly rent, facilities, and availability are listed for each room.',
   uiText: {
@@ -220,7 +221,7 @@ export function getPageOgImage(siteUrl, path = siteConfig.ogImagePath) {
 }
 
 export function getRoomPageTitle(room) {
-  return `${room.title} for Rent in Kakadeo | DiviStays`
+  return `${room.title} in Kakadeo, Kanpur | DiviStays`
 }
 
 export function getRoomPageDescription(room) {

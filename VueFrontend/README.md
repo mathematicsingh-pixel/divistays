@@ -6,6 +6,7 @@ Feature-first Vue app. One room file per room. FAQ copy in one site data file.
 
 - `assets/rooms`: raw local source images/videos per room
 - `src/app`: app entry, app shell, router
+- `src/features/accommodation`: search-intent category pages and live setup comparisons
 - `src/features/home`: home page + home-only sections
 - `src/features/rooms`: room pages, room UI, room content, room model, media helpers
 - `src/features/site`: site-wide nav, footer, brand, site config
@@ -52,6 +53,10 @@ That file feeds:
 - `siteConfig.faqs`
 - FAQ structured data output
 
+When search-facing site copy changes, also update `siteConfig.contentUpdatedAt` in
+`src/features/site/config/site.js`. The home and room-catalogue sitemap dates use the later of
+that date and the latest room update.
+
 ## Checks
 
 - `npm run validate:rooms`: room content validation
@@ -62,6 +67,11 @@ The canonical production origin is `https://divistays.com`. It is shared by page
 structured data, `sitemap.xml`, and `robots.txt`. Set `VITE_SITE_URL` only when a staging build
 needs to override that origin.
 
+Cloudflare must permanently redirect the alternate host to that origin. Configure a 301 redirect
+from `https://www.divistays.com/*` to `https://divistays.com/${1}` and preserve the query string.
+Cloudflare Pages `_redirects` does not support domain-level redirects, so this belongs in the
+Cloudflare Redirect Rules or Bulk Redirects settings.
+
 ## Design system
 
 UI source of truth: [`docs/ui-style-guide.md`](docs/ui-style-guide.md)
@@ -69,3 +79,5 @@ UI source of truth: [`docs/ui-style-guide.md`](docs/ui-style-guide.md)
 Agent rules: [`AGENTS.md`](../AGENTS.md) (root) — includes UI constraints.
 
 Current audit: [`docs/ui-audit.md`](docs/ui-audit.md)
+
+Current local SEO baseline and 30/60/90 plan: [`docs/seo-growth-plan.md`](docs/seo-growth-plan.md)

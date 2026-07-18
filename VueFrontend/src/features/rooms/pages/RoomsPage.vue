@@ -1,6 +1,7 @@
 <script setup>
 import { computed, defineAsyncComponent, ref, watch } from 'vue'
 import { useHead, useSeoMeta } from '@unhead/vue'
+import RoomTypeComparisonSection from '@/features/accommodation/components/RoomTypeComparisonSection.vue'
 import CatalogSection from '@/features/rooms/components/catalog/CatalogSection.vue'
 import { useRoomCatalog } from '@/features/rooms/composables/useRoomCatalog'
 import { availableRooms, roomCatalog } from '@/features/rooms'
@@ -137,6 +138,8 @@ useHead(() => ({
       :room-slug="catalog.selectedRoomSlug.value"
       @close="catalog.closePreview()"
     />
+
+    <RoomTypeComparisonSection :rooms="roomCatalog" />
   </main>
 
   <SiteFooter

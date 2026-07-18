@@ -1,5 +1,6 @@
 <script setup>
-import { ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
+import { getRoomCategoryPage } from '@/features/accommodation/model/category-catalog'
 import { buildVideoPath, buildVideoPosterPath } from '@/features/rooms'
 import RoomReferenceBadge from '@/features/rooms/components/RoomReferenceBadge.vue'
 import { getCallHref, siteConfig } from '@/features/site/config/site'
@@ -29,6 +30,7 @@ const props = defineProps({
 
 const callHref = getCallHref()
 const isVideoReady = ref(false)
+const categoryPage = computed(() => getRoomCategoryPage(props.room))
 
 watch(
   () => props.room.slug,
@@ -69,6 +71,19 @@ watch(
       <p class="detail-summary">
         {{ room.summary }}
       </p>
+
+      <p class="detail-location">
+        Furnished room in {{ siteConfig.locationShort }}
+      </p>
+
+      <RouterLink
+        v-if="categoryPage"
+        class="detail-category-link"
+        :to="categoryPage.path"
+      >
+        {{ categoryPage.label }}
+        <span aria-hidden="true">→</span>
+      </RouterLink>
 
       <p class="detail-freshness">
         Availability updated {{ room.availabilityUpdatedLabel }}
@@ -306,10 +321,47 @@ watch(
   font-size: 1.0625rem;
 }
 
+.detail-location {
+  width: fit-content;
+  padding-top: var(--space-sm);
+  border-top: 1px solid var(--line);
+  color: var(--text);
+  font-size: 0.875rem;
+  font-weight: 700;
+}
+
+.detail-category-link {
+  display: inline-flex;
+  width: fit-content;
+  min-height: 2.75rem;
+  align-items: center;
+  gap: var(--space-sm);
+  color: var(--accent-deep);
+  font-size: 0.875rem;
+  font-weight: 700;
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  text-underline-offset: var(--space-xs);
+}
+
+.detail-category-link span {
+  transition: transform 160ms ease;
+}
+
 .detail-freshness {
   color: var(--muted);
   font-size: 0.875rem;
   font-weight: 600;
+}
+
+@media (hover: hover) {
+  .detail-category-link:hover {
+    text-decoration-color: currentColor;
+  }
+
+  .detail-category-link:hover span {
+    transform: translateX(var(--space-xs));
+  }
 }
 
 .detail-section {

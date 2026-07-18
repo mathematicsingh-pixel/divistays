@@ -1,5 +1,8 @@
+import { accommodationCategoryPageList } from '../../src/features/accommodation/content/category-pages.js'
+import { getAccommodationCategoryRooms } from '../../src/features/accommodation/model/category-catalog.js'
 import { getRoomPath } from '../../src/features/rooms/model/room-record.js'
 import { buildImagePath } from '../../src/features/rooms/media.js'
+import { siteConfig } from '../../src/features/site/config/site.js'
 
 const routePathPattern = /^\/(?:[a-z0-9]+(?:-[a-z0-9]+)*(?:\/[a-z0-9]+(?:-[a-z0-9]+)*)*)?$/
 const isoDatePattern = /^\d{4}-\d{2}-\d{2}$/
@@ -36,14 +39,28 @@ export function buildSeoPages(roomCatalog) {
     images: room.gallery.map((media) => buildImagePath(room.slug, media.key, 1440, 'jpg')),
   }))
   const catalogLastmod = latestDate(roomPages.map((page) => page.lastmod))
+  const siteContentLastmod = normalizeDate(siteConfig.contentUpdatedAt, 'siteConfig.contentUpdatedAt')
+  const sharedPageLastmod = latestDate([catalogLastmod, siteContentLastmod])
   const coverImages = roomPages.map((page) => page.images[0]).filter(Boolean)
   const availableCoverImages = roomCatalog
     .filter((room) => room.available)
     .map((room) => buildImagePath(room.slug, room.gallery[0].key, 1440, 'jpg'))
+  const categoryPages = accommodationCategoryPageList.map((page) => {
+    const categoryRooms = getAccommodationCategoryRooms(roomCatalog, page.key)
+
+    return {
+      path: page.path,
+      lastmod: sharedPageLastmod,
+      images: categoryRooms.map((room) => (
+        buildImagePath(room.slug, room.gallery[0].key, 1440, 'jpg')
+      )),
+    }
+  })
 
   return [
-    { path: '/', lastmod: catalogLastmod, images: availableCoverImages },
-    { path: '/rooms', lastmod: catalogLastmod, images: coverImages },
+    { path: '/', lastmod: sharedPageLastmod, images: availableCoverImages },
+    { path: '/rooms', lastmod: sharedPageLastmod, images: coverImages },
+    ...categoryPages,
     ...roomPages,
   ]
 }

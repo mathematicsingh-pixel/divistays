@@ -279,9 +279,18 @@ Room reference and availability may use the existing badge pattern. Keep them sm
 1. Compact header.
 2. Concise proposition, five factual room samples, and one responsive real-room preview.
 3. Three representative available rooms and a link to all rooms.
-4. Factual proof and approximate location.
-5. Three-step visit path.
-6. FAQs, one final orange enquiry plane, and an ink footer.
+4. One open, ruled comparison that explains room, PG/hostel-style, studio, and 1 RK search labels through the actual facilities shown on listings. Do not imply food, services, or house rules that have not been verified.
+5. Factual proof and approximate location.
+6. Three-step visit path.
+7. FAQs, one final orange enquiry plane, and an ink footer.
+
+### Search-intent accommodation page
+
+1. Use one truthful page per materially different setup: shared-kitchen PG/hostel-style rooms, or private-kitchen studio/1 RK rooms. Do not create locality or spelling clones.
+2. Open on solid ink with one eager real-room photograph, one concise `h1`, current room count, starting monthly rent, Kakadeo location, and the latest real availability date.
+3. Follow immediately with a complete, live filtered room grid. Then explain how the search label maps to the actual facilities and explicitly name important items that still require confirmation. Never imply meals, eligibility, deposits, or house rules that are not recorded.
+4. Continue with one open ruled decision guide, approximate location, native FAQ disclosures, the standard final enquiry plane, and footer register.
+5. On mobile, retain one linear reading path and full-width actions. At 960px, the hero and decision guide may use asymmetric two-column layouts. Motion is limited to the standard page entrance and whole-room-link photograph/arrow feedback.
 
 ### Final enquiry plane
 
@@ -309,6 +318,7 @@ Room reference and availability may use the existing badge pattern. Keep them sm
 2. Compact result/filter/sort controls.
 3. Room grid.
 4. Mobile filter sheet / desktop inline filters.
+5. After the grid, one live ruled setup comparison may summarize count, real rent range, occupancy, kitchen, washroom, and latest genuine availability date for all rooms, PG/hostel-style rooms, and studios/1 RK rooms.
 
 ### Detail
 
