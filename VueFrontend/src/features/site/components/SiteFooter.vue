@@ -189,7 +189,6 @@ onBeforeUnmount(() => {
 <style scoped>
 .site-footer {
   position: relative;
-  margin-top: var(--space-xl);
   overflow: clip;
   padding-block: var(--space-2xl) calc(var(--space-2xl) + env(safe-area-inset-bottom));
   background: var(--bg);

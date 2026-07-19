@@ -120,7 +120,6 @@ useHead(() => ({
   </main>
 
   <SiteFooter
-    class="home-footer"
     :site="siteConfig"
     :call-href="callHref"
     :whatsapp-href="defaultWhatsAppHref"
@@ -144,9 +143,5 @@ useHead(() => ({
 .home-page-main {
   padding-bottom: 0;
   background: var(--canvas);
-}
-
-.home-footer {
-  margin-top: 0;
 }
 </style>
