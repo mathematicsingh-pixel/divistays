@@ -16,13 +16,13 @@ const mapPreviewSrc = computed(() => props.site.localityPage?.placeholderImagePa
 
 const mapPreviewAlt = computed(() =>
   props.site.localityPage?.placeholderImageAlt
-  || 'Stylized approximate neighborhood map with a highlighted area pin.',
+  || 'Stylized exact neighborhood map with a highlighted building pin.',
 )
 
 const mapHighlights = computed(() => [
   props.site.locationShort,
   'Google Maps area pin',
-  'Exact building shared on enquiry',
+  'Exact building pin',
 ])
 </script>
 
@@ -35,11 +35,11 @@ const mapHighlights = computed(() => [
       <article class="location-stage surface-dark page-rise">
         <div class="location-grid">
           <div class="location-copy">
-            <span class="label-upper label-pill location-eyebrow">Approximate location</span>
-            <h2>Check the area before you visit.</h2>
+            <span class="label-upper label-pill location-eyebrow">Location</span>
+            <h2>Find the exact location before you visit.</h2>
             <p>
-              The map shows the wider Kakadeo area, not the exact building. We share the precise
-              pin once you shortlist a room or studio to discuss.
+              The map now shows the exact building location in Kakadeo. Use it to check
+              commute routes, nearby landmarks, and arrival details.
             </p>
 
             <div class="location-highlights">
@@ -53,8 +53,8 @@ const mapHighlights = computed(() => [
             </div>
 
             <div class="location-note">
-              <span class="label-upper label-pill">Area pin only</span>
-              <p>Useful for commute checks, nearby landmarks, and a quick feel for the area.</p>
+              <span class="label-upper label-pill">Exact location</span>
+              <p>Useful for commute checks, nearby landmarks, and arrival planning.</p>
             </div>
           </div>
 
@@ -63,7 +63,7 @@ const mapHighlights = computed(() => [
             :href="mapOpenUrl"
             target="_blank"
             rel="noreferrer"
-            :aria-label="`Open approximate ${site.name} location in Google Maps for ${site.locationLabel}`"
+            :aria-label="`Open exact ${site.name} location in Google Maps for ${site.locationLabel}`"
           >
             <div class="location-map-head">
               <div class="location-map-copy">
@@ -71,7 +71,7 @@ const mapHighlights = computed(() => [
                 <p>{{ site.locationLabel }}</p>
               </div>
 
-              <span class="location-map-badge">Approximate</span>
+              <span class="location-map-badge">Exact</span>
             </div>
 
             <div class="location-frame">
@@ -85,14 +85,14 @@ const mapHighlights = computed(() => [
                 decoding="async"
               >
               <div class="location-map-overlay">
-                <span class="map-placeholder-kicker">Approximate area only</span>
+                <span class="map-placeholder-kicker">Exact building pin</span>
                 <strong>Open in Google Maps</strong>
-                <small>Tap the card to check commute, coaching belt, and nearby landmarks.</small>
+                <small>Tap the card to check commute, nearby landmarks, and arrival details.</small>
               </div>
             </div>
 
             <p class="location-map-note">
-              Area only. Exact pin shared once you shortlist a place.
+              Exact building location is shown here.
             </p>
           </a>
         </div>
