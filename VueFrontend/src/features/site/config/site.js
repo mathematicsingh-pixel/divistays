@@ -58,9 +58,9 @@ export const siteConfig = {
   brandLine: 'See photos and rent before you call.',
   supportLine: 'Furnished rooms, PG-style stays, and studio apartments for rent in Kakadeo, Kanpur.',
   heroEyebrow: 'Rooms and PG stays in Kakadeo',
-  heroTitle: 'Rooms, PGs and studios in Kakadeo.',
+  heroTitle: 'Rooms, PGs and Studios in Kakadeo.',
   heroSummary:
-    'See photos, monthly rent, and facilities before you call. If you like a room, send us the room ID to arrange a visit.',
+    'See photos, video walkthroughs, monthly rent, and facilities before you call. If you like a room, send us the room ID to arrange a visit.',
   heroPrimaryLabel: 'See room details',
   heroCallLabel: 'Call DiviStays',
   homeRoomsEyebrow: 'Available now',
