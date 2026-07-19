@@ -9,7 +9,7 @@
     "validate:site-url": "node scripts/validate-site-url.mjs",
     "validate:site-url:production": "node scripts/validate-site-url.mjs --production",
     "verify:seo": "node scripts/verify-seo-artifacts.mjs",
-    "predev": "npm run generate:room-summaries && npm run validate:rooms && node scripts/build-room-media.mjs",
+    "predev": "npm run generate:room-summaries && npm run validate:rooms",
     "dev": "vite",
     "prebuild": "npm run generate:room-summaries && npm run validate:rooms && npm run validate:site-url && node scripts/build-room-media.mjs",
     "build": "vite-ssg build",
