@@ -88,7 +88,7 @@ const kakadeoReasons = [
               <div>
                 <span class="label-upper">Plan from Kakadeo</span>
                 <p>See your route before you visit</p>
-                <small>Public map shows the neighbourhood. Exact pin shared after enquiry.</small>
+                <small>Here's our exact location in Kakadeo</small>
               </div>
               <span class="location-map-action">Open Google Maps ↗</span>
             </div>
