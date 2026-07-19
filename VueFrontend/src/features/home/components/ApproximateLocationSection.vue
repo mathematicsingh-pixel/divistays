@@ -16,7 +16,7 @@ const mapPreviewSrc = computed(() => props.site.localityPage?.placeholderImagePa
 
 const mapPreviewAlt = computed(() =>
   props.site.localityPage?.placeholderImageAlt
-  || 'Stylized exact neighborhood map with a highlighted building pin.',
+  || 'Stylized approximate neighborhood map with a highlighted area pin.',
 )
 
 const kakadeoReasons = [
@@ -36,20 +36,43 @@ const kakadeoReasons = [
 </script>
 
 <template>
-  <secti  <secti  <secti on"
-    clas    clas    clas    clas    clasn"    clas    clas    clas    clas    clasn"    clas    clas    clas    clas    clasn"    clas    clas    clas     class="location-grid">
+  <section
+    id="location"
+    class="section-shell location-section"
+  >
+    <div class="container location-shell">
+      <article class="location-stage surface-dark">
+        <div class="location-grid">
           <div class="location-copy">
             <span class="label-upper location-eyebrow">Rooms for rent in Kakadeo</span>
-            <h            <h            <h            <h   at            <h            <h            <h            <h   at          , Kakadeo makes sense. It is one o            <h            <hstricts, with Rawatpur Metro nearby for longer journeys.
+            <h2>Why Kakadeo?</h2>
+            <p class="location-intro">
+              If your day revolves around classes and study, Kakadeo makes sense. It is one of
+              Kanpur's major coaching districts, with Rawatpur Metro nearby for longer journeys.
             </p>
 
             <ol class="location-reasons">
               <li
-                                             ad                                             ad                                             ad                 ex">{{ String(index + 1).padStart(2, '0') }}</span>
+                v-for="(reason, index) in kakadeoReasons"
+                :key="reason.title"
+              >
+                <span class="location-reason-index">{{ String(index + 1).padStart(2, '0') }}</span>
                 <div>
                   <h3>{{ reason.title }}</h3>
                   <p>{{ reason.body }}</p>
-                </d                  </li                </d                          </d                  </li                </d                          </d                  </li                </d                          </d                 en                </d                 le                </d                  </li                </d                          
+                </div>
+              </li>
+            </ol>
+          </div>
+
+          <a
+            class="location-map-link"
+            :href="mapOpenUrl"
+            target="_blank"
+            rel="noreferrer"
+            :aria-label="`Open approximate ${site.name} location in Google Maps for ${site.locationLabel}`"
+          >
+            <div class="location-frame">
               <img
                 class="location-map-image"
                 :src="mapPreviewSrc"
@@ -58,7 +81,16 @@ const kakadeoReasons = [
                 height="1536"
                 loading="lazy"
                 decoding="async"
-                                                   v                 ma                                                   v                 ma                                                   v                 ma                                                   v              location for Kakadeo.</s                                         <span                   p-action">Open Google Maps ↗</span>
+              >
+            </div>
+
+            <div class="location-map-caption">
+              <div>
+                <span class="label-upper">Plan from Kakadeo</span>
+                <p>See your route before you visit</p>
+                <small>Public map shows the neighbourhood. Exact pin shared after enquiry.</small>
+              </div>
+              <span class="location-map-action">Open Google Maps ↗</span>
             </div>
           </a>
         </div>
@@ -89,7 +121,11 @@ const kakadeoReasons = [
 .location-copy {
   display: grid;
   align-content: start;
-  gap: va  gap: va  gap: va  gap: va  gap:ow {  gap: va  gap: va  gap:verse);
+  gap: var(--space-md);
+}
+
+.location-eyebrow {
+  color: var(--muted-inverse);
 }
 
 .location-copy h2,
@@ -98,9 +134,35 @@ const kakadeoReasons = [
   color: var(--text-inverse);
 }
 
-.l.l.l.l.l.l.l.l.l.l.l.l.l.l.l.l.12.l.l.l.l.l.l.l.l.l.l.l.l.l.l.l.l.12.l.l.l.l.l.l.l.l.l.l.l.l.l.l.l.l.12.l.l.l.l.l.l.l.l.l.l.l.l.l.l.l.l.12.l.l.l.l.l.l.l.l.l.l.l.l.l.l.l.l.12.l.l.l.l.l.l.l.l.l.l.l.l.l.l.l.l.12.l.l.l.l.l.l.l.l.l.l.l.l.l.l.l.l.12.l.l.l.l.l.l.l.l.l.l.l.l.l.l.l.l.12.l.l.l.l.l.l.l.l.l.l.l.l.l.l.l.l.12.l.l.l.l.l.l.l.l.l.l.l.l.l.l.l.l.12.l.l.l.l.l.l.l.l.l.l.l.l.l.l.l.l.12.l.l.l.l.l.l.l.l.l.l.l.l.l.l.l.l.12.l.l.l.l.l.l.l.l.l.in.l.l.l.l.l..locatio.lreason-index {
+.location-copy h2 {
+  max-width: 12ch;
+}
+
+.location-copy .location-intro {
+  max-width: 32rem;
+  color: var(--muted-inverse);
+}
+
+.location-reasons {
+  display: grid;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--line-inverse);
+  list-style: none;
+}
+
+.location-reasons li {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: var(--space-md);
+  padding: var(--space-md) 0;
+  border-bottom: 1px solid var(--line-inverse);
+}
+
+.location-reason-index {
   min-width: 1.75rem;
-  color:  color: ce  color:  c-s  colvar(--text-label);
+  color: var(--accent);
+  font-size: var(--text-label);
   font-weight: 600;
   letter-spacing: 0.06em;
   line-height: 1.5;
@@ -108,7 +170,11 @@ const kakadeoReasons = [
 
 .location-reasons div {
   display: grid;
-  display: grid;ce  display: grid;ce-r  display: grid;ce  displ1rem;
+  gap: var(--space-xs);
+}
+
+.location-reasons h3 {
+  font-size: 1rem;
 }
 
 .location-reasons p {
@@ -117,10 +183,14 @@ const kakadeoReasons = [
 }
 
 .location-map-link {
-  display: grid;  display: grid;  display: grid;  display: grid;  display: grid;  display: gration: none;
+  display: grid;
+  align-content: start;
+  gap: var(--space-md);
+  min-width: 0;
+  text-decoration: none;
 }
 
-.locati.locati.locati.lo-visible {
+.location-map-link:focus-visible {
   outline-color: var(--sun);
   outline-offset: var(--space-sm);
 }
@@ -148,10 +218,67 @@ const kakadeoReasons = [
 
 .location-map-caption > div {
   display: grid;
+  gap: var(--space-xs);
+  min-width: 0;
+}
+
+.location-map-caption .label-upper {
+  color: var(--muted-inverse);
+}
+
+.location-map-caption p {
+  font-weight: 700;
+}
+
+.location-map-caption small {
+  max-width: 30rem;
+  color: var(--muted-inverse);
+  font-size: 0.75rem;
+  line-height: 1.5;
 }
 
 .location-map-action {
-  color: var(--sun);
-  font-weight: 600;
+  flex: 0 0 auto;
+  color: var(--accent);
+  font-size: 0.875rem;
+  font-weight: 700;
+}
+
+@media (hover: hover) {
+  .location-map-link:hover .location-map-image {
+    transform: scale(1.015);
+  }
+
+  .location-map-link:hover .location-map-action {
+    color: var(--text-inverse);
+  }
+}
+
+@media (min-width: 640px) {
+  .location-stage {
+    padding: var(--space-xl);
+  }
+
+  .location-frame {
+    aspect-ratio: 16 / 10;
+  }
+
+  .location-map-caption {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+  }
+}
+
+@media (min-width: 960px) {
+  .location-grid {
+    grid-template-columns: minmax(20rem, 0.9fr) minmax(24rem, 1.1fr);
+    align-items: center;
+    gap: var(--space-2xl);
+  }
+
+  .location-stage {
+    padding: var(--space-2xl);
+  }
 }
 </style>

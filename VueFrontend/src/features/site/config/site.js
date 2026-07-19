@@ -159,10 +159,10 @@ export const siteConfig = {
     },
   },
   localityPage: {
-    mapUrl: 'https://maps.app.goo.gl/9sDR9Z3dRfdb1PYJA',
+    mapUrl: 'https://maps.google.com/?q=Kakadeo+Kanpur',
     placeholderImagePath: '/location-placeholder-map.webp',
     placeholderImageAlt:
-      'Stylized approximate neighborhood map for Kakadeo, Kanpur with a highlighted area pin.',
+      'Illustrated map showing the approximate DiviStays area in Kakadeo, Kanpur.',
   },
 }
 
