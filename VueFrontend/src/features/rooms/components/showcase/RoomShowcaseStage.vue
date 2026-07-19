@@ -99,7 +99,9 @@ watch(
         >
           Photo gallery
         </p>
-        <p>{{ room.gallery.length }} {{ room.gallery.length === 1 ? 'photo' : 'photos' }} of this room</p>
+        <p>
+          {{ room.gallery.length }} {{ room.gallery.length === 1 ? 'photo' : 'photos' }}{{ room.video ? ' and a video walkthrough' : '' }} of this room
+        </p>
       </div>
     </div>
 
