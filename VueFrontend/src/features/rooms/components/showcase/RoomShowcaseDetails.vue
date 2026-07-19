@@ -1,5 +1,5 @@
 <script setup>
-import { computed, ref, watch } from 'vue'
+import { computed, nextTick, ref, watch } from 'vue'
 import { getRoomCategoryPage } from '@/features/accommodation/model/category-catalog'
 import { buildVideoPath, buildVideoPosterPath } from '@/features/rooms'
 import RoomReferenceBadge from '@/features/rooms/components/RoomReferenceBadge.vue'
@@ -30,7 +30,20 @@ const props = defineProps({
 
 const callHref = getCallHref()
 const isVideoReady = ref(false)
+const videoRef = ref(null)
 const categoryPage = computed(() => getRoomCategoryPage(props.room))
+
+async function activateVideo() {
+  isVideoReady.value = true
+
+  await nextTick()
+
+  if (videoRef.value) {
+    videoRef.value.play().catch(() => {
+      // Some browsers block autoplay; video still becomes available.
+    })
+  }
+}
 
 watch(
   () => props.room.slug,
@@ -161,7 +174,7 @@ watch(
         class="video-trigger"
         type="button"
         :aria-label="`Play ${room.video.label}`"
-        @click="isVideoReady = true"
+        @click="activateVideo"
       >
         <img
           :src="buildVideoPosterPath(room.slug, room.video.key)"
@@ -179,6 +192,7 @@ watch(
 
       <video
         v-else
+        ref="videoRef"
         controls
         playsinline
         preload="metadata"
