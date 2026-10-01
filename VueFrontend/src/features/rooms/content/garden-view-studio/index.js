@@ -3,7 +3,7 @@ import { defineRoom, image } from '../helpers.js'
 const included = [
   'Bed, study table, and storage',
   'Private kitchen',
-  'Attached washroom',
+  'Private attached washroom with shower, sink, and toilet',
   'Wi-Fi access',
   'Water purifier',
   '24/7 CCTV monitoring',
@@ -42,7 +42,7 @@ export default defineRoom({
   kitchenType: 'private',
   kitchenLabel: 'Private kitchen',
   washroomType: 'attached',
-  washroomLabel: 'Attached washroom',
+  washroomLabel: 'Private attached washroom',
   highlightLabel: 'Room for two or three',
   facingLabel: 'Garden side',
   bestFor: 'Two or three occupants who want more floor space and private kitchen and washroom facilities.',

@@ -44,7 +44,7 @@ export default defineRoom({
   kitchenType: 'private',
   kitchenLabel: 'Private kitchen',
   washroomType: 'attached',
-  washroomLabel: 'Attached washroom',
+  washroomLabel: 'Private attached washroom',
   highlightLabel: 'Private kitchen and washroom',
   facingLabel: 'Bright interior',
   bestFor: 'One or two occupants who want their own kitchen and attached washroom.',

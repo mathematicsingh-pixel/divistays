@@ -5,7 +5,7 @@ const included = [
   'Water purifier',
   'Garden-facing ventilation',
   'Private kitchen',
-  'Attached washroom',
+  'Private attached washroom with shower, sink, and toilet',
   'Wi-Fi access',
   '24/7 CCTV monitoring',
 ]
@@ -44,7 +44,7 @@ export default defineRoom({
   kitchenType: 'private',
   kitchenLabel: 'Private kitchen',
   washroomType: 'attached',
-  washroomLabel: 'Attached washroom',
+  washroomLabel: 'Private attached washroom',
   highlightLabel: 'Private kitchen and washroom',
   facingLabel: 'Garden-facing',
   bestFor: 'Two occupants who want their own kitchen and attached washroom.',
