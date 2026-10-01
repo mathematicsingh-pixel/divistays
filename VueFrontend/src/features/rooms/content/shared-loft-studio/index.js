@@ -30,7 +30,7 @@ const gallery = [
 export default defineRoom({
   id: 9,
   slug: 'garden-room-kitchenette',
-  title: 'Garden-side room with kitchenette',
+  title: 'Garden side room',
   summary:
     'Furnished garden-side room with a bed, shared kitchen access, and a private attached washroom.',
   fitSummary: 'Shared kitchen access and a private attached washroom for one or two occupants.',
