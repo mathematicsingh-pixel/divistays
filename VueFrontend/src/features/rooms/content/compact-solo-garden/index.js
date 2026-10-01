@@ -32,7 +32,7 @@ export default defineRoom({
   summary:
     'Furnished single room with garden-side ventilation and shared kitchen and washroom facilities.',
   fitSummary: 'Lowest listed rent, with private washroom and shared kitchen access.',
-  priceMonthly: 4000,
+  priceMonthly: 3999,
   available: true,
   featured: false,
   updatedAt: '2026-07-15',

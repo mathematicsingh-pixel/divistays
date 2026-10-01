@@ -29,7 +29,7 @@ export default defineRoom({
   summary:
     'Furnished room with a large window, study desk, attached washroom, and access to a shared kitchen.',
   fitSummary: 'Extra floor space, an attached washroom, and a shared kitchen.',
-  priceMonthly: 5499,
+  priceMonthly: 5999,
   available: true,
   featured: false,
   updatedAt: '2026-07-15',
