@@ -322,11 +322,11 @@ watch(
 }
 
 .availability-status--occupied {
-  color: var(--muted);
+  color: var(--status-occupied);
 }
 
 .availability-status--occupied > span {
-  background: var(--muted);
+  background: var(--status-occupied);
 }
 
 .detail-summary {

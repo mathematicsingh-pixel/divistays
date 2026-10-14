@@ -193,7 +193,10 @@ const previewAriaLabel = computed(() =>
 
               <span class="hero-room-meta">
                 <strong>{{ activePreview.room.priceLabel }}</strong>
-                <span class="hero-room-status">
+                <span
+                  class="hero-room-status"
+                  :class="{ 'hero-room-status--occupied': !activePreview.room.available }"
+                >
                   <span aria-hidden="true" />
                   {{ activePreview.room.availabilityShortLabel }}
                 </span>
@@ -424,6 +427,14 @@ const previewAriaLabel = computed(() =>
   border-radius: var(--radius-full);
   animation: availability-pulse 2.8s ease-out infinite;
   content: '';
+}
+
+.hero-room-status--occupied {
+  color: var(--status-occupied);
+}
+
+.hero-room-status--occupied > span::after {
+  content: none;
 }
 
 .hero-room-setup {

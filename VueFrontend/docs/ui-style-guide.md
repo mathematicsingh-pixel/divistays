@@ -88,6 +88,7 @@ Use a stable responsive header, whole-card room navigation, staged mobile filter
 | `--accent-deep` | `#a94210` | Action hover/text treatment |
 | `--brand` | `#7ed7c4` | Availability/success only |
 | `--brand-strong` | `#126d60` | Availability text on light |
+| `--status-occupied` | `#a33e36` | Occupied/unavailable status only |
 | `--sun` | `#ffd38e` | Focus ring; rare highlight |
 | `--gradient-enquiry` | `#ff7a1a → #ff9d3b` + `--sun` | Final enquiry plane only |
 | `--line` | `rgba(16,29,36,.14)` | Light-plane rules |
@@ -98,6 +99,7 @@ Use a stable responsive header, whole-card room navigation, staged mobile filter
 
 - Orange is action. It may form a primary button, a tight static action halo, an explicit text action, or the one documented mango gradient on the final enquiry plane. Do not use orange for card-edge decoration, badges, status, other gradients, or ambient decoration.
 - Mint is availability/status. It is never a primary button color.
+- Occupied/unavailable status uses `--status-occupied`; do not use it for errors or actions.
 - Sun is a focus color and appears rarely elsewhere.
 - Dark content planes are solid. No ambient glow fields, glass tints, or blur-heavy translucency.
 

@@ -150,11 +150,11 @@ defineProps({
 }
 
 .room-status--occupied {
-  color: var(--muted);
+  color: var(--status-occupied);
 }
 
 .room-status--occupied > span {
-  background: var(--muted);
+  background: var(--status-occupied);
 }
 
 .room-price {
