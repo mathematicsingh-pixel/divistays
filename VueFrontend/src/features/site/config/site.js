@@ -160,6 +160,7 @@ export const siteConfig = {
   },
   localityPage: {
     mapUrl: 'https://maps.app.goo.gl/RYzBVD8LiLB8WC1KA',
+    googleReviewsUrl: 'https://www.google.com/maps/place/Cozy+Rooms+Available+For+Students+And+Working+Professional/@26.4745842,80.2845376,17z/data=!4m8!3m7!1s0x399c39e8375bb13d:0x6c4584d992df3f7f!8m2!3d26.4745842!4d80.2845376!9m1!1b1!16s%2Fg%2F11ydcw4vh8',
     placeholderImagePath: '/location-placeholder-map.webp',
     placeholderImageAlt:
       'Illustrated map showing the approximate DiviStays area in Kakadeo, Kanpur.',

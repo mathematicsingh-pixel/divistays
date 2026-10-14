@@ -6,6 +6,7 @@ import AvailableRoomsSection from '@/features/home/components/AvailableRoomsSect
 import EnquiryBanner from '@/features/home/components/EnquiryBanner.vue'
 import FAQSection from '@/features/home/components/FAQSection.vue'
 import HeroSection from '@/features/home/components/HeroSection.vue'
+import GoogleReviewsSection from '@/features/home/components/GoogleReviewsSection.vue'
 import ProcessSection from '@/features/home/components/ProcessSection.vue'
 import StayTypesSection from '@/features/home/components/StayTypesSection.vue'
 import TrustSection from '@/features/home/components/TrustSection.vue'
@@ -108,6 +109,8 @@ useHead(() => ({
     <TrustSection :site="siteConfig" />
 
     <ApproximateLocationSection :site="siteConfig" />
+
+    <GoogleReviewsSection :site="siteConfig" />
 
     <ProcessSection :site="siteConfig" />
 
