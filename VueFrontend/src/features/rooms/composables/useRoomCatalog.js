@@ -2,8 +2,10 @@ import { computed, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { priceBands, roomCatalog, roomMatchesPriceBand } from '@/features/rooms'
 
+const allRoomsBooked = !roomCatalog.some((room) => room.available)
+
 const defaultState = {
-  availability: 'available',
+  availability: allRoomsBooked ? 'all' : 'available',
   sort: 'available-first',
 }
 
@@ -11,7 +13,7 @@ const allowedAvailability = new Set(['available', 'all'])
 const allowedSort = new Set(['available-first', 'price-asc', 'price-desc', 'updated'])
 const allowedOccupancy = new Set(roomCatalog.map((room) => room.occupancy))
 const allowedKitchen = new Set(['private', 'common'])
-const allowedWashroom = new Set(['attached', 'common'])
+const allowedWashroom = new Set(['attached', 'private', 'common'])
 const allowedPrice = new Set(priceBands.map((item) => item.value))
 
 function parseMulti(value, allowedValues) {
@@ -38,6 +40,10 @@ function sortRooms(list, sort) {
 
   if (sort === 'updated') {
     return rooms.sort((left, right) => new Date(right.updatedAt) - new Date(left.updatedAt) || Number(right.available) - Number(left.available))
+  }
+
+  if (allRoomsBooked) {
+    return rooms
   }
 
   return rooms.sort((left, right) => {

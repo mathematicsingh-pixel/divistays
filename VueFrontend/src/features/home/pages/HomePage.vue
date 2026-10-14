@@ -12,6 +12,7 @@ import TrustSection from '@/features/home/components/TrustSection.vue'
 import { buildHomeStructuredData } from '@/features/home/seo'
 import {
   availableRooms,
+  roomCatalog,
 } from '@/features/rooms'
 import MobileEnquiryBar from '@/features/site/components/MobileEnquiryBar.vue'
 import SiteFooter from '@/features/site/components/SiteFooter.vue'
@@ -29,6 +30,7 @@ const defaultWhatsAppHref = getWhatsAppHref()
 const stickyContactOptions = buildStickyContactOptions(callHref, defaultWhatsAppHref)
 const siteUrl = resolveSiteUrl(import.meta.env.VITE_SITE_URL)
 const ogImage = getPageOgImage(siteUrl)
+const homeRooms = availableRooms.length ? availableRooms : roomCatalog
 const isEnquiryVisible = ref(false)
 const isFooterVisible = ref(false)
 
@@ -93,11 +95,11 @@ useHead(() => ({
   >
     <HeroSection
       :site="siteConfig"
-      :rooms="availableRooms"
+      :rooms="homeRooms"
     />
 
     <AvailableRoomsSection
-      :rooms="availableRooms"
+      :rooms="homeRooms"
       :site="siteConfig"
     />
 

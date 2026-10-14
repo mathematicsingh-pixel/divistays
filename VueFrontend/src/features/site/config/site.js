@@ -63,8 +63,8 @@ export const siteConfig = {
     'See photos, video walkthroughs, monthly rent, and facilities before you call. If you like a room, send us the room ID to arrange a visit.',
   heroPrimaryLabel: 'See room details',
   heroCallLabel: 'Call DiviStays',
-  homeRoomsEyebrow: 'Available now',
-  homeRoomsTitle: 'Available rooms',
+  homeRoomsEyebrow: availableRoomCount ? 'Available now' : 'Room register',
+  homeRoomsTitle: availableRoomCount ? 'Available rooms' : 'All room listings',
   homeRoomsSummary: `${availabilitySummary} Open any listing for more photos and full room details.`,
   proofEyebrow: 'Room listings',
   proofTitle: 'Photos, rent and facilities',
@@ -120,8 +120,8 @@ export const siteConfig = {
     'Photos, monthly rent, facilities, and availability are listed for each room.',
   uiText: {
     actions: {
-      viewOpenRooms: 'See available rooms',
-      viewRooms: 'See available rooms',
+      viewOpenRooms: availableRoomCount ? 'See available rooms' : 'Browse all rooms',
+      viewRooms: availableRoomCount ? 'See available rooms' : 'Browse all rooms',
       compareAllRooms: 'Compare all rooms',
       talkToUs: 'Call or WhatsApp',
       chooseFilters: 'Filter rooms',

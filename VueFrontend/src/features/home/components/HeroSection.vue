@@ -79,6 +79,12 @@ const activePosition = computed(() => {
 
   return index >= 0 ? index + 1 : 1
 })
+
+const previewAriaLabel = computed(() =>
+  props.rooms.some((room) => room.available)
+    ? `Preview ${roomPreviews.value.length} available room listings`
+    : `Preview ${roomPreviews.value.length} room listings`,
+)
 </script>
 
 <template>
@@ -100,7 +106,7 @@ const activePosition = computed(() => {
           v-if="roomPreviews.length"
           class="hero-preview-group"
           role="group"
-          :aria-label="`Preview ${roomPreviews.length} available room listings`"
+          :aria-label="previewAriaLabel"
         >
           <div class="hero-preview-heading">
             <span class="label-upper">Room preview</span>

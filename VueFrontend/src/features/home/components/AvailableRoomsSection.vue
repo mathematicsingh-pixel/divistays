@@ -14,15 +14,21 @@ const props = defineProps({
 })
 
 const featuredRooms = computed(() => props.rooms.slice(0, 3))
+const hasAvailableRooms = computed(() => props.rooms.some((room) => room.available))
+const allRoomsLabel = computed(() =>
+  hasAvailableRooms.value
+    ? `See all ${props.rooms.length} available ${props.rooms.length === 1 ? 'room' : 'rooms'}`
+    : `See all ${props.rooms.length} rooms`,
+)
 </script>
 
 <template>
-  <section class="section-shell available-shell" aria-labelledby="available-rooms-title">
+  <section class="section-shell available-shell" aria-labelledby="home-rooms-title">
     <div class="container">
       <div class="rooms-heading">
         <div class="section-heading">
           <span class="label-upper">{{ site.homeRoomsEyebrow }}</span>
-          <h2 id="available-rooms-title">{{ site.homeRoomsTitle }}</h2>
+          <h2 id="home-rooms-title">{{ site.homeRoomsTitle }}</h2>
           <p>{{ site.homeRoomsSummary }}</p>
         </div>
 
@@ -30,7 +36,7 @@ const featuredRooms = computed(() => props.rooms.slice(0, 3))
           class="rooms-all-link"
           to="/rooms"
         >
-          See all {{ rooms.length }} available {{ rooms.length === 1 ? 'room' : 'rooms' }}
+          {{ allRoomsLabel }}
           <span aria-hidden="true">→</span>
         </RouterLink>
       </div>
@@ -48,7 +54,7 @@ const featuredRooms = computed(() => props.rooms.slice(0, 3))
         class="button-secondary rooms-mobile-action"
         to="/rooms"
       >
-        See all available rooms
+        {{ hasAvailableRooms ? 'See all available rooms' : 'See all rooms' }}
       </RouterLink>
     </div>
   </section>

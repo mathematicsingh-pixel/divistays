@@ -2,7 +2,7 @@ import { roomSummarySourceCatalog } from '../content/summary-registry.js'
 import { decorateRoomRecord, formatPriceLabel } from './room-record.js'
 const occupancyOrder = ['single', 'single/double', 'double', 'flex']
 const kitchenOrder = ['private', 'common']
-const washroomOrder = ['attached', 'common']
+const washroomOrder = ['attached', 'private', 'common']
 
 export const priceBands = [
   { value: 'under-4000', label: 'Under ₹4,000' },

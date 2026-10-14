@@ -84,7 +84,7 @@ const filterGroups = [
   {
     key: 'washroom',
     label: 'Washroom',
-    options: withShortLabels(washroomOptions, { attached: 'Attached', common: 'Shared' }),
+    options: withShortLabels(washroomOptions, { attached: 'Attached', private: 'Private', common: 'Shared' }),
     action: 'toggleWashroom',
   },
   { key: 'price', label: 'Budget', options: priceBands, action: 'togglePrice' },
